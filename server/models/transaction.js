@@ -1,0 +1,20 @@
+'use strict';
+module.exports = (sequelize, DataTypes) => {
+    var transaction = sequelize.define('transaction', {
+        userId: DataTypes.INTEGER,
+        accountId: DataTypes.INTEGER,
+        categoryId: DataTypes.INTEGER,
+        subcategoryId: DataTypes.INTEGER,
+        debit: DataTypes.DECIMAL,
+        credit: DataTypes.DECIMAL,
+        note: DataTypes.TEXT
+    }, {});
+    transaction.associate = function (models) {
+        // associations can be defined here
+        transaction.belongsTo(models.category);
+        transaction.belongsTo(models.subcategory);
+        transaction.belongsTo(models.account);
+        transaction.belongsTo(models.user);
+    };
+    return transaction;
+};
