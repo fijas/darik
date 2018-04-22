@@ -38,14 +38,9 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-//Define request response in root URL (/)
-app.get('/', function (req, res) {
-    res.send('Hello World!')
-});
-
 //Launch listening server on port 8888
-app.listen(8888, function () {
-    console.log('app listening on port 8888!')
+app.listen(3001, function () {
+    console.log('app listening on port 3001!')
 });
 
 module.exports = app;

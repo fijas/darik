@@ -18,6 +18,7 @@
     "sequelize-cli": "^4.0.0"
   },
   "devDependencies": {
+    "nodemon": "^1.17.3",
     "supertest": "^3.0.0",
     "tape": "^4.9.0"
   }

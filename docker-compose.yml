@@ -1,0 +1,20 @@
+version: "2.1"
+services:
+
+  server:
+    container_name: darikserver
+    build: ./server/
+    volumes:
+      - './server:/usr/src/'
+      - './server/package.json:/usr/src/package.json'
+    ports:
+      - '3001:3001'
+
+  client:
+    container_name: darikclient
+    build: ./client/
+    volumes:
+      - './client:/usr/src/'
+      - '/usr/src/node_modules'
+    ports:
+      - '3000:3000'
