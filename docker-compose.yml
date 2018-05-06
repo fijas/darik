@@ -1,9 +1,24 @@
-version: "2.1"
+version: "3.3"
 services:
+  db:
+    image: mariadb:latest
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret-darik-root
+      MYSQL_DATABASE: darik
+      MYSQL_USER: darik
+      MYSQL_PASSWORD: darik123
+    ports:
+      - '3307:3306'
 
   server:
     container_name: darikserver
     build: ./server/
+    links:
+      - db:db
+    depends_on:
+      - db
     volumes:
       - './server:/usr/src/'
       - './server/package.json:/usr/src/package.json'
@@ -18,3 +33,6 @@ services:
       - '/usr/src/node_modules'
     ports:
       - '3000:3000'
+
+volumes:
+    db_data:

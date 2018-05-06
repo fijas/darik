@@ -79,6 +79,9 @@ node_modules/
 ehthumbs.db
 Thumbs.db
 
+# Project Specific Files
+/server/config/config.json
+
 # ignore Editor files
 *.sublime-project
 *.sublime-workspace
