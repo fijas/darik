@@ -43,7 +43,7 @@ passport.use('local-signup', new LocalStrategy({
                     password: userPassword,
                     firstName: req.body.firstName,
                     lastName: req.body.lastName,
-                    status: user.statusCode.active
+                    status: User.statusCodes.active
                 };
                 User.create(data).then(function (newUser, created) {
                     if (!newUser) {

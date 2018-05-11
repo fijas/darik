@@ -7,10 +7,10 @@
     "dialect": "mysql"
   },
   "test": {
-    "username": "darik",
+    "username": "darik_test",
     "password": "darik123",
-    "database": "darik",
-    "host": "db",
+    "database": "darik_test",
+    "host": "db_test",
     "dialect": "mysql"
   },
   "production": {

@@ -32,11 +32,11 @@ app.use(function (req, res, next) {
 
 const models = require("./models");
 
-models.sequelize.sync().then(function () {
+/*models.sequelize.sync().then(function () {
     console.log('Nice! Database looks fine');
 }).catch(function (err) {
     console.log(err, "Something went wrong with the Database Update!");
-});
+});*/
 
 require('./config/passport.js');
 
@@ -62,9 +62,11 @@ app.use(function (err, req, res, next) {
     res.render('error');
 });
 
-//Launch listening server on port 8888
-app.listen(3001, function () {
-    console.log('app listening on port 3001!')
+let port = process.env.PORT || 3001;
+
+//Launch listening server on port defined in env file
+app.listen(port, function () {
+    console.log('app listening on ' + port.toString())
 });
 
 module.exports = app;

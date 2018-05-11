@@ -1,0 +1,34 @@
+version: "3.3"
+services:
+  server_test:
+    container_name: darikserver-test
+    build:
+      context: ./server/
+      dockerfile: Dockerfile.test
+    links:
+      - db_test:db_test
+    depends_on:
+      - db_test
+    environment:
+      - NODE_ENV=test
+      - PORT=3002
+    volumes:
+      - './server:/usr/src/'
+      - './server/package.json:/usr/src/package.json'
+    ports:
+      - '3002:3002'
+
+  db_test:
+    image: mariadb:latest
+    volumes:
+      - db_data_test:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret-darik-root
+      MYSQL_DATABASE: darik_test
+      MYSQL_USER: darik_test
+      MYSQL_PASSWORD: darik123
+    ports:
+      - '3308:3306'
+
+volumes:
+    db_data_test:

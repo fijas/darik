@@ -19,6 +19,8 @@ services:
       - db:db
     depends_on:
       - db
+    environment:
+      - NODE_ENV=development
     volumes:
       - './server:/usr/src/'
       - './server/package.json:/usr/src/package.json'
@@ -28,6 +30,8 @@ services:
   client:
     container_name: darikclient
     build: ./client/
+    depends_on:
+      - server
     volumes:
       - './client:/usr/src/'
       - '/usr/src/node_modules'
