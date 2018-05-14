@@ -5,5 +5,5 @@ language: node_js
 services:
   - docker
 
-before_install:
+script:
   - docker-compose -f docker-compose.test.yml up --abort-on-container-exit
