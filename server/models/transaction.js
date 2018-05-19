@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-    var transaction = sequelize.define('transaction', {
+    const transaction = sequelize.define('transaction', {
         userId: DataTypes.INTEGER,
         accountId: DataTypes.INTEGER,
         categoryId: DataTypes.INTEGER,

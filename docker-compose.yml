@@ -17,6 +17,7 @@ services:
     build: ./server/
     links:
       - db:db
+    restart: always
     depends_on:
       - db
     environment:

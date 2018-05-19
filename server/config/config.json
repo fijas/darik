@@ -1,23 +1,23 @@
 {
   "development": {
+    "host": "db",
+    "database": "darik",
     "username": "darik",
     "password": "darik123",
-    "database": "darik",
-    "host": "db",
     "dialect": "mysql"
   },
   "test": {
+    "host": "db_test",
+    "database": "darik_test",
     "username": "darik_test",
     "password": "darik123",
-    "database": "darik_test",
-    "host": "db_test",
     "dialect": "mysql"
   },
   "production": {
+    "host": "db",
+    "database": "darik",
     "username": "darik",
     "password": "darik123",
-    "database": "darik",
-    "host": "db",
     "dialect": "mysql"
   }
 }

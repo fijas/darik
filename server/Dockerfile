@@ -6,6 +6,5 @@ ENV PATH /usr/src/node_modules/.bin:$PATH
 
 ADD package.json /usr/src/package.json
 RUN npm install
-RUN sequelize db:migrate
 
 CMD ["nodemon"]
