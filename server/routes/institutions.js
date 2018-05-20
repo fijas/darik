@@ -10,6 +10,6 @@ router.post('/', institution_controller.create);
 router.get('/', institution_controller.list);
 
 /* GET a single institution. */
-router.get('/<id>', institution_controller.view);
+router.get('/:id', institution_controller.view);
 
 module.exports = router;

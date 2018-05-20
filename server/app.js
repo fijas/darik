@@ -1,5 +1,4 @@
 const express = require('express');
-const models = require("./models");
 const logger = require('morgan');
 const passport = require('passport');
 
@@ -45,19 +44,5 @@ let port = process.env.PORT || 3001;
 app.listen(port, () => {
     console.log('app listening on ' + port.toString())
 });
-
-const env = process.env.NODE_ENV || "development";
-let syncOption = env === "test" ? {force: true} : {};
-
-function syncSequelize() {
-    models.sequelize.sync(syncOption).then(function () {
-        console.log('Database and models initialized');
-        return true;
-    }).catch(function (err) {
-        console.log(err, "Error setting up / connecting to DB! Retrying in a few seconds...");
-        return setTimeout(syncSequelize, 4000);
-    });
-}
-syncSequelize();
 
 module.exports = app;

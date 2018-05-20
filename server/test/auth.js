@@ -2,9 +2,6 @@
 
 const chai = require('chai');
 const expect = require('chai').expect;
-const models = require("../models");
-
-let User = models.user;
 
 chai.use(require('chai-http'));
 
@@ -12,16 +9,8 @@ const app = require('../app.js'); // Our app
 
 describe('API endpoint /users', () => {
 
-    before(function () {
-
-    });
-
-    after(function () {
-
-    });
-
     // POST - User registration
-    it('should return details of user that signed up', (done) => {
+    it('should sign up a new user and return details of user that signed up', (done) => {
         chai.request(app)
             .post('/users')
             .send({
@@ -32,7 +21,6 @@ describe('API endpoint /users', () => {
             })
             .end((err, res) => {
                 expect(res).to.have.status(200);
-                expect(res).to.be.json;
                 expect(res.body).to.be.an('object');
                 expect(res.body).to.have.property('userData');
                 expect(res.body.userData.email).to.equal('fijas.p@gmail.com');
@@ -43,17 +31,9 @@ describe('API endpoint /users', () => {
 
 describe('API endpoint /login', () => {
 
-    before(function () {
-
-    });
-
-    after(function () {
-
-    });
-
     // GET - List all colors
     it('should login using signed up details', (done) => {
-        return chai.request(app)
+        chai.request(app)
             .post('/login')
             .send({
                 "email": "fijas.p@gmail.com",
@@ -61,7 +41,6 @@ describe('API endpoint /login', () => {
             })
             .end((err, res) => {
                 expect(res).to.have.status(200);
-                expect(res).to.be.json;
                 expect(res.body).to.be.an('object');
                 expect(res.body).to.have.property('userData');
                 expect(res.body).to.have.property('token');

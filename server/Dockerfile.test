@@ -7,4 +7,4 @@ ENV PATH /usr/src/node_modules/.bin:$PATH
 ADD package.json /usr/src/package.json
 ADD . /usr/src/
 
-CMD ["sh", "run_test.sh"]
+CMD sh run_test.sh
