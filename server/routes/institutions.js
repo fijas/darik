@@ -12,4 +12,10 @@ router.get('/', institution_controller.list);
 /* GET a single institution. */
 router.get('/:id', institution_controller.view);
 
+/* GET a single institution. */
+router.patch('/:id', institution_controller.update);
+
+/* GET a single institution. */
+router.delete('/:id', institution_controller.delete);
+
 module.exports = router;

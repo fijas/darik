@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
         name: DataTypes.STRING,
         type: DataTypes.SMALLINT,
         userId: DataTypes.INTEGER
-    }, {});
+    }, {paranoid: true});
     institution.associate = function (models) {
         // associations can be defined here
         institution.belongsTo(models.user);

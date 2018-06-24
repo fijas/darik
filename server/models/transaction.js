@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         debit: DataTypes.DECIMAL,
         credit: DataTypes.DECIMAL,
         note: DataTypes.TEXT
-    }, {});
+    }, {paranoid: true});
     transaction.associate = function (models) {
         // associations can be defined here
         transaction.belongsTo(models.category);

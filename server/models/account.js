@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
         userId: DataTypes.INTEGER,
         institutionId: DataTypes.INTEGER,
         type: DataTypes.SMALLINT
-    }, {});
+    }, {paranoid: true});
     account.associate = function (models) {
         // associations can be defined here
         account.belongsTo(models.user);
@@ -13,11 +13,12 @@ module.exports = (sequelize, DataTypes) => {
     account.types = {
         savings: 0,
         current: 1,
-        mutualFund: 2,
-        employer: 3,
-        client: 4,
-        loan: 5,
-        borrower: 6
+        fixed: 2,
+        mutualFund: 3,
+        employer: 4,
+        client: 5,
+        loan: 6,
+        borrower: 7
     };
     return account;
 };

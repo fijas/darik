@@ -33,6 +33,14 @@ app.use('/users', userRoute);
 
 const institutionRoute = require('./routes/institutions');
 app.use('/institutions', institutionRoute);
+const accountRoute = require('./routes/accounts');
+app.use('/accounts', accountRoute);
+const categoryRoute = require('./routes/categories');
+app.use('/categories', categoryRoute);
+const subcategoryRoute = require('./routes/subcategories');
+app.use('/subcategories', subcategoryRoute);
+const transactionRoute = require('./routes/transactions');
+app.use('/subcategories', transactionRoute);
 
 const feedRoute = require('./routes/feed');
 app.use('/feed', passport.authenticate('jwt', {session: false}), feedRoute);
