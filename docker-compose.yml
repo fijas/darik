@@ -35,7 +35,7 @@ services:
       - server
     volumes:
       - './client:/usr/src/'
-      - '/usr/src/node_modules'
+      - './client/package.json:/usr/src/package.json'
     ports:
       - '3000:3000'
 
