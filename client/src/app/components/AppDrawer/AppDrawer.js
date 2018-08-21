@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import classNames from 'classnames';
+import {withStyles} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -11,14 +12,19 @@ import Hidden from '@material-ui/core/Hidden';
 import Divider from '@material-ui/core/Divider';
 
 import MenuIcon from '@material-ui/icons/Menu';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import StarIcon from '@material-ui/icons/Star';
-import SendIcon from '@material-ui/icons/Send';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import PresentToAllIcon from '@material-ui/icons/PresentToAll';
+import MoveToInboxIcon from '@material-ui/icons/MoveToInbox';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 import ListItem from "@material-ui/core/ListItem/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText/ListItemText";
+
+import {Link, Route} from "react-router-dom";
+import Dashboard from "../Dashboard";
 
 const drawerWidth = 240;
 
@@ -34,10 +40,21 @@ const styles = theme => ({
     },
     appBar: {
         position: 'absolute',
+        zIndex: theme.zIndex.drawer + 1,
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+    },
+    appBarShift: {
+        width: `calc(100% - ${drawerWidth}px)`,
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+    'appBarShift-left': {
         marginLeft: drawerWidth,
-        [theme.breakpoints.up('md')]: {
-            width: `calc(100% - ${drawerWidth}px)`,
-        },
     },
     navIconHide: {
         [theme.breakpoints.up('md')]: {
@@ -51,10 +68,33 @@ const styles = theme => ({
             position: 'relative',
         },
     },
+    drawerHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        padding: '0 8px',
+        ...theme.mixins.toolbar,
+    },
     content: {
         flexGrow: 1,
         backgroundColor: theme.palette.background.default,
         padding: theme.spacing.unit * 3,
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+    },
+    'content-left': {
+        marginLeft: drawerWidth,
+    },
+    contentShift: {
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+    'contentShift-left': {
+        marginLeft: 0,
     },
 });
 
@@ -64,52 +104,71 @@ class AppDrawer extends React.Component {
     };
 
     handleDrawerToggle = () => {
-        this.setState(state => ({ mobileOpen: !state.mobileOpen }));
+        this.setState(state => ({mobileOpen: !state.mobileOpen}));
     };
 
     render() {
-        const { classes, theme } = this.props;
+        const {classes, theme} = this.props;
+        const {mobileOpen} = this.state;
 
         const drawer = (
             <div>
-                <div className={classes.toolbar} />
-                <Divider />
+                <div className={classes.toolbar}/>
+                <Divider/>
                 <List>
-                    <div>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <InboxIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Inbox" />
-                        </ListItem>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <StarIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Starred" />
-                        </ListItem>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <SendIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Send mail" />
-                        </ListItem>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <DraftsIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Drafts" />
-                        </ListItem>
-                    </div>
+                    <ListItem button component={Link} to="/dashboard">
+                        <ListItemIcon>
+                            <DashboardIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Dashboard"/>
+                    </ListItem>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <PresentToAllIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Expense"/>
+                    </ListItem>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <MoveToInboxIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Income"/>
+                    </ListItem>
                 </List>
-                <Divider />
-                <List></List>
+                <Divider/>
+                <List>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <AccountCircleIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Profile"/>
+                    </ListItem>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <SettingsIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Settings"/>
+                    </ListItem>
+                </List>
+                <Divider/>
+                <List>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <PowerSettingsNewIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Logout"/>
+                    </ListItem>
+                </List>
             </div>
         );
 
         return (
             <div className={classes.root}>
-                <AppBar className={classes.appBar}>
+                <AppBar
+                    className={classNames(classes.appBar, {
+                        [classes.appBarShift]: mobileOpen,
+                        [classes[`appBarShift-left`]]: mobileOpen,
+                    })}>
                     <Toolbar>
                         <IconButton
                             color="inherit"
@@ -117,10 +176,10 @@ class AppDrawer extends React.Component {
                             onClick={this.handleDrawerToggle}
                             className={classes.navIconHide}
                         >
-                            <MenuIcon />
+                            <MenuIcon/>
                         </IconButton>
                         <Typography variant="title" color="inherit" noWrap>
-                            Responsive drawer
+                            Darik
                         </Typography>
                     </Toolbar>
                 </AppBar>
@@ -151,9 +210,14 @@ class AppDrawer extends React.Component {
                         {drawer}
                     </Drawer>
                 </Hidden>
-                <main className={classes.content}>
-                    <div className={classes.toolbar} />
-                    <Typography noWrap>{'You think water moves fast? You should see ice.'}</Typography>
+                <main
+                    className={classNames(classes.content, {
+                        [classes.contentShift]: mobileOpen,
+                        [classes[`content-left`]]: mobileOpen,
+                    })}
+                >
+                    <div className={classes.toolbar}/>
+                    <Route path="/dashboard" component={Dashboard}/>
                 </main>
             </div>
         );
@@ -165,4 +229,4 @@ AppDrawer.propTypes = {
     theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(AppDrawer);
+export default withStyles(styles, {withTheme: true})(AppDrawer);

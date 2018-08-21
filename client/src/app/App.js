@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import AppDrawer from "./components/AppDrawer/AppDrawer";
+import AppDrawer from "./components/AppDrawer";
 
 class App extends Component {
 
