@@ -18,6 +18,9 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import PresentToAllIcon from '@material-ui/icons/PresentToAll';
 import MoveToInboxIcon from '@material-ui/icons/MoveToInbox';
 import SettingsIcon from '@material-ui/icons/Settings';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import FolderSpecialIcon from '@material-ui/icons/FolderSpecial';
+import CategoryIcon from '@material-ui/icons/Category';
 
 import ListItem from "@material-ui/core/ListItem/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon/ListItemIcon";
@@ -25,13 +28,14 @@ import ListItemText from "@material-ui/core/ListItemText/ListItemText";
 
 import {Link, Route} from "react-router-dom";
 import Dashboard from "../Dashboard";
+import Category from "../Category/Category";
 
 const drawerWidth = 240;
 
 const styles = theme => ({
     root: {
         flexGrow: 1,
-        height: 430,
+        height: '100%',
         zIndex: 1,
         overflow: 'hidden',
         position: 'relative',
@@ -137,6 +141,27 @@ class AppDrawer extends React.Component {
                 </List>
                 <Divider/>
                 <List>
+                    <ListItem button component={Link} to="/account">
+                        <ListItemIcon>
+                            <FolderSpecialIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Accounts"/>
+                    </ListItem>
+                    <ListItem button component={Link} to="/institution">
+                        <ListItemIcon>
+                            <AccountBalanceIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Institutions"/>
+                    </ListItem>
+                    <ListItem button component={Link} to="/category">
+                        <ListItemIcon>
+                            <CategoryIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Categories"/>
+                    </ListItem>
+                </List>
+                <Divider/>
+                <List>
                     <ListItem button>
                         <ListItemIcon>
                             <AccountCircleIcon/>
@@ -218,6 +243,7 @@ class AppDrawer extends React.Component {
                 >
                     <div className={classes.toolbar}/>
                     <Route path="/dashboard" component={Dashboard}/>
+                    <Route path="/category" component={Category}/>
                 </main>
             </div>
         );

@@ -1,12 +1,17 @@
 const express = require('express');
 const logger = require('morgan');
 const passport = require('passport');
+const bodyParser = require("body-parser");
 
 const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 
 // CORS
 app.use((req, res, next) => {

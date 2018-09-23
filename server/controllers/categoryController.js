@@ -2,6 +2,7 @@ const models = require("../models");
 
 // Display list of all Authors.
 exports.create = (req, res) => {
+    console.log(req.body);
     models.category.create(req.body).then(category => {
         return res.json(category);
     });
@@ -9,8 +10,8 @@ exports.create = (req, res) => {
 
 // Display list of all Authors.
 exports.list = (req, res) => {
-    models.category.findAll().then(category => {
-        return res.json(category);
+    models.category.findAll().then(categories => {
+        return res.json(categories);
     });
 };
 

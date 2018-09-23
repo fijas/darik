@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React from 'react';
 import './Dashboard.css';
 
-class Dashboard extends Component {
+class Dashboard extends React.Component {
 
     render() {
         return (
