@@ -10,24 +10,24 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
     "debug": "~2.6.9",
-    "express": "~4.16.0",
-    "jsonwebtoken": "^8.3.0",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.5.0",
     "morgan": "^1.9.1",
     "mysql": "^2.16.0",
-    "mysql2": "^1.6.1",
+    "mysql2": "^1.6.5",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "sequelize": "^4.38.1",
+    "sequelize": "^4.42.0",
     "sequelize-cli": "^4.1.1"
   },
   "devDependencies": {
-    "chai": "^4.1.2",
-    "chai-http": "^4.2.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
     "faker": "^4.1.0",
     "mocha": "^5.2.0",
-    "nodemon": "^1.18.4",
-    "supertest": "^3.3.0",
-    "tape": "^4.9.1"
+    "nodemon": "^1.18.10",
+    "supertest": "^3.4.2",
+    "tape": "^4.10.1"
   }
 }
