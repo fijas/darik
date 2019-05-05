@@ -2,7 +2,6 @@ const models = require("../models");
 
 // Display list of all Authors.
 exports.create = (req, res) => {
-    console.log(req.body);
     models.category.create(req.body).then(category => {
         return res.json(category);
     });
@@ -10,7 +9,13 @@ exports.create = (req, res) => {
 
 // Display list of all Authors.
 exports.list = (req, res) => {
-    models.category.findAll().then(categories => {
+    models.category.findAll({
+        attributes: ['id', 'name', [models.Sequelize.fn("COUNT", models.Sequelize.col("subcategories.categoryId")), "subCategoryCount"]],
+        include: [{
+            model: models.subcategory, attributes: ['id', 'name']
+        }],
+        group: ['category.id']
+    }).then(categories => {
         return res.json(categories);
     });
 };
@@ -25,7 +30,7 @@ exports.view = (req, res) => {
 // Display list of all Authors.
 exports.update = (req, res) => {
     models.category.findById(req.params.id).then(category => {
-        if(category !== null) {
+        if (category !== null) {
             category.update(req.body).then(updatedCategory => {
                 return res.json(updatedCategory);
             });
@@ -38,7 +43,7 @@ exports.update = (req, res) => {
 // Display list of all Authors.
 exports.delete = (req, res) => {
     models.category.findById(req.params.id).then(category => {
-        if(category !== null) {
+        if (category !== null) {
             return category.destroy();
         } else {
             return res.sendStatus(404);

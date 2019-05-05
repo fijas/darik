@@ -189,18 +189,15 @@ class AppDrawer extends React.Component {
 
         return (
             <div className={classes.root}>
-                <AppBar
-                    className={classNames(classes.appBar, {
+                <AppBar className={classNames(classes.appBar, {
                         [classes.appBarShift]: mobileOpen,
                         [classes[`appBarShift-left`]]: mobileOpen,
                     })}>
                     <Toolbar>
-                        <IconButton
-                            color="inherit"
+                        <IconButton color="inherit"
                             aria-label="Open drawer"
                             onClick={this.handleDrawerToggle}
-                            className={classes.navIconHide}
-                        >
+                            className={classes.navIconHide}>
                             <MenuIcon/>
                         </IconButton>
                         <Typography variant="title" color="inherit" noWrap>
@@ -209,8 +206,7 @@ class AppDrawer extends React.Component {
                     </Toolbar>
                 </AppBar>
                 <Hidden mdUp>
-                    <Drawer
-                        variant="temporary"
+                    <Drawer variant="temporary"
                         anchor={theme.direction === 'rtl' ? 'right' : 'left'}
                         open={this.state.mobileOpen}
                         onClose={this.handleDrawerToggle}
@@ -219,8 +215,7 @@ class AppDrawer extends React.Component {
                         }}
                         ModalProps={{
                             keepMounted: true, // Better open performance on mobile.
-                        }}
-                    >
+                        }}>
                         {drawer}
                     </Drawer>
                 </Hidden>
@@ -230,17 +225,14 @@ class AppDrawer extends React.Component {
                         open
                         classes={{
                             paper: classes.drawerPaper,
-                        }}
-                    >
+                        }}>
                         {drawer}
                     </Drawer>
                 </Hidden>
-                <main
-                    className={classNames(classes.content, {
+                <main className={classNames(classes.content, {
                         [classes.contentShift]: mobileOpen,
                         [classes[`content-left`]]: mobileOpen,
-                    })}
-                >
+                    })}>
                     <div className={classes.toolbar}/>
                     <Route path="/dashboard" component={Dashboard}/>
                     <Route path="/category" component={Category}/>

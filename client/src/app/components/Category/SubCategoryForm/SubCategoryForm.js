@@ -1,19 +1,21 @@
 import React from 'react';
-import './CategoryForm.css';
+import './SubCategoryForm.css';
 import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button/Button";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions/DialogActions";
+import FormControl from "@material-ui/core/FormControl/FormControl";
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 
-class CategoryForm extends React.Component {
+class SubCategoryForm extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            categoryId: '',
+            categoryId: props.categoryId,
             name: ''
         };
     }
@@ -23,7 +25,7 @@ class CategoryForm extends React.Component {
     };
 
     handleSave = () => {
-        fetch('http://localhost:3001/categories', {
+        fetch('http://localhost:3001/subcategories', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({categoryId: this.state.categoryId, name: this.state.name})
@@ -44,12 +46,18 @@ class CategoryForm extends React.Component {
 
         return (
             <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.props.open}>
-                <DialogTitle id="simple-dialog-title">Add A New Category</DialogTitle>
+                <DialogTitle id="simple-dialog-title">Add A New Sub-Category</DialogTitle>
                 <form className={props.container} noValidate autoComplete="off">
                     <DialogContent>
                         <div>
-                            <TextField id="standard-uncontrolled"
-                                label="Category Name"
+                            <FormControl className={props.formControl} fullWidth={true}>
+                                <InputLabel>Parent Category: {props.parent}</InputLabel>
+                                <input type="hidden"  value={this.state.categoryId} id="parent-category-id" />
+                            </FormControl>
+                        </div>
+                        <div>
+                            <TextField id="sub-category-name"
+                                label="Sub-category Name"
                                 value={this.state.name}
                                 onChange={e => this.handleChange(e, 'name')}
                                 margin="normal" />
@@ -69,4 +77,4 @@ class CategoryForm extends React.Component {
     }
 }
 
-export default CategoryForm;
+export default SubCategoryForm;

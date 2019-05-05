@@ -6,11 +6,16 @@ import TableHead from "@material-ui/core/TableHead/TableHead";
 import TableRow from "@material-ui/core/TableRow/TableRow";
 import TableCell from "@material-ui/core/TableCell/TableCell";
 import TableBody from "@material-ui/core/TableBody/TableBody";
-import Button from "@material-ui/core/Button/Button";
 import CategoryForm from "./CategoryForm/CategoryForm";
 import Typography from "@material-ui/core/Typography/Typography";
 import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import {withStyles} from '@material-ui/core/styles';
+import Fab from "@material-ui/core/Fab/Fab";
+import Tooltip from "@material-ui/core/Tooltip";
+import Button from "@material-ui/core/Button";
+import SubCategoryForm from "./SubCategoryForm/SubCategoryForm";
 
 const styles = theme => ({
     fab: {
@@ -20,6 +25,9 @@ const styles = theme => ({
         bottom: 20,
         left: 'auto',
         position: 'fixed'
+    },
+    subcategory: {
+        backgroundColor: '#eee',
     }
 });
 
@@ -31,7 +39,10 @@ class Category extends React.Component {
         this.state = {
             data: null,
             isLoading: true,
-            showCategoryForm: false
+            showCategoryForm: false,
+            showSubCategoryForm: false,
+            parent: null,
+            categoryId: ''
         };
     }
 
@@ -46,15 +57,31 @@ class Category extends React.Component {
             .then(data => this.setState({data: data, isLoading: false}));
     }
 
-    handleClickOpen = () => {
+    newCategory = () => {
         this.setState({
             showCategoryForm: true
         });
     };
 
-    closeForm() {
+    newSubCategory = (id, name) => {
+        console.log(id);
+        console.log(name);
+        this.setState({
+            showSubCategoryForm: true,
+            parent: name,
+            categoryId: id
+        });
+    };
+
+    closeCategoryForm() {
         this.setState({
             showCategoryForm: false
+        });
+    }
+
+    closeSubCategoryForm() {
+        this.setState({
+            showSubCategoryForm: false
         });
     }
 
@@ -68,7 +95,9 @@ class Category extends React.Component {
 
         return (
             <div>
-                <CategoryForm open={this.state.showCategoryForm} close={this.closeForm.bind(this)}/>
+                <CategoryForm open={this.state.showCategoryForm} close={this.closeCategoryForm.bind(this)} />
+                <SubCategoryForm open={this.state.showSubCategoryForm} close={this.closeSubCategoryForm.bind(this)}
+                              parent={this.state.parent} categoryId={this.state.categoryId}/>
                 <Typography variant="display1" gutterBottom>
                     Categories
                 </Typography>
@@ -77,27 +106,59 @@ class Category extends React.Component {
                     <Table className={classes.table}>
                         <TableHead>
                             <TableRow>
+                                <TableCell></TableCell>
                                 <TableCell>Name</TableCell>
-                                <TableCell numeric>Sub Categories</TableCell>
+                                <TableCell align="center">Sub Categories</TableCell>
+                                <TableCell align="right">Options</TableCell>
                             </TableRow>
                         </TableHead>
-                        <TableBody>
-                            {data.map(row => {
-                                return (
-                                    <TableRow key={row.id}>
+                        {data.map(category => {
+                            return (
+                                <TableBody key={category.id}>
+                                    <TableRow>
+                                        <TableCell>{category.id}</TableCell>
                                         <TableCell component="th" scope="row">
-                                            {row.name}
+                                            {category.name}
                                         </TableCell>
-                                        <TableCell numeric>0</TableCell>
+                                        <TableCell align="center">{category.subCategoryCount}</TableCell>
+                                        <TableCell align="right">
+                                            <Tooltip title="Add Sub-Category" aria-label="Add">
+                                                <Button component="span" className={classes.button}
+                                                        onClick={() => this.newSubCategory(category.id, category.name)}>
+                                                    <AddIcon/>
+                                                </Button>
+                                            </Tooltip>
+                                            <Tooltip title="Edit" aria-label="Add">
+                                                <Button component="span" className={classes.button}>
+                                                    <EditIcon/>
+                                                </Button>
+                                            </Tooltip>
+                                            <Tooltip title="Delete" aria-label="Add">
+                                                <Button component="span" className={classes.button}>
+                                                    <DeleteIcon/>
+                                                </Button>
+                                            </Tooltip>
+                                        </TableCell>
                                     </TableRow>
-                                );
-                            })}
-                        </TableBody>
+                                    {category.subcategories.map(subCategory => {
+                                        return (
+                                            <TableRow key={subCategory.id} className={classes.subcategory}>
+                                                <TableCell></TableCell>
+                                                <TableCell component="th" scope="row" colSpan={2}>
+                                                    {subCategory.name}
+                                                </TableCell>
+                                                <TableCell align="right"></TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
+                                </TableBody>
+                            )
+                        })}
                     </Table>
                 </Paper>
-                <Button variant="fab" color="primary" className={classes.fab} onClick={this.handleClickOpen}>
+                <Fab color="primary" className={classes.fab} onClick={this.newCategory}>
                     <AddIcon/>
-                </Button>
+                </Fab>
             </div>
         );
     }
