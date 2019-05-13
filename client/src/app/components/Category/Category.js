@@ -32,7 +32,6 @@ const styles = theme => ({
 });
 
 class Category extends React.Component {
-
     constructor(props) {
         super(props);
 
@@ -42,7 +41,9 @@ class Category extends React.Component {
             showCategoryForm: false,
             showSubCategoryForm: false,
             parent: null,
-            categoryId: ''
+            categoryId: '',
+            subCategoryId: '',
+            categoryName: ''
         };
     }
 
@@ -64,22 +65,61 @@ class Category extends React.Component {
     };
 
     newSubCategory = (id, name) => {
-        console.log(id);
-        console.log(name);
         this.setState({
             showSubCategoryForm: true,
             parent: name,
-            categoryId: id
+            categoryId: id,
+            categoryName: '',
+            subCategoryId: ''
         });
     };
 
+    editCategory = (category) => {
+        this.setState({
+            showCategoryForm: true,
+            categoryName: category.name,
+            categoryId: category.id
+        });
+    };
+
+    deleteCategory = (id) => {
+        if(window.confirm('Are you sure you want to delete this category?')) {
+            fetch('http://localhost:3001/categories/' + id, {
+                method: 'DELETE'
+            }).then((res) => res.json())
+                .then(() => this.getCategories())
+                .catch((err) => console.log(err));
+        }
+    };
+
+    editSubCategory = (subcategory, parent) => {
+        this.setState({
+            showSubCategoryForm: true,
+            parent: parent.name,
+            categoryName: subcategory.name,
+            subCategoryId: subcategory.id
+        });
+    };
+
+    deleteSubCategory = (id) => {
+        if(window.confirm('Are you sure you want to delete this sub-category?')) {
+            fetch('http://localhost:3001/subcategories/' + id, {
+                method: 'DELETE'
+            }).then((res) => res.json())
+                .then(() => this.getCategories())
+                .catch((err) => console.log(err));
+        }
+    };
+
     closeCategoryForm() {
+        this.getCategories();
         this.setState({
             showCategoryForm: false
         });
     }
 
     closeSubCategoryForm() {
+        this.getCategories();
         this.setState({
             showSubCategoryForm: false
         });
@@ -95,9 +135,11 @@ class Category extends React.Component {
 
         return (
             <div>
-                <CategoryForm open={this.state.showCategoryForm} close={this.closeCategoryForm.bind(this)} />
+                <CategoryForm open={this.state.showCategoryForm} close={this.closeCategoryForm.bind(this)}
+                              name={this.state.categoryName} categoryId={this.state.categoryId}/>
                 <SubCategoryForm open={this.state.showSubCategoryForm} close={this.closeSubCategoryForm.bind(this)}
-                              parent={this.state.parent} categoryId={this.state.categoryId}/>
+                                 name={this.state.categoryName} parent={this.state.parent}
+                                 categoryId={this.state.categoryId} subCategoryId={this.state.subCategoryId}/>
                 <Typography variant="display1" gutterBottom>
                     Categories
                 </Typography>
@@ -106,7 +148,7 @@ class Category extends React.Component {
                     <Table className={classes.table}>
                         <TableHead>
                             <TableRow>
-                                <TableCell></TableCell>
+                                <TableCell>#</TableCell>
                                 <TableCell>Name</TableCell>
                                 <TableCell align="center">Sub Categories</TableCell>
                                 <TableCell align="right">Options</TableCell>
@@ -120,7 +162,7 @@ class Category extends React.Component {
                                         <TableCell component="th" scope="row">
                                             {category.name}
                                         </TableCell>
-                                        <TableCell align="center">{category.subCategoryCount}</TableCell>
+                                        <TableCell align="center">{category.subcategories.length}</TableCell>
                                         <TableCell align="right">
                                             <Tooltip title="Add Sub-Category" aria-label="Add">
                                                 <Button component="span" className={classes.button}
@@ -128,13 +170,15 @@ class Category extends React.Component {
                                                     <AddIcon/>
                                                 </Button>
                                             </Tooltip>
-                                            <Tooltip title="Edit" aria-label="Add">
-                                                <Button component="span" className={classes.button}>
+                                            <Tooltip title="Edit" aria-label="Edit">
+                                                <Button component="span" className={classes.button}
+                                                        onClick={() => this.editCategory(category)}>
                                                     <EditIcon/>
                                                 </Button>
                                             </Tooltip>
-                                            <Tooltip title="Delete" aria-label="Add">
-                                                <Button component="span" className={classes.button}>
+                                            <Tooltip title="Delete" aria-label="Delete">
+                                                <Button component="span" className={classes.button}
+                                                        onClick={() => this.deleteCategory(category.id)}>
                                                     <DeleteIcon/>
                                                 </Button>
                                             </Tooltip>
@@ -147,7 +191,20 @@ class Category extends React.Component {
                                                 <TableCell component="th" scope="row" colSpan={2}>
                                                     {subCategory.name}
                                                 </TableCell>
-                                                <TableCell align="right"></TableCell>
+                                                <TableCell align="right">
+                                                    <Tooltip title="Edit" aria-label="Edit">
+                                                        <Button component="span" className={classes.button}
+                                                                onClick={() => this.editSubCategory(subCategory, category)}>
+                                                            <EditIcon/>
+                                                        </Button>
+                                                    </Tooltip>
+                                                    <Tooltip title="Delete" aria-label="Delete">
+                                                        <Button component="span" className={classes.button}
+                                                                onClick={() => this.deleteSubCategory(subCategory.id)}>
+                                                            <DeleteIcon/>
+                                                        </Button>
+                                                    </Tooltip>
+                                                </TableCell>
                                             </TableRow>
                                         );
                                     })}

@@ -6,17 +6,17 @@ import Dialog from "@material-ui/core/Dialog/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions/DialogActions";
-import FormControl from "@material-ui/core/FormControl/FormControl";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import Typography from "@material-ui/core/Typography";
 
 class SubCategoryForm extends React.Component {
-
     constructor(props) {
         super(props);
 
         this.state = {
             categoryId: props.categoryId,
-            name: ''
+            id: '',
+            name: '',
+            subCategoryId: ''
         };
     }
 
@@ -25,15 +25,33 @@ class SubCategoryForm extends React.Component {
     };
 
     handleSave = () => {
+        if(this.state.subCategoryId === '') {
+            this.createNew();
+        } else {
+            this.update(this.state.subCategoryId);
+        }
+        this.props.close();
+    };
+
+    createNew() {
         fetch('http://localhost:3001/subcategories', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({categoryId: this.state.categoryId, name: this.state.name})
+            body: JSON.stringify({categoryId: this.props.categoryId, name: this.state.name})
         }).then((res) => res.json())
-            .then((data) => this.setState({categories: data}))
+            .then(() => this.props.close())
             .catch((err) => console.log(err));
-        this.props.close();
-    };
+    }
+
+    update(id) {
+        fetch('http://localhost:3001/subcategories/' + id, {
+            method: 'PATCH',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({name: this.state.name})
+        }).then((res) => res.json())
+            .then(() => this.props.close())
+            .catch((err) => console.log(err));
+    }
 
     handleChange = (event, name) => {
         let obj = {};
@@ -41,32 +59,37 @@ class SubCategoryForm extends React.Component {
         this.setState(obj);
     };
 
+    updateState = () => {
+        this.setState({
+            name: this.props.name,
+            subCategoryId: this.props.subCategoryId
+        });
+    };
+
     render() {
         const props = this.props;
 
         return (
-            <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.props.open}>
-                <DialogTitle id="simple-dialog-title">Add A New Sub-Category</DialogTitle>
+            <Dialog onClose={this.handleClose} onEntered={this.updateState} aria-labelledby="sub-category-dialog" open={this.props.open}>
+                <DialogTitle id="sub-category-dialog-title">Add A New Sub-Category</DialogTitle>
                 <form className={props.container} noValidate autoComplete="off">
                     <DialogContent>
+                        <Typography variant="subheading" gutterBottom>
+                            Parent Category: {props.parent}
+                        </Typography>
                         <div>
-                            <FormControl className={props.formControl} fullWidth={true}>
-                                <InputLabel>Parent Category: {props.parent}</InputLabel>
-                                <input type="hidden"  value={this.state.categoryId} id="parent-category-id" />
-                            </FormControl>
-                        </div>
-                        <div>
-                            <TextField id="sub-category-name"
+                            <TextField
+                                autoFocus
+                                fullWidth
+                                id="sub-category-name"
                                 label="Sub-category Name"
                                 value={this.state.name}
                                 onChange={e => this.handleChange(e, 'name')}
-                                margin="normal" />
+                                margin="dense"/>
                         </div>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleClose} color="secondary">
-                            Cancel
-                        </Button>
+                        <Button onClick={this.handleClose} color="secondary">Cancel</Button>
                         <Button variant="contained" color="primary" className={props.button} onClick={this.handleSave}>
                             Save
                         </Button>

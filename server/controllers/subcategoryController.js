@@ -38,7 +38,9 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     models.subcategory.findById(req.params.id).then(subcategory => {
         if(subcategory !== null) {
-            return subcategory.destroy();
+            subcategory.destroy().then((subcat) => {
+                return res.json(subcat);
+            });
         } else {
             return res.sendStatus(404);
         }

@@ -18,7 +18,7 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "sequelize": "^4.43.2",
+    "sequelize": "^4.44.0",
     "sequelize-cli": "^4.1.1"
   },
   "devDependencies": {

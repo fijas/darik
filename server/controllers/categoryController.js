@@ -10,11 +10,10 @@ exports.create = (req, res) => {
 // Display list of all Authors.
 exports.list = (req, res) => {
     models.category.findAll({
-        attributes: ['id', 'name', [models.Sequelize.fn("COUNT", models.Sequelize.col("subcategories.categoryId")), "subCategoryCount"]],
+        attributes: ['id', 'name'],
         include: [{
             model: models.subcategory, attributes: ['id', 'name']
-        }],
-        group: ['category.id']
+        }]
     }).then(categories => {
         return res.json(categories);
     });
@@ -44,7 +43,9 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     models.category.findById(req.params.id).then(category => {
         if (category !== null) {
-            return category.destroy();
+            category.destroy().then((cat) => {
+                return res.json(cat);
+            });
         } else {
             return res.sendStatus(404);
         }
