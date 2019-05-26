@@ -30,6 +30,7 @@ import {Link, Route} from "react-router-dom";
 import Dashboard from "../Dashboard";
 import Category from "../Category/Category";
 import Institution from "../Institution/Institution";
+import Account from "../Account/Account";
 
 const drawerWidth = 240;
 
@@ -238,6 +239,7 @@ class AppDrawer extends React.Component {
                     <Route path="/dashboard" component={Dashboard}/>
                     <Route path="/category" component={Category}/>
                     <Route path="/institution" component={Institution}/>
+                    <Route path="/account" component={Account}/>
                 </main>
             </div>
         );

@@ -21,14 +21,14 @@ exports.list = (req, res) => {
 
 // Display list of all Authors.
 exports.view = (req, res) => {
-    models.category.findById(req.params.id).then(category => {
+    models.category.findByPk(req.params.id).then(category => {
         return res.json(category);
     });
 };
 
 // Display list of all Authors.
 exports.update = (req, res) => {
-    models.category.findById(req.params.id).then(category => {
+    models.category.findByPk(req.params.id).then(category => {
         if (category !== null) {
             category.update(req.body).then(updatedCategory => {
                 return res.json(updatedCategory);
@@ -41,7 +41,7 @@ exports.update = (req, res) => {
 
 // Display list of all Authors.
 exports.delete = (req, res) => {
-    models.category.findById(req.params.id).then(category => {
+    models.category.findByPk(req.params.id).then(category => {
         if (category !== null) {
             category.destroy().then((cat) => {
                 return res.json(cat);

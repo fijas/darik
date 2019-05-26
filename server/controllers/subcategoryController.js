@@ -16,14 +16,14 @@ exports.list = (req, res) => {
 
 // Display list of all Authors.
 exports.view = (req, res) => {
-    models.subcategory.findById(req.params.id).then(subcategory => {
+    models.subcategory.findByPk(req.params.id).then(subcategory => {
         return res.json(subcategory);
     });
 };
 
 // Display list of all Authors.
 exports.update = (req, res) => {
-    models.subcategory.findById(req.params.id).then(subcategory => {
+    models.subcategory.findByPk(req.params.id).then(subcategory => {
         if(subcategory !== null) {
             subcategory.update(req.body).then(updatedSubcategory => {
                 return res.json(updatedSubcategory);
@@ -36,7 +36,7 @@ exports.update = (req, res) => {
 
 // Display list of all Authors.
 exports.delete = (req, res) => {
-    models.subcategory.findById(req.params.id).then(subcategory => {
+    models.subcategory.findByPk(req.params.id).then(subcategory => {
         if(subcategory !== null) {
             subcategory.destroy().then((subcat) => {
                 return res.json(subcat);

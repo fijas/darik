@@ -1,5 +1,5 @@
 import React from 'react';
-import './InstitutionForm.css';
+import './AccountForm.css';
 import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button/Button";
 import Dialog from "@material-ui/core/Dialog/Dialog";
@@ -23,13 +23,13 @@ const styles = theme => ({
     },
 });
 
-class InstitutionForm extends React.Component {
+class AccountForm extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             id: '',
-            name: '',
+            institutionId: '',
             type: ''
         };
     }
@@ -51,7 +51,7 @@ class InstitutionForm extends React.Component {
         fetch('http://localhost:3001/institutions', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({name: this.state.name, type: this.state.type})
+            body: JSON.stringify({institutionId: this.state.institutionId, type: this.state.type})
         }).then((res) => res.json())
             .then(() => this.props.close())
             .catch((err) => console.log(err));
@@ -61,7 +61,7 @@ class InstitutionForm extends React.Component {
         fetch('http://localhost:3001/institutions/' + id, {
             method: 'PATCH',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({name: this.state.name, type: this.state.type})
+            body: JSON.stringify({name: this.state.name})
         }).then((res) => res.json())
             .then(() => this.props.close())
             .catch((err) => console.log(err));
@@ -129,4 +129,4 @@ class InstitutionForm extends React.Component {
     }
 }
 
-export default withStyles(styles)(InstitutionForm);
+export default withStyles(styles)(AccountForm);

@@ -16,14 +16,14 @@ exports.list = (req, res) => {
 
 // Display list of all Authors.
 exports.view = (req, res) => {
-    models.transaction.findById(req.params.id).then(transaction => {
+    models.transaction.findByPk(req.params.id).then(transaction => {
         return res.json(transaction);
     });
 };
 
 // Display list of all Authors.
 exports.update = (req, res) => {
-    models.transaction.findById(req.params.id).then(transaction => {
+    models.transaction.findByPk(req.params.id).then(transaction => {
         if(transaction !== null) {
             transaction.update(req.body).then(updatedTransaction => {
                 return res.json(updatedTransaction);
@@ -36,7 +36,7 @@ exports.update = (req, res) => {
 
 // Display list of all Authors.
 exports.delete = (req, res) => {
-    models.transaction.findById(req.params.id).then(transaction => {
+    models.transaction.findByPk(req.params.id).then(transaction => {
         if(transaction !== null) {
             return transaction.destroy();
         } else {

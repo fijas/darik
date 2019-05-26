@@ -1,5 +1,5 @@
 import React from 'react';
-import './Institution.css';
+import './Account.css';
 import Paper from "@material-ui/core/Paper/Paper";
 import Table from "@material-ui/core/Table/Table";
 import TableHead from "@material-ui/core/TableHead/TableHead";
@@ -14,7 +14,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Fab from "@material-ui/core/Fab/Fab";
 import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
-import InstitutionForm from "./InstitutionForm";
+import InstitutionForm from "./AccountForm";
 
 const styles = theme => ({
     fab: {
@@ -27,9 +27,10 @@ const styles = theme => ({
     }
 });
 
-const types = [{id: 0, name: 'Bank'}, {id: 1, name: 'Financial'}, {id: 2, name: 'Credit Card'}];
+const types = [{id: 0, name: 'Savings'}, {id: 1, name: 'Current'}, {id: 2, name: 'Fixed'}, {id: 3, name: 'Mutual Fund'},
+    {id: 4, name: 'Employer'}, {id: 5, name: 'Client'}, {id: 6, name: 'Loan'}, {id: 7, name: 'Borrower'}];
 
-class Institution extends React.Component {
+class Account extends React.Component {
     constructor(props) {
         super(props);
 
@@ -38,52 +39,61 @@ class Institution extends React.Component {
             isLoading: true,
             showAccountForm: false,
             id: '',
-            name: '',
-            type: ''
+            institutionId: '',
+            type: '',
+            institutions: []
         };
     }
 
     componentDidMount() {
-        this.getInstitutions();
+        this.setState({isLoading: true});
+        this.getInstitutions()
+            .then(() => this.getAccounts());
     }
 
     getInstitutions() {
+        return fetch('http://localhost:3001/institutions')
+            .then(response => response.json())
+            .then(data => this.setState({institutions: data}));
+    }
+
+    getAccounts() {
         this.setState({isLoading: true});
-        fetch('http://localhost:3001/institutions')
+        fetch('http://localhost:3001/accounts')
             .then(response => response.json())
             .then(data => this.setState({data: data, isLoading: false}));
     }
 
-    newInstitution = () => {
+    newAccount = () => {
         this.setState({
             showAccountForm: true,
             name: '',
-            type: '',
+            institutionId: '',
             id: ''
         });
     };
 
-    editInstitution = (institution) => {
+    editAccount = (account) => {
         this.setState({
             showAccountForm: true,
-            name: institution.name,
-            type: institution.type,
-            id: institution.id
+            name: account.name,
+            institutionId: account.institutionId,
+            id: account.id
         });
     };
 
-    deleteInstitution = (id) => {
+    deleteAccount = (id) => {
         if(window.confirm('Are you sure you want to delete this institution?')) {
             fetch('http://localhost:3001/institutions/' + id, {
                 method: 'DELETE'
             }).then((res) => res.json())
-                .then(() => this.getInstitutions())
+                .then(() => this.getAccounts())
                 .catch((err) => console.log(err));
         }
     };
 
-    closeInstitutionForm() {
-        this.getInstitutions();
+    closeAccountForm() {
+        this.getAccounts();
         this.setState({
             showAccountForm: false
         });
@@ -99,10 +109,11 @@ class Institution extends React.Component {
 
         return (
             <div>
-                <InstitutionForm open={this.state.showAccountForm} close={this.closeInstitutionForm.bind(this)}
-                                 types={types} id={this.state.id} name={this.state.name} type={this.state.type} />
+                <InstitutionForm open={this.state.showAccountForm} close={this.closeAccountForm.bind(this)}
+                                 types={types} institutions={this.state.institutions} id={this.state.id}
+                                 name={this.state.name} type={this.state.type} />
                 <Typography variant="display1" gutterBottom>
-                    Institutions
+                    Accounts
                 </Typography>
                 <hr/>
                 <Paper className={classes.root}>
@@ -110,30 +121,30 @@ class Institution extends React.Component {
                         <TableHead>
                             <TableRow>
                                 <TableCell>#</TableCell>
-                                <TableCell>Name</TableCell>
                                 <TableCell>Type</TableCell>
+                                <TableCell>Institution</TableCell>
                                 <TableCell align="right">Options</TableCell>
                             </TableRow>
                         </TableHead>
-                        {data.map(institution => {
+                        {data.map(account => {
                             return (
-                                <TableBody key={institution.id}>
+                                <TableBody key={account.id}>
                                     <TableRow>
-                                        <TableCell>{institution.id}</TableCell>
+                                        <TableCell>{account.id}</TableCell>
                                         <TableCell component="th" scope="row">
-                                            {institution.name}
+                                            {account.type}
                                         </TableCell>
-                                        <TableCell>{types.find(x => x.id === institution.type).name}</TableCell>
+                                        <TableCell>{types.find(x => x.id === account.institutionId).name}</TableCell>
                                         <TableCell align="right">
                                             <Tooltip title="Edit" aria-label="Edit">
                                                 <Button component="span" className={classes.button}
-                                                        onClick={() => this.editInstitution(institution)}>
+                                                        onClick={() => this.editAccount(account)}>
                                                     <EditIcon/>
                                                 </Button>
                                             </Tooltip>
                                             <Tooltip title="Delete" aria-label="Delete">
                                                 <Button component="span" className={classes.button}
-                                                        onClick={() => this.deleteInstitution(institution.id)}>
+                                                        onClick={() => this.deleteAccount(account.id)}>
                                                     <DeleteIcon/>
                                                 </Button>
                                             </Tooltip>
@@ -144,7 +155,7 @@ class Institution extends React.Component {
                         })}
                     </Table>
                 </Paper>
-                <Fab color="primary" className={classes.fab} onClick={this.newInstitution}>
+                <Fab color="primary" className={classes.fab} onClick={this.newAccount}>
                     <AddIcon/>
                 </Fab>
             </div>
@@ -152,4 +163,4 @@ class Institution extends React.Component {
     }
 }
 
-export default withStyles(styles)(Institution);
+export default withStyles(styles)(Account);
