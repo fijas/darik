@@ -48,7 +48,7 @@ class AccountForm extends React.Component {
     };
 
     createNew() {
-        fetch('http://localhost:3001/institutions', {
+        fetch('http://localhost:3001/accounts', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({institutionId: this.state.institutionId, type: this.state.type})
@@ -58,7 +58,7 @@ class AccountForm extends React.Component {
     }
 
     update(id) {
-        fetch('http://localhost:3001/institutions/' + id, {
+        fetch('http://localhost:3001/accounts/' + id, {
             method: 'PATCH',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({name: this.state.name})
@@ -87,7 +87,7 @@ class AccountForm extends React.Component {
         return (
             <Dialog onClose={this.handleClose} onEntered={this.updateState} aria-labelledby="institution-dialog"
                     open={this.props.open}>
-                <DialogTitle id="institution-dialog-title">Add A New Institution</DialogTitle>
+                <DialogTitle id="institution-dialog-title">Add A New Account</DialogTitle>
                 <form className={props.container} noValidate autoComplete="off">
                     <DialogContent>
                         <TextField

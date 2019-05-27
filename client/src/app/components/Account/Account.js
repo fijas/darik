@@ -14,7 +14,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Fab from "@material-ui/core/Fab/Fab";
 import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
-import InstitutionForm from "./AccountForm";
+import AccountForm from "./AccountForm";
 
 const styles = theme => ({
     fab: {
@@ -109,7 +109,7 @@ class Account extends React.Component {
 
         return (
             <div>
-                <InstitutionForm open={this.state.showAccountForm} close={this.closeAccountForm.bind(this)}
+                <AccountForm open={this.state.showAccountForm} close={this.closeAccountForm.bind(this)}
                                  types={types} institutions={this.state.institutions} id={this.state.id}
                                  name={this.state.name} type={this.state.type} />
                 <Typography variant="display1" gutterBottom>
@@ -132,9 +132,9 @@ class Account extends React.Component {
                                     <TableRow>
                                         <TableCell>{account.id}</TableCell>
                                         <TableCell component="th" scope="row">
-                                            {account.type}
+                                            {types.find(x => x.id === account.institutionId).name}
                                         </TableCell>
-                                        <TableCell>{types.find(x => x.id === account.institutionId).name}</TableCell>
+                                        <TableCell>{this.state.institutions.find(x => x.id === account.institutionId).name}</TableCell>
                                         <TableCell align="right">
                                             <Tooltip title="Edit" aria-label="Edit">
                                                 <Button component="span" className={classes.button}

@@ -94,7 +94,7 @@ class InstitutionForm extends React.Component {
                             select
                             autoFocus
                             fullWidth
-                            id="standard-select-currency"
+                            id="institution-type"
                             label="Institution Type"
                             className={props.selectEmpty}
                             value={this.state.type}
@@ -109,7 +109,7 @@ class InstitutionForm extends React.Component {
                         </TextField>
                         <TextField
                             fullWidth
-                            id="standard-uncontrolled"
+                            id="institution-name"
                             label="Institution Name"
                             value={this.state.name}
                             onChange={e => this.handleChange(e, 'name')}
