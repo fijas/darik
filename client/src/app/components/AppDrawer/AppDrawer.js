@@ -31,6 +31,7 @@ import Dashboard from "../Dashboard";
 import Category from "../Category/Category";
 import Institution from "../Institution/Institution";
 import Account from "../Account/Account";
+import Expense from "../Expense/Expense";
 
 const drawerWidth = 240;
 
@@ -128,7 +129,7 @@ class AppDrawer extends React.Component {
                         </ListItemIcon>
                         <ListItemText primary="Dashboard"/>
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button component={Link} to="/expense">
                         <ListItemIcon>
                             <PresentToAllIcon/>
                         </ListItemIcon>
@@ -240,6 +241,7 @@ class AppDrawer extends React.Component {
                     <Route path="/category" component={Category}/>
                     <Route path="/institution" component={Institution}/>
                     <Route path="/account" component={Account}/>
+                    <Route path="/expense" component={Expense}/>
                 </main>
             </div>
         );

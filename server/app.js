@@ -45,7 +45,7 @@ app.use('/categories', categoryRoute);
 const subcategoryRoute = require('./routes/subcategories');
 app.use('/subcategories', subcategoryRoute);
 const transactionRoute = require('./routes/transactions');
-app.use('/subcategories', transactionRoute);
+app.use('/transactions', transactionRoute);
 
 const feedRoute = require('./routes/feed');
 app.use('/feed', passport.authenticate('jwt', {session: false}), feedRoute);

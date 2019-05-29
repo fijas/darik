@@ -1,4 +1,6 @@
 const models = require("../models");
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 // Display list of all Authors.
 exports.create = (req, res) => {
@@ -9,7 +11,22 @@ exports.create = (req, res) => {
 
 // Display list of all Authors.
 exports.list = (req, res) => {
-    models.transaction.findAll().then(transaction => {
+    let where = {};
+    if(req.query.type === '0') {
+        where.debit = {
+            [Op.gt]: 0
+        }
+    } else {
+        where.credit = {
+            [Op.gt]: 0
+        }
+    }
+    models.transaction.findAll({
+        where: where,
+        order: [
+            ['createdAt', 'DESC']
+        ]
+    }).then(transaction => {
         return res.json(transaction);
     });
 };
