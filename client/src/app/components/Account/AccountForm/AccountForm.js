@@ -75,7 +75,7 @@ class AccountForm extends React.Component {
 
     updateState = () => {
         this.setState({
-            name: this.props.name,
+            institutionId: this.props.institutionId,
             type: this.props.type,
             id: this.props.id
         });
@@ -94,8 +94,8 @@ class AccountForm extends React.Component {
                             select
                             autoFocus
                             fullWidth
-                            id="standard-select-currency"
-                            label="Institution Type"
+                            id="account-type"
+                            label="Account Type"
                             className={props.selectEmpty}
                             value={this.state.type}
                             onChange={e => this.handleChange(e,'type')}
@@ -108,12 +108,21 @@ class AccountForm extends React.Component {
                             ))}
                         </TextField>
                         <TextField
+                            select
                             fullWidth
-                            id="standard-uncontrolled"
-                            label="Institution Name"
-                            value={this.state.name}
-                            onChange={e => this.handleChange(e, 'name')}
-                            margin="normal" />
+                            id="institution"
+                            label="Institution"
+                            className={props.selectEmpty}
+                            value={this.state.institutionId}
+                            onChange={e => this.handleChange(e, 'institutionId')}
+                            margin="normal"
+                        >
+                            {props.institutions.map(option => (
+                                <MenuItem key={option.name} value={option.id}>
+                                    {option.name}
+                                </MenuItem>
+                            ))}
+                        </TextField>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="secondary">

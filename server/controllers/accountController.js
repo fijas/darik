@@ -38,7 +38,9 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     models.account.findByPk(req.params.id).then(account => {
         if(account !== null) {
-            return account.destroy();
+            account.destroy().then((acc) => {
+                return res.json(acc);
+            });
         } else {
             return res.sendStatus(404);
         }

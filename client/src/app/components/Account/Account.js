@@ -67,7 +67,7 @@ class Account extends React.Component {
     newAccount = () => {
         this.setState({
             showAccountForm: true,
-            name: '',
+            type: '',
             institutionId: '',
             id: ''
         });
@@ -76,15 +76,15 @@ class Account extends React.Component {
     editAccount = (account) => {
         this.setState({
             showAccountForm: true,
-            name: account.name,
+            type: account.type,
             institutionId: account.institutionId,
             id: account.id
         });
     };
 
     deleteAccount = (id) => {
-        if(window.confirm('Are you sure you want to delete this institution?')) {
-            fetch('http://localhost:3001/institutions/' + id, {
+        if(window.confirm('Are you sure you want to delete this account?')) {
+            fetch('http://localhost:3001/accounts/' + id, {
                 method: 'DELETE'
             }).then((res) => res.json())
                 .then(() => this.getAccounts())
@@ -110,8 +110,8 @@ class Account extends React.Component {
         return (
             <div>
                 <AccountForm open={this.state.showAccountForm} close={this.closeAccountForm.bind(this)}
-                                 types={types} institutions={this.state.institutions} id={this.state.id}
-                                 name={this.state.name} type={this.state.type} />
+                             types={types} institutions={this.state.institutions} id={this.state.id}
+                             institutionId={this.state.institutionId} type={this.state.type} />
                 <Typography variant="display1" gutterBottom>
                     Accounts
                 </Typography>
@@ -132,7 +132,7 @@ class Account extends React.Component {
                                     <TableRow>
                                         <TableCell>{account.id}</TableCell>
                                         <TableCell component="th" scope="row">
-                                            {types.find(x => x.id === account.institutionId).name}
+                                            {types.find(x => x.id === account.type).name}
                                         </TableCell>
                                         <TableCell>{this.state.institutions.find(x => x.id === account.institutionId).name}</TableCell>
                                         <TableCell align="right">
