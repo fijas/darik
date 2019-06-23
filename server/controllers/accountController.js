@@ -9,7 +9,11 @@ exports.create = (req, res) => {
 
 // Display list of all Authors.
 exports.list = (req, res) => {
-    models.account.findAll().then(account => {
+    models.account.findAll({
+        include: [{
+            model: models.institution
+        }]
+    }).then(account => {
         return res.json(account);
     });
 };

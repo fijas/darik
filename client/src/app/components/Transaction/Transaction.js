@@ -1,5 +1,5 @@
 import React from "react";
-import './Expense.css';
+import './Transaction.css';
 import {withStyles} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
@@ -8,13 +8,14 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
+/*import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import TableBody from "@material-ui/core/TableBody";
 import Tooltip from "@material-ui/core/Tooltip";
-import Button from "@material-ui/core/Button";
+import Button from "@material-ui/core/Button";*/
 import Fab from "@material-ui/core/Fab/Fab";
-import ExpenseForm from "./ExpenseForm";
+import TransactionForm from "./TransactionForm";
+import TableBody from "@material-ui/core/TableBody";
 
 const styles = theme => ({
     fab: {
@@ -27,7 +28,7 @@ const styles = theme => ({
     }
 });
 
-class Expense extends React.Component {
+class Transaction extends React.Component {
     constructor(props) {
         super(props);
 
@@ -35,7 +36,8 @@ class Expense extends React.Component {
             data: null,
             isLoading: true,
             accounts: [],
-            categories: []
+            categories: [],
+            showExpenseForm: false
         };
     }
 
@@ -93,11 +95,11 @@ class Expense extends React.Component {
 
         return (
             <div>
-                <ExpenseForm open={this.state.showExpenseForm} close={this.closeExpenseForm.bind(this)}
+                <TransactionForm open={this.state.showExpenseForm} close={this.closeExpenseForm.bind(this)}
                              accounts={this.state.accounts} categories={this.state.categories} id={this.state.id}
                              subcategories={this.state.subcategories} />
                 <Typography variant="display1" gutterBottom>
-                    Expenses
+                    Transactions
                 </Typography>
                 <hr/>
                 <Paper className={classes.root}>
@@ -107,9 +109,25 @@ class Expense extends React.Component {
                                 <TableCell>#</TableCell>
                                 <TableCell>Type</TableCell>
                                 <TableCell>Institution</TableCell>
+                                <TableCell>Amount</TableCell>
                                 <TableCell align="right">Options</TableCell>
                             </TableRow>
                         </TableHead>
+                        {data.map(transaction => {
+                            return (
+                                <TableBody key={transaction.id}>
+                                    <TableRow>
+                                        <TableCell>{transaction.id}</TableCell>
+                                        <TableCell component="th" scope="row">
+                                            {transaction.credit > 0 ? 'Credit' : 'Debit'}
+                                        </TableCell>
+                                        <TableCell>{transaction.accountId}</TableCell>
+                                        <TableCell>{transaction.credit > 0 ? transaction.credit : transaction.debit}</TableCell>
+                                        <TableCell></TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            )
+                        })}
                     </Table>
                 </Paper>
                 <Fab color="primary" className={classes.fab} onClick={this.newExpense}>
@@ -120,4 +138,4 @@ class Expense extends React.Component {
     }
 }
 
-export default withStyles(styles)(Expense);
+export default withStyles(styles)(Transaction);

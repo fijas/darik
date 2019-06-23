@@ -31,7 +31,7 @@ import Dashboard from "../Dashboard";
 import Category from "../Category/Category";
 import Institution from "../Institution/Institution";
 import Account from "../Account/Account";
-import Expense from "../Expense/Expense";
+import Transaction from "../Transaction/Transaction";
 
 const drawerWidth = 240;
 
@@ -129,17 +129,11 @@ class AppDrawer extends React.Component {
                         </ListItemIcon>
                         <ListItemText primary="Dashboard"/>
                     </ListItem>
-                    <ListItem button component={Link} to="/expense">
+                    <ListItem button component={Link} to="/transaction">
                         <ListItemIcon>
                             <PresentToAllIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Expense"/>
-                    </ListItem>
-                    <ListItem button>
-                        <ListItemIcon>
-                            <MoveToInboxIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Income"/>
+                        <ListItemText primary="Transactions"/>
                     </ListItem>
                 </List>
                 <Divider/>
@@ -241,7 +235,7 @@ class AppDrawer extends React.Component {
                     <Route path="/category" component={Category}/>
                     <Route path="/institution" component={Institution}/>
                     <Route path="/account" component={Account}/>
-                    <Route path="/expense" component={Expense}/>
+                    <Route path="/transaction" component={Transaction}/>
                 </main>
             </div>
         );

@@ -22,7 +22,7 @@ const styles = theme => ({
     },
 });
 
-class ExpenseForm extends React.Component {
+class TransactionForm extends React.Component {
     constructor(props) {
         super(props);
 
@@ -32,7 +32,8 @@ class ExpenseForm extends React.Component {
             categoryId: '',
             subCategoryId: '',
             amount: '',
-            note: ''
+            note: '',
+            type: 0
         };
     }
 
@@ -49,10 +50,50 @@ class ExpenseForm extends React.Component {
     updateState = () => {
         this.setState({
             institutionId: this.props.institutionId,
-            type: this.props.type,
             id: this.props.id
         });
     };
+
+    handleSave = () => {
+        if (this.state.id === '') {
+            this.createNew();
+        } else {
+            this.update(this.state.id);
+        }
+        this.props.close();
+    };
+
+    createNew() {
+        fetch('http://localhost:3001/transactions?type=0', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                accountId: this.state.accountId,
+                categoryId: this.state.categoryId,
+                subCategoryId: this.state.subCategoryId,
+                note: this.state.note,
+                amount: this.state.amount,
+            })
+        }).then((res) => res.json())
+            .then(() => this.props.close())
+            .catch((err) => console.log(err));
+    }
+
+    update(id) {
+        fetch('http://localhost:3001/transactions/' + id + '?type=0', {
+            method: 'PATCH',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                accountId: this.state.accountId,
+                categoryId: this.state.categoryId,
+                subCategoryId: this.state.subCategoryId,
+                note: this.state.note,
+                amount: this.state.amount,
+            })
+        }).then((res) => res.json())
+            .then(() => this.props.close())
+            .catch((err) => console.log(err));
+    }
 
     render() {
         const props = this.props;
@@ -63,6 +104,19 @@ class ExpenseForm extends React.Component {
                 <DialogTitle id="institution-dialog-title">Add A New Account</DialogTitle>
                 <form className={props.container} noValidate autoComplete="off">
                     <DialogContent>
+                        <TextField
+                            select
+                            fullWidth
+                            id="type"
+                            label="Type"
+                            className={props.selectEmpty}
+                            value={this.state.type}
+                            onChange={e => this.handleChange(e,'type')}
+                            margin="normal"
+                        >
+                            <MenuItem key="0" value="0">Debit</MenuItem>
+                            <MenuItem key="1" value="1">Credit</MenuItem>
+                        </TextField>
                         <TextField
                             autoFocus
                             fullWidth
@@ -83,8 +137,8 @@ class ExpenseForm extends React.Component {
                             margin="normal"
                         >
                             {props.accounts.map(option => (
-                                <MenuItem key={option.name} value={option.id}>
-                                    {option.name}
+                                <MenuItem key={option.id} value={option.id}>
+                                    {option.institution.name}
                                 </MenuItem>
                             ))}
                         </TextField>
@@ -142,4 +196,4 @@ class ExpenseForm extends React.Component {
         );
     }
 }
-export default withStyles(styles)(ExpenseForm);
+export default withStyles(styles)(TransactionForm);

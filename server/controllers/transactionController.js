@@ -4,6 +4,12 @@ const Op = Sequelize.Op;
 
 // Display list of all Authors.
 exports.create = (req, res) => {
+    let body = req.body;
+    if(req.query.type === '0') {
+        body.debit = req.body.amount;
+    } else {
+        body.credit = req.body.amount;
+    }
     models.transaction.create(req.body).then(transaction => {
         return res.json(transaction);
     });
@@ -25,7 +31,13 @@ exports.list = (req, res) => {
         where: where,
         order: [
             ['createdAt', 'DESC']
-        ]
+        ],
+        include: [{
+            model: models.account
+        }/*, {
+            model: models.institution,
+            where: {id: Sequelize.col('account.institutionId')}
+        }*/]
     }).then(transaction => {
         return res.json(transaction);
     });
