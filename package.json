@@ -1,0 +1,66 @@
+{
+  "name": "darik",
+  "version": "0.1.0",
+  "description": "Local-first personal finance tracker with offline support and client-side encryption",
+  "private": true,
+  "workspaces": [
+    "app",
+    "worker"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:app\" \"npm run dev:worker\"",
+    "dev:app": "npm run dev --workspace=app",
+    "dev:worker": "npm run dev --workspace=worker",
+    "build": "npm run build:app && npm run build:worker",
+    "build:app": "npm run build --workspace=app",
+    "build:worker": "npm run build --workspace=worker",
+    "test": "npm run test:app && npm run test:worker",
+    "test:app": "npm run test --workspace=app",
+    "test:worker": "npm run test --workspace=worker",
+    "test:unit": "npm run test:unit --workspace=app",
+    "test:integration": "npm run test:integration --workspace=app",
+    "test:e2e": "npm run test:e2e --workspace=app",
+    "lint": "npm run lint --workspaces --if-present",
+    "lint:fix": "npm run lint:fix --workspaces --if-present",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "clean": "rm -rf node_modules app/node_modules worker/node_modules app/.next worker/dist",
+    "db:migrate": "npm run db:migrate --workspace=worker",
+    "db:seed": "npm run db:seed --workspace=worker",
+    "deploy:app": "npm run deploy --workspace=app",
+    "deploy:worker": "npm run deploy --workspace=worker",
+    "deploy": "npm run deploy:app && npm run deploy:worker"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "prettier": "^3.1.1",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=24.0.0",
+    "npm": ">=10.0.0"
+  },
+  "keywords": [
+    "finance",
+    "budgeting",
+    "expense-tracker",
+    "investment-tracker",
+    "pwa",
+    "offline-first",
+    "local-first",
+    "privacy",
+    "encryption",
+    "cloudflare-workers",
+    "nextjs"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/darik.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/darik/issues"
+  },
+  "homepage": "https://github.com/yourusername/darik#readme"
+}
