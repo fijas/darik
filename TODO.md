@@ -88,21 +88,21 @@
 - [x] Create `/types/parsed.ts` for parser output types
 - [x] Create `/types/sync.ts` for sync protocol types
 
-### 1.2 Dexie (IndexedDB) Schema
+### 1.2 Dexie (IndexedDB) Schema ✅
 
-- [ ] Create `/lib/db/schema.ts` with Dexie database class
-- [ ] Define all tables matching D1 schema
-  - [ ] `transactions` table with indices
-  - [ ] `securities` table with indices
-  - [ ] `holdings` table with indices
-  - [ ] `prices` table with compound index
-  - [ ] `assets` table
-  - [ ] `liabilities` table
-  - [ ] `goals` table
-  - [ ] `_clock` table for sync metadata
-- [ ] Implement database versioning and migrations
-- [ ] Create database initialization function
-- [ ] Export singleton database instance
+- [x] Create `/lib/db/schema.ts` with Dexie database class
+- [x] Define all tables matching D1 schema
+  - [x] `transactions` table with indices
+  - [x] `securities` table with indices
+  - [x] `holdings` table with indices
+  - [x] `prices` table with compound index
+  - [x] `assets` table
+  - [x] `liabilities` table
+  - [x] `goals` table
+  - [x] `_clock` table for sync metadata
+- [x] Implement database versioning and migrations
+- [x] Create database initialization function
+- [x] Export singleton database instance
 
 ### 1.3 D1 (SQLite) Schema & Migrations
 
