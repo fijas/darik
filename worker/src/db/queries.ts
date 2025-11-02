@@ -5,10 +5,7 @@ export class DBQueries {
 
   // Example query helper
   async getUser(userId: string) {
-    return await this.db
-      .prepare('SELECT * FROM users WHERE id = ?')
-      .bind(userId)
-      .first();
+    return await this.db.prepare('SELECT * FROM users WHERE id = ?').bind(userId).first();
   }
 
   // Add more query helpers as needed

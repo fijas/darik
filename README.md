@@ -5,6 +5,7 @@ A **local-first** personal finance tracker for budgeting, expenses, investments,
 ## Features
 
 ### Core Functionality
+
 - **Expense Tracking** - Natural language input with voice support
 - **Investment Portfolio** - Mutual funds, equities, gold, crypto tracking
 - **Net Worth Monitoring** - Assets and liabilities management
@@ -13,6 +14,7 @@ A **local-first** personal finance tracker for budgeting, expenses, investments,
 - **Privacy-Focused** - Client-side encryption, server stores only ciphertext
 
 ### Key Highlights
+
 - 💬 Natural language expense entry (text or voice)
 - 📸 Receipt OCR (optional)
 - 📊 Automatic mutual fund NAV updates via AMFI
@@ -45,6 +47,7 @@ A **local-first** personal finance tracker for budgeting, expenses, investments,
 ```
 
 ### Tech Stack
+
 - **Frontend**: Next.js 14+, TypeScript, Tailwind CSS, PWA
 - **Local Storage**: Dexie (IndexedDB wrapper)
 - **Backend**: Cloudflare Workers, D1 (SQLite), KV, R2
@@ -81,6 +84,7 @@ darik/
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 18+ and npm/yarn/pnpm
 - Cloudflare account (free tier works)
 - Git
@@ -88,17 +92,20 @@ darik/
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/yourusername/darik.git
    cd darik
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up Cloudflare Worker**
+
    ```bash
    # Install Wrangler CLI
    npm install -g wrangler
@@ -118,6 +125,7 @@ darik/
    ```
 
 4. **Configure environment**
+
    ```bash
    # Copy example env files
    cp app/.env.example app/.env.local
@@ -127,6 +135,7 @@ darik/
    ```
 
 5. **Start development servers**
+
    ```bash
    # In one terminal - Next.js app
    npm run dev:app
@@ -172,6 +181,7 @@ npm run db:seed          # Seed with test data
 ### Key Directories
 
 #### `/app` - Next.js Application
+
 - `/app` - App Router pages and layouts
 - `/components` - Reusable React components
   - `/ui` - Base UI components (Button, Input, Card, etc.)
@@ -186,6 +196,7 @@ npm run db:seed          # Seed with test data
   - `/calculations` - Financial math
 
 #### `/worker` - Cloudflare Worker
+
 - `/src/routes` - API endpoints
 - `/src/auth` - WebAuthn authentication
 - `/src/sync` - Sync protocol implementation
@@ -195,12 +206,14 @@ npm run db:seed          # Seed with test data
 ## Features in Detail
 
 ### Expense Capture
+
 - Type or speak: "Fuel 900 cash 7:30pm"
 - Auto-parses amount, merchant, category, payment method, time
 - Learns from corrections
 - Optional receipt scanning with OCR
 
 ### Portfolio Management
+
 - Import holdings from CSV (CAMS, KFintech, Kuvera, Zerodha)
 - Automatic daily NAV updates for mutual funds
 - Manual price entry for other assets
@@ -208,18 +221,21 @@ npm run db:seed          # Seed with test data
 - XIRR calculation for returns
 
 ### Goals & Planning
+
 - Define financial goals with target amount and date
 - Calculate required SIP amount
 - Monte Carlo simulation for probability
 - Track progress with on-track indicators
 
 ### Net Worth Tracking
+
 - Track all assets (bank, FD, property, PF, etc.)
 - Track liabilities (loans, credit cards)
 - Historical snapshots
 - Rebalancing suggestions
 
 ### Privacy & Security
+
 - All data encrypted client-side before sync
 - Server never sees plaintext
 - WebAuthn passkeys for authentication
@@ -230,6 +246,7 @@ npm run db:seed          # Seed with test data
 ### Production Deployment
 
 1. **Deploy Next.js to Cloudflare Pages**
+
    ```bash
    cd app
    npm run build
@@ -237,6 +254,7 @@ npm run db:seed          # Seed with test data
    ```
 
 2. **Deploy Worker**
+
    ```bash
    cd worker
    wrangler deploy
@@ -250,6 +268,7 @@ npm run db:seed          # Seed with test data
 ### CI/CD with GitHub Actions
 
 The project includes GitHub Actions workflows for:
+
 - **CI** - Lint, test, and build on PR
 - **Preview** - Deploy preview on PR
 - **Production** - Deploy on tag `v*`
@@ -261,12 +280,14 @@ See `.github/workflows/` for details.
 ### Environment Variables
 
 #### App (Next.js)
+
 ```env
 NEXT_PUBLIC_WORKER_URL=https://your-worker.workers.dev
 NEXT_PUBLIC_ENABLE_SYNC=true
 ```
 
 #### Worker (Cloudflare)
+
 ```env
 # Set in wrangler.toml or Cloudflare dashboard
 D1_DATABASE_ID=your-d1-id
@@ -298,14 +319,17 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 See [TODO.md](TODO.md) for detailed implementation checklist.
 
 ### Completed
+
 - ✅ Project setup and scaffolding
 - ✅ Repository structure
 
 ### In Progress
+
 - 🔄 Next.js app setup
 - 🔄 Cloudflare Worker setup
 
 ### Planned
+
 - Data models and database schema
 - Expense capture and parsing
 - Sync engine and encryption

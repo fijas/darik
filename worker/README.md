@@ -5,23 +5,27 @@ Backend API for Darik Finance Tracker, built on Cloudflare Workers with D1, KV, 
 ## Setup
 
 1. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 2. **Create D1 database**
+
    ```bash
    npm run d1:create
    # Copy the database_id from output and update wrangler.toml
    ```
 
 3. **Create KV namespace**
+
    ```bash
    npm run kv:create
    # Copy the id from output and update wrangler.toml
    ```
 
 4. **Run migrations**
+
    ```bash
    npm run d1:migrate  # For local development
    ```
@@ -67,12 +71,14 @@ Set in `wrangler.toml` or `.dev.vars`:
 Migrations are stored in `/migrations` directory and applied via Wrangler CLI.
 
 Create a new migration:
+
 ```bash
 # Manually create a new file in migrations/
 touch migrations/0001_create_users.sql
 ```
 
 Apply migrations:
+
 ```bash
 npm run d1:migrate        # Local
 npm run d1:migrate:remote # Remote dev

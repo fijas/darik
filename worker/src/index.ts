@@ -11,14 +11,17 @@ type Bindings = {
 const app = new Hono<{ Bindings: Bindings }>();
 
 // CORS configuration
-app.use('/*', cors({
-  origin: (origin) => origin, // TODO: Restrict to app domain in production
-  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowHeaders: ['Content-Type', 'Authorization'],
-  exposeHeaders: ['Content-Length'],
-  maxAge: 600,
-  credentials: true,
-}));
+app.use(
+  '/*',
+  cors({
+    origin: (origin) => origin, // TODO: Restrict to app domain in production
+    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowHeaders: ['Content-Type', 'Authorization'],
+    exposeHeaders: ['Content-Length'],
+    maxAge: 600,
+    credentials: true,
+  })
+);
 
 // Health check endpoint
 app.get('/api/health', async (c) => {
@@ -33,10 +36,13 @@ app.get('/api/health', async (c) => {
       environment: c.env.ENVIRONMENT || 'unknown',
     });
   } catch (error) {
-    return c.json({
-      status: 'unhealthy',
-      error: error instanceof Error ? error.message : 'Unknown error',
-    }, 500);
+    return c.json(
+      {
+        status: 'unhealthy',
+        error: error instanceof Error ? error.message : 'Unknown error',
+      },
+      500
+    );
   }
 });
 
@@ -55,9 +61,12 @@ app.notFound((c) => {
 // Error handler
 app.onError((err, c) => {
   console.error(`Error: ${err.message}`);
-  return c.json({
-    error: err.message || 'Internal Server Error',
-  }, 500);
+  return c.json(
+    {
+      error: err.message || 'Internal Server Error',
+    },
+    500
+  );
 });
 
 export default app;

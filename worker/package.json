@@ -6,6 +6,7 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "wrangler dev",
+    "build": "tsc --noEmit && echo 'Worker build validated'",
     "deploy": "wrangler deploy",
     "deploy:prod": "wrangler deploy --env production",
     "tail": "wrangler tail",
@@ -16,9 +17,16 @@
     "d1:migrate:prod": "wrangler d1 migrations apply darik-finance-prod --env production",
     "kv:create": "wrangler kv:namespace create darik-kv-dev",
     "typecheck": "tsc --noEmit",
+    "lint": "echo 'Linting worker...' && eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["cloudflare", "workers", "finance", "local-first"],
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "finance",
+    "local-first"
+  ],
   "author": "",
   "license": "ISC",
   "description": "Cloudflare Worker API for Darik Finance Tracker",
