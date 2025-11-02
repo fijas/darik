@@ -15,25 +15,25 @@
 - [x] Set up package.json at root level with workspace configuration (if monorepo)
 
 ### 0.2 Next.js App Setup
-- [ ] Initialize Next.js 16+ with App Router
-  - [ ] Run `npx create-next-app@latest app --typescript --tailwind --app`
-  - [ ] Configure TypeScript (strict mode, path aliases)
-  - [ ] Set up Tailwind CSS with custom theme (colors, spacing)
-  - [ ] Configure `next.config.js` for PWA support
-- [ ] Install core dependencies
-  - [ ] `dexie` (IndexedDB wrapper)
-  - [ ] `dexie-react-hooks` (React integration)
-  - [ ] `@ducanh2912/next-pwa` or `serwist` (PWA support)
-  - [ ] `chrono-node` (date parsing)
-  - [ ] `zod` (schema validation)
-  - [ ] `date-fns` (date utilities)
-- [ ] Set up basic folder structure
-  - [ ] `/app` - Next.js pages (App Router)
-  - [ ] `/lib` - utilities, database, sync engine
-  - [ ] `/components` - React components
-  - [ ] `/hooks` - custom React hooks
-  - [ ] `/types` - TypeScript type definitions
-  - [ ] `/constants` - enums, categories, config
+- [x] Initialize Next.js 16+ with App Router
+  - [x] Run `npx create-next-app@latest app --typescript --tailwind --app`
+  - [x] Configure TypeScript (strict mode, path aliases)
+  - [x] Set up Tailwind CSS with custom theme (colors, spacing)
+  - [x] Configure `next.config.js` for PWA support
+- [x] Install core dependencies
+  - [x] `dexie` (IndexedDB wrapper)
+  - [x] `dexie-react-hooks` (React integration)
+  - [x] `@ducanh2912/next-pwa` or `serwist` (PWA support)
+  - [x] `chrono-node` (date parsing)
+  - [x] `zod` (schema validation)
+  - [x] `date-fns` (date utilities)
+- [x] Set up basic folder structure
+  - [x] `/app` - Next.js pages (App Router)
+  - [x] `/lib` - utilities, database, sync engine
+  - [x] `/components` - React components
+  - [x] `/hooks` - custom React hooks
+  - [x] `/types` - TypeScript type definitions
+  - [x] `/constants` - enums, categories, config
 
 ### 0.3 Cloudflare Worker Setup
 - [ ] Install Cloudflare Wrangler CLI globally: `npm install -g wrangler`
@@ -782,7 +782,13 @@
 
 ## Progress Tracking
 
-**Current Phase**: Phase 0 - Project Setup
-**Overall Completion**: 0/14 phases completed (0%)
+**Current Phase**: Phase 0 - Project Setup (Phase 0.2 Complete)
+**Overall Completion**: 0/14 phases completed (Phase 0: 2/4 sections complete)
 
-Last Updated: 2025-10-31
+**Phase 0 Progress**:
+- [x] 0.1 Repository & Structure Setup
+- [x] 0.2 Next.js App Setup
+- [ ] 0.3 Cloudflare Worker Setup
+- [ ] 0.4 Development Environment
+
+Last Updated: 2025-11-02
