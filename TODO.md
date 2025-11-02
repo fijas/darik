@@ -73,20 +73,20 @@
 
 ## Phase 1: Data Models & Database Schema
 
-### 1.1 TypeScript Type Definitions
+### 1.1 TypeScript Type Definitions ✅
 
-- [ ] Create `/types/database.ts` with all table interfaces
-  - [ ] `Transaction` interface
-  - [ ] `Security` interface
-  - [ ] `Holding` interface
-  - [ ] `Price` interface
-  - [ ] `Asset` interface
-  - [ ] `Liability` interface
-  - [ ] `Goal` interface
-  - [ ] `SyncLog` interface
-- [ ] Create `/types/enums.ts` for category, payment method, asset types
-- [ ] Create `/types/parsed.ts` for parser output types
-- [ ] Create `/types/sync.ts` for sync protocol types
+- [x] Create `/types/database.ts` with all table interfaces
+  - [x] `Transaction` interface
+  - [x] `Security` interface
+  - [x] `Holding` interface
+  - [x] `Price` interface
+  - [x] `Asset` interface
+  - [x] `Liability` interface
+  - [x] `Goal` interface
+  - [x] `SyncLog` interface
+- [x] Create `/types/enums.ts` for category, payment method, asset types
+- [x] Create `/types/parsed.ts` for parser output types
+- [x] Create `/types/sync.ts` for sync protocol types
 
 ### 1.2 Dexie (IndexedDB) Schema
 
