@@ -1,0 +1,34 @@
+{
+  "name": "worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "deploy:prod": "wrangler deploy --env production",
+    "tail": "wrangler tail",
+    "tail:prod": "wrangler tail --env production",
+    "d1:create": "wrangler d1 create darik-finance-dev",
+    "d1:migrate": "wrangler d1 migrations apply darik-finance-dev --local",
+    "d1:migrate:remote": "wrangler d1 migrations apply darik-finance-dev",
+    "d1:migrate:prod": "wrangler d1 migrations apply darik-finance-prod --env production",
+    "kv:create": "wrangler kv:namespace create darik-kv-dev",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["cloudflare", "workers", "finance", "local-first"],
+  "author": "",
+  "license": "ISC",
+  "description": "Cloudflare Worker API for Darik Finance Tracker",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20251014.0",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.45.3"
+  },
+  "dependencies": {
+    "hono": "^4.10.4",
+    "zod": "^4.1.12"
+  }
+}

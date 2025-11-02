@@ -1,0 +1,77 @@
+# Cloudflare Worker configuration for Darik Finance Tracker
+name = "darik-finance-worker"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Development environment
+[env.dev]
+name = "darik-finance-worker-dev"
+
+# Production environment
+[env.production]
+name = "darik-finance-worker-prod"
+
+# D1 Database bindings
+# Run: wrangler d1 create darik-finance-dev
+# Run: wrangler d1 create darik-finance-prod
+# Then update the database_id values below
+
+[[d1_databases]]
+binding = "DB"
+database_name = "darik-finance-dev"
+database_id = "TODO: Run 'wrangler d1 create darik-finance-dev' and paste database_id here"
+preview_database_id = "local"
+
+[env.production.d1_databases]
+binding = "DB"
+database_name = "darik-finance-prod"
+database_id = "TODO: Run 'wrangler d1 create darik-finance-prod' and paste database_id here"
+
+# KV Namespace bindings
+# Run: wrangler kv:namespace create "darik-kv-dev"
+# Run: wrangler kv:namespace create "darik-kv-prod"
+# Then update the id values below
+
+[[kv_namespaces]]
+binding = "KV"
+id = "TODO: Run 'wrangler kv:namespace create darik-kv-dev' and paste id here"
+preview_id = "TODO: Run 'wrangler kv:namespace create darik-kv-dev --preview' and paste id here"
+
+[env.production.kv_namespaces]
+binding = "KV"
+id = "TODO: Run 'wrangler kv:namespace create darik-kv-prod' and paste id here"
+
+# R2 Bucket bindings (optional - for backups)
+# Run: wrangler r2 bucket create darik-backups-dev
+# Run: wrangler r2 bucket create darik-backups-prod
+
+# [[r2_buckets]]
+# binding = "BACKUPS"
+# bucket_name = "darik-backups-dev"
+# preview_bucket_name = "darik-backups-dev"
+
+# [env.production.r2_buckets]
+# binding = "BACKUPS"
+# bucket_name = "darik-backups-prod"
+
+# Cron triggers for scheduled tasks
+# Uncomment after deployment
+# [triggers]
+# crons = [
+#   "0 23 * * *"  # Daily at 23:00 IST (AMFI NAV fetch)
+# ]
+
+# Environment variables
+[vars]
+ENVIRONMENT = "development"
+
+[env.production.vars]
+ENVIRONMENT = "production"
+
+# Build configuration
+[build]
+command = "npm run build"
+
+[build.upload]
+format = "service-worker"
