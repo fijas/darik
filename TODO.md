@@ -156,13 +156,13 @@
 - [x] Create `/components/layout/Header.tsx`
 - [x] Implement navigation state management (using Next.js usePathname)
 
-### 2.3 Core Pages
+### 2.3 Core Pages ✅
 
-- [ ] Create `/app/page.tsx` - Capture/Home page
-- [ ] Create `/app/portfolio/page.tsx` - Portfolio view
-- [ ] Create `/app/plan/page.tsx` - Goals & planning
-- [ ] Create `/app/settings/page.tsx` - Settings
-- [ ] Set up basic routing and navigation between pages
+- [x] Create `/app/page.tsx` - Capture/Home page
+- [x] Create `/app/portfolio/page.tsx` - Portfolio view
+- [x] Create `/app/plan/page.tsx` - Goals & planning
+- [x] Create `/app/settings/page.tsx` - Settings
+- [x] Set up basic routing and navigation between pages
 
 ### 2.4 Loading & Error States
 
