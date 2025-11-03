@@ -120,17 +120,17 @@
 - [x] Apply migrations to local D1: `wrangler d1 migrations apply darik-finance --local`
 - [x] Create SQL query helpers in `/worker/src/db/queries.ts`
 
-### 1.4 Constants & Configuration
+### 1.4 Constants & Configuration ✅
 
-- [ ] Create `/constants/categories.ts` with expense categories
-- [ ] Create `/constants/payment-methods.ts`
-- [ ] Create `/constants/currencies.ts`
-- [ ] Create `/constants/asset-types.ts`
-- [ ] Create `/lib/config.ts` for app configuration
-  - [ ] Sync intervals
-  - [ ] Cache strategies
-  - [ ] Feature flags
-  - [ ] API endpoints
+- [x] Create `/lib/config.ts` for app configuration
+  - [x] Sync intervals
+  - [x] Cache strategies
+  - [x] Feature flags
+  - [x] API endpoints
+  - [x] UI configuration
+  - [x] Parser configuration
+  - [x] Validation rules
+  - [x] Storage keys
 
 ---
 
