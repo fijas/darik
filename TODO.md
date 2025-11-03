@@ -136,18 +136,18 @@
 
 ## Phase 2: Basic UI Layout & Navigation
 
-### 2.1 Design System Setup
+### 2.1 Design System Setup ✅
 
-- [ ] Create `/components/ui/` with base components
-  - [ ] `Button.tsx`
-  - [ ] `Input.tsx`
-  - [ ] `Card.tsx`
-  - [ ] `Badge.tsx`
-  - [ ] `Sheet.tsx` or `Modal.tsx`
-  - [ ] `Toast.tsx` (notification system)
-  - [ ] `Tabs.tsx`
-- [ ] Set up Tailwind custom classes for consistent spacing/colors
-- [ ] Create theme configuration (light/dark mode support)
+- [x] Create `/components/ui/` with base components
+  - [x] `Button.tsx`
+  - [x] `Input.tsx`
+  - [x] `Card.tsx`
+  - [x] `Badge.tsx`
+  - [x] `Sheet.tsx`
+  - [x] `Toast.tsx` (notification system)
+  - [x] `Tabs.tsx`
+- [x] Set up Tailwind custom classes for consistent spacing/colors
+- [x] Create theme configuration (light/dark mode support)
 
 ### 2.2 Layout Components
 
