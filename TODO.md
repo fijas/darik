@@ -164,12 +164,12 @@
 - [x] Create `/app/settings/page.tsx` - Settings
 - [x] Set up basic routing and navigation between pages
 
-### 2.4 Loading & Error States
+### 2.4 Loading & Error States ✅
 
-- [ ] Create `/app/loading.tsx` - Loading skeleton
-- [ ] Create `/app/error.tsx` - Error boundary
-- [ ] Create offline state indicators
-- [ ] Create sync status indicator component
+- [x] Create `/app/loading.tsx` - Loading skeleton
+- [x] Create `/app/error.tsx` - Error boundary
+- [x] Create offline state indicators
+- [x] Create sync status indicator component
 
 ---
 

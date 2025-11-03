@@ -10,3 +10,5 @@ export * from './Badge';
 export * from './Toast';
 export * from './Tabs';
 export * from './Sheet';
+export * from './OfflineIndicator';
+export * from './SyncStatusIndicator';
