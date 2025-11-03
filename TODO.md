@@ -149,12 +149,12 @@
 - [x] Set up Tailwind custom classes for consistent spacing/colors
 - [x] Create theme configuration (light/dark mode support)
 
-### 2.2 Layout Components
+### 2.2 Layout Components ✅
 
-- [ ] Create `/components/layout/Layout.tsx` with main structure
-- [ ] Create `/components/layout/BottomNav.tsx` (mobile navigation)
-- [ ] Create `/components/layout/Header.tsx`
-- [ ] Implement navigation state management (if needed)
+- [x] Create `/components/layout/Layout.tsx` with main structure
+- [x] Create `/components/layout/BottomNav.tsx` (mobile navigation)
+- [x] Create `/components/layout/Header.tsx`
+- [x] Implement navigation state management (using Next.js usePathname)
 
 ### 2.3 Core Pages
 
