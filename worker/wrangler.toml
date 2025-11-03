@@ -20,7 +20,7 @@ name = "darik-finance-worker-prod"
 [[d1_databases]]
 binding = "DB"
 database_name = "darik-finance-dev"
-database_id = "TODO: Run 'wrangler d1 create darik-finance-dev' and paste database_id here"
+database_id = "dc75329a-04fd-4b2d-a0b5-bb3abe388fc5"
 preview_database_id = "local"
 
 [env.production.d1_databases]

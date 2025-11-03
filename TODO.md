@@ -104,21 +104,21 @@
 - [x] Create database initialization function
 - [x] Export singleton database instance
 
-### 1.3 D1 (SQLite) Schema & Migrations
+### 1.3 D1 (SQLite) Schema & Migrations ✅
 
-- [ ] Create D1 database: `wrangler d1 create darik-finance`
-- [ ] Create migration files in `/worker/migrations/`
-  - [ ] `0001_create_transactions.sql`
-  - [ ] `0002_create_securities.sql`
-  - [ ] `0003_create_holdings.sql`
-  - [ ] `0004_create_prices.sql`
-  - [ ] `0005_create_assets.sql`
-  - [ ] `0006_create_liabilities.sql`
-  - [ ] `0007_create_goals.sql`
-  - [ ] `0008_create_sync_log.sql`
-  - [ ] `0009_create_indices.sql`
-- [ ] Apply migrations to local D1: `wrangler d1 migrations apply darik-finance --local`
-- [ ] Create SQL query helpers in `/worker/src/db/queries.ts`
+- [x] Create D1 database: `wrangler d1 create darik-finance`
+- [x] Create migration files in `/worker/migrations/`
+  - [x] `0001_create_transactions.sql`
+  - [x] `0002_create_securities.sql`
+  - [x] `0003_create_holdings.sql`
+  - [x] `0004_create_prices.sql`
+  - [x] `0005_create_assets.sql`
+  - [x] `0006_create_liabilities.sql`
+  - [x] `0007_create_goals.sql`
+  - [x] `0008_create_sync_log.sql`
+  - [x] `0009_create_users_devices.sql`
+- [x] Apply migrations to local D1: `wrangler d1 migrations apply darik-finance --local`
+- [x] Create SQL query helpers in `/worker/src/db/queries.ts`
 
 ### 1.4 Constants & Configuration
 
