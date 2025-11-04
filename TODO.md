@@ -175,17 +175,17 @@
 
 ## Phase 3: Expense Capture & Parsing
 
-### 3.1 Natural Language Parser
+### 3.1 Natural Language Parser ✅
 
-- [ ] Create `/lib/parsers/expense-parser.ts`
-  - [ ] Amount extraction (₹, Rs, INR patterns)
-  - [ ] Merchant name extraction
-  - [ ] Payment method detection (UPI, GPay, PhonePe, card, cash)
-  - [ ] Date/time parsing with `chrono-node`
-  - [ ] Note/description extraction
-- [ ] Create unit tests for parser edge cases
-- [ ] Create fallback rules for common patterns
-- [ ] Implement confidence scoring
+- [x] Create `/lib/parsers/expense-parser.ts`
+  - [x] Amount extraction (₹, Rs, INR patterns)
+  - [x] Merchant name extraction
+  - [x] Payment method detection (UPI, GPay, PhonePe, card, cash)
+  - [x] Date/time parsing with `chrono-node`
+  - [x] Note/description extraction
+- [x] Create fallback rules for common patterns
+- [x] Implement confidence scoring
+- [ ] Create unit tests for parser edge cases (deferred)
 
 ### 3.2 Category Auto-Learning
 
