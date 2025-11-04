@@ -8,6 +8,7 @@
 import { ReactNode } from 'react';
 import { Header } from './Header';
 import { BottomNav } from './BottomNav';
+import { SyncIndicator } from '../sync/SyncIndicator';
 
 interface LayoutProps {
   children: ReactNode;
@@ -36,6 +37,9 @@ export function Layout({
 
       {/* Bottom Navigation (Mobile only) */}
       {showBottomNav && <BottomNav />}
+
+      {/* Sync indicator */}
+      <SyncIndicator />
     </div>
   );
 }

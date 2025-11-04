@@ -7,6 +7,11 @@ export interface Env {
   ENVIRONMENT: string;
 }
 
+// Context variables that can be set via middleware
+export interface ContextVariables {
+  userId?: string;
+}
+
 // Sync protocol types
 export interface SyncRequest {
   lastSyncTimestamp: number;

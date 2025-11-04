@@ -1,14 +1,11 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
+import type { Env } from './types';
+import syncRoutes from './routes/sync';
+import { authMiddleware } from './middleware/auth';
+import { rateLimiter } from './middleware/rate-limit';
 
-type Bindings = {
-  DB: D1Database;
-  KV: KVNamespace;
-  // BACKUPS: R2Bucket;
-  ENVIRONMENT: string;
-};
-
-const app = new Hono<{ Bindings: Bindings }>();
+const app = new Hono<{ Bindings: Env }>();
 
 // CORS configuration
 app.use(
@@ -17,13 +14,18 @@ app.use(
     origin: (origin) => origin, // TODO: Restrict to app domain in production
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowHeaders: ['Content-Type', 'Authorization'],
-    exposeHeaders: ['Content-Length'],
+    exposeHeaders: [
+      'Content-Length',
+      'X-RateLimit-Limit',
+      'X-RateLimit-Remaining',
+      'X-RateLimit-Reset',
+    ],
     maxAge: 600,
     credentials: true,
   })
 );
 
-// Health check endpoint
+// Health check endpoint (no auth required)
 app.get('/api/health', async (c) => {
   try {
     // Check D1 connection
@@ -46,12 +48,9 @@ app.get('/api/health', async (c) => {
   }
 });
 
-// API routes will be added here
-// Example structure:
-// import authRoutes from './routes/auth';
-// import syncRoutes from './routes/sync';
-// app.route('/api/auth', authRoutes);
-// app.route('/api/sync', syncRoutes);
+// Sync routes - require authentication and rate limiting
+app.use('/api/sync/*', authMiddleware, rateLimiter('sync'));
+app.route('/api/sync', syncRoutes);
 
 // 404 handler
 app.notFound((c) => {
