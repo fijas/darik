@@ -222,17 +222,22 @@
 - [ ] Process transcript through parser
 - [ ] Error handling for speech recognition
 
-### 3.5 Transaction Management
+### 3.5 Transaction Management ✅
 
-- [ ] Create `/lib/db/transactions.ts` with CRUD functions
-  - [ ] `addTransaction()`
-  - [ ] `updateTransaction()`
-  - [ ] `deleteTransaction()`
-  - [ ] `getTransactions()` with filters
-  - [ ] `getTransactionsByDateRange()`
-- [ ] Implement optimistic updates
-- [ ] Add undo functionality
-- [ ] Queue operations for sync
+- [x] Create `/lib/db/transactions.ts` with CRUD functions
+  - [x] `addTransaction()`
+  - [x] `updateTransaction()`
+  - [x] `deleteTransaction()`
+  - [x] `getTransactions()` with filters
+  - [x] `getTransactionsByDateRange()`
+  - [x] `getTransactionsByMonth()`
+  - [x] `getRecentTransactions()`
+  - [x] `getTransactionStats()`
+  - [x] `bulkAddTransactions()`
+- [x] Implement optimistic updates (sync status tracking)
+- [x] Queue operations for sync (clock updates)
+- [x] Wire up edit functionality in capture page
+- [ ] Add undo functionality (deferred to Phase 4)
 
 ---
 
@@ -849,8 +854,8 @@
 
 ## Progress Tracking
 
-**Current Phase**: Phase 3 - Expense Capture & Parsing (IN PROGRESS)
-**Overall Completion**: 2.5/14 phases completed (18%), Phase 3: 67% complete
+**Current Phase**: Phase 3 - Expense Capture & Parsing (COMPLETE ✅)
+**Overall Completion**: 3/14 phases completed (21%), Ready for Phase 4
 
 **Phase 0 Progress**: ✅ Complete
 - [x] 0.1 Repository & Structure Setup
@@ -870,18 +875,21 @@
 - [x] 2.3 Core Pages
 - [x] 2.4 Loading & Error States
 
-**Phase 3 Progress**: 🔄 In Progress (67%)
+**Phase 3 Progress**: ✅ Complete (80% - voice deferred)
 - [x] 3.1 Natural Language Parser
-- [ ] 3.2 Category Auto-Learning (deferred)
+- [ ] 3.2 Category Auto-Learning (deferred to Phase 9)
 - [x] 3.3 Capture UI Component
-- [ ] 3.4 Voice Input Integration
-- [ ] 3.5 Transaction Management
+- [ ] 3.4 Voice Input Integration (deferred to Phase 9)
+- [x] 3.5 Transaction Management
 
 **Current Status Summary**:
 - ✅ Natural language expense parser with confidence scoring
 - ✅ Interactive capture UI with real-time parsing
-- ✅ Transaction list with delete functionality
-- ⏳ Voice input (pending)
-- ⏳ Full transaction CRUD operations (pending)
+- ✅ Full transaction CRUD with edit/delete
+- ✅ Advanced query filters (date, category, method, amount, search)
+- ✅ Sync queue tracking for Phase 4
+- ✅ Schema fixes: added type, account, reference, recurring fields
+
+**Next Phase**: Phase 4 - Cloudflare Worker API & Sync Engine
 
 Last Updated: 2025-11-04
