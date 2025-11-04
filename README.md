@@ -6,7 +6,10 @@ A **local-first** personal finance tracker for budgeting, expenses, investments,
 
 ### Core Functionality
 
-- **Expense Tracking** - Natural language input with voice support
+- **Income & Expense Tracking** - Natural language input with voice support
+  - Track all income sources: salary, freelance, loan repayments, bonuses
+  - Track expenses across comprehensive categories
+  - Visual differentiation (green for income, red for expense)
 - **Investment Portfolio** - Mutual funds, equities, gold, crypto tracking
 - **Net Worth Monitoring** - Assets and liabilities management
 - **Goals & Planning** - SIP calculators and goal tracking
@@ -15,7 +18,10 @@ A **local-first** personal finance tracker for budgeting, expenses, investments,
 
 ### Key Highlights
 
-- 💬 Natural language expense entry (text or voice)
+- 💬 Natural language transaction entry (text or voice)
+  - Income: "Salary 50000 received", "Freelance project 15000", "Ram repaid 5000"
+  - Expense: "Groceries 500 cash", "Fuel 900 UPI"
+- 💰 Comprehensive income categories (salary, freelance, variable pay, loan repayments)
 - 📸 Receipt OCR (optional)
 - 📊 Automatic mutual fund NAV updates via AMFI
 - 🎯 Financial goal tracking with required SIP calculations
@@ -23,7 +29,7 @@ A **local-first** personal finance tracker for budgeting, expenses, investments,
 - 📱 Installable PWA with offline support
 - 🌙 Dark mode support
 - 📥 CSV import from CAMS, KFintech, Kuvera, Zerodha
-- 💰 All calculations in paise (no float precision issues)
+- 💵 All calculations in paise (no float precision issues)
 
 ## Architecture
 
@@ -205,12 +211,23 @@ npm run db:seed          # Seed with test data
 
 ## Features in Detail
 
-### Expense Capture
+### Transaction Capture
 
-- Type or speak: "Fuel 900 cash 7:30pm"
+**Income:**
+- Type or speak: "Salary 50000 received", "Freelance 15000 bank transfer"
+- Auto-detects income keywords and categorizes appropriately
+- Supports: salary, freelance, variable pay, loan repayments, gifts, refunds
+
+**Expense:**
+- Type or speak: "Fuel 900 cash 7:30pm", "Groceries 500 UPI"
 - Auto-parses amount, merchant, category, payment method, time
 - Learns from corrections
 - Optional receipt scanning with OCR
+
+**All transactions:**
+- Visual distinction (green for income, red for expense)
+- Manual type override available
+- Net income calculation (income - expense)
 
 ### Portfolio Management
 

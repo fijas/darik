@@ -1,12 +1,35 @@
 /**
  * Expense Parser
- * Parses natural language input into structured expense data
- * Example: "Fuel 900 cash 7:30pm" -> { amount: 90000, merchant: "Fuel", method: "cash", ... }
+ * Parses natural language input into structured transaction data
+ * Examples:
+ * - Income: "Salary 50000 received", "Freelance project 15000"
+ * - Expense: "Fuel 900 cash 7:30pm", "Groceries 500"
  */
 
 import { parseDate } from 'chrono-node';
 import type { ParsedExpense, ParseError } from '@/types';
 import { TransactionCategory, PaymentMethod, Currency } from '@/types';
+
+/**
+ * Income keywords for automatic detection
+ */
+const INCOME_KEYWORDS = [
+  'salary', 'salaries', 'paid', 'received', 'got', 'earned',
+  'freelance', 'freelancing', 'project', 'client',
+  'bonus', 'commission', 'incentive',
+  'repaid', 'returned', 'refund', 'refunded',
+  'cashback', 'dividend', 'interest',
+  'rental', 'rent received',
+  'gift', 'gifted', 'inheritance',
+];
+
+/**
+ * Detect if input describes income based on keywords
+ */
+function detectIncomeKeywords(text: string): boolean {
+  const lowerText = text.toLowerCase();
+  return INCOME_KEYWORDS.some(keyword => lowerText.includes(keyword));
+}
 
 /**
  * Parse expense from natural language text
@@ -15,12 +38,15 @@ export function parseExpense(input: string): ParsedExpense {
   const raw = input.trim();
   const tokens = tokenize(raw);
 
+  // Detect if this is income or expense
+  const isIncome = detectIncomeKeywords(raw);
+
   // Extract all fields
   const amount = extractAmount(tokens, raw);
   const method = extractPaymentMethod(tokens, raw);
   const date = extractDate(tokens, raw);
-  const merchant = extractMerchant(tokens, raw, amount, method, date);
-  const category = categorizeByMerchant(merchant);
+  const merchant = extractMerchant(tokens, raw, amount, method, date, isIncome);
+  const category = categorizeByMerchant(merchant, isIncome);
 
   // Calculate confidence scores
   const confidence = {
@@ -49,6 +75,7 @@ export function parseExpense(input: string): ParsedExpense {
     tokens,
     ambiguities: [],
     suggestions: [],
+    type: isIncome ? 'income' : 'expense', // Add detected type
   };
 }
 
@@ -178,7 +205,8 @@ function extractMerchant(
   _raw: string,
   amount?: number,
   _method?: PaymentMethod,
-  _date?: Date
+  _date?: Date,
+  _isIncome?: boolean
 ): string | undefined {
   // Remove tokens that are part of other fields
   const stopWords = new Set([
@@ -190,6 +218,9 @@ function extractMerchant(
     'on',
     'paid',
     'spent',
+    'received',
+    'got',
+    'earned',
     'rs',
     'inr',
     'rupees',
@@ -236,15 +267,46 @@ function extractMerchant(
 }
 
 /**
- * Categorize transaction based on merchant name
+ * Categorize transaction based on merchant name and type
  * This is basic - will be improved in Phase 3.2 with learning
  */
-function categorizeByMerchant(merchant?: string): TransactionCategory | undefined {
+function categorizeByMerchant(merchant?: string, isIncome?: boolean): TransactionCategory | undefined {
   if (!merchant) return undefined;
 
   const merchantLower = merchant.toLowerCase();
 
-  // Simple keyword matching for common categories
+  // Income category matching
+  if (isIncome) {
+    const incomeKeywords: Record<string, TransactionCategory> = {
+      salary: TransactionCategory.SALARY,
+      freelance: TransactionCategory.FREELANCE,
+      project: TransactionCategory.FREELANCE,
+      client: TransactionCategory.FREELANCE,
+      bonus: TransactionCategory.VARIABLE_PAY,
+      commission: TransactionCategory.VARIABLE_PAY,
+      incentive: TransactionCategory.VARIABLE_PAY,
+      repaid: TransactionCategory.LOAN_REPAYMENT,
+      returned: TransactionCategory.LOAN_REPAYMENT,
+      refund: TransactionCategory.REFUND,
+      cashback: TransactionCategory.CASHBACK,
+      dividend: TransactionCategory.INVESTMENT_INCOME,
+      interest: TransactionCategory.INVESTMENT_INCOME,
+      rental: TransactionCategory.RENTAL_INCOME,
+      rent: TransactionCategory.RENTAL_INCOME,
+      gift: TransactionCategory.GIFT_RECEIVED,
+      inheritance: TransactionCategory.INHERITANCE,
+    };
+
+    for (const [keyword, category] of Object.entries(incomeKeywords)) {
+      if (merchantLower.includes(keyword)) {
+        return category;
+      }
+    }
+
+    return TransactionCategory.OTHER_INCOME;
+  }
+
+  // Expense category matching
   const categoryKeywords: Record<string, TransactionCategory> = {
     // Food & Dining
     restaurant: TransactionCategory.DINING,

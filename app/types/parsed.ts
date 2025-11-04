@@ -21,6 +21,7 @@ export interface ParsedExpense {
   date?: Date; // Parsed date/time
   note?: string; // Additional notes
   currency?: Currency; // Detected currency (defaults to INR)
+  type?: 'income' | 'expense' | 'transfer'; // Detected transaction type
 
   // Confidence scores (0-1, higher = more confident)
   confidence: {

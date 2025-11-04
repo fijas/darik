@@ -96,13 +96,11 @@ export class DarikDatabase extends Dexie {
       devices: 'deviceId, lastSeenAt',
     });
 
-    // Future schema migrations will be added here
-    // Example:
-    // this.version(2).stores({
-    //   transactions: '...existing indices..., newField'
-    // }).upgrade(tx => {
-    //   // Migration logic
-    // });
+    // Version 2: Add syncStatus index for efficient sync queries
+    this.version(2).stores({
+      transactions:
+        'id, userId, type, createdTs, postedTs, category, method, merchant, account, isRecurring, parentTransactionId, syncStatus, [userId+createdTs], [userId+category], [userId+method], [userId+type]',
+    });
   }
 }
 

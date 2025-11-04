@@ -62,11 +62,19 @@ export enum TransactionCategory {
   EMI = 'emi',
   TAX = 'tax',
 
-  // Income
+  // Income (for type='income' transactions)
   SALARY = 'salary',
-  BONUS = 'bonus',
-  REFUND = 'refund',
-  CASHBACK = 'cashback',
+  VARIABLE_PAY = 'variable_pay',      // Bonus, commission, incentives
+  FREELANCE = 'freelance',             // Freelance/contract work
+  BUSINESS_INCOME = 'business_income', // Business revenue
+  INVESTMENT_INCOME = 'investment_income', // Dividends, interest
+  RENTAL_INCOME = 'rental_income',     // Property rent
+  LOAN_REPAYMENT = 'loan_repayment',   // Money lent returned
+  REFUND = 'refund',                   // Purchase refunds
+  CASHBACK = 'cashback',               // Cashback rewards
+  GIFT_RECEIVED = 'gift_received',     // Money gifts received
+  INHERITANCE = 'inheritance',         // Inheritance money
+  OTHER_INCOME = 'other_income',       // Other income sources
 
   // Other
   GIFTS = 'gifts',
@@ -220,9 +228,17 @@ export const getCategoryLabel = (category: TransactionCategory): string => {
     [TransactionCategory.EMI]: 'EMI',
     [TransactionCategory.TAX]: 'Tax',
     [TransactionCategory.SALARY]: 'Salary',
-    [TransactionCategory.BONUS]: 'Bonus',
+    [TransactionCategory.VARIABLE_PAY]: 'Variable Pay',
+    [TransactionCategory.FREELANCE]: 'Freelance',
+    [TransactionCategory.BUSINESS_INCOME]: 'Business Income',
+    [TransactionCategory.INVESTMENT_INCOME]: 'Investment Income',
+    [TransactionCategory.RENTAL_INCOME]: 'Rental Income',
+    [TransactionCategory.LOAN_REPAYMENT]: 'Loan Repayment',
     [TransactionCategory.REFUND]: 'Refund',
     [TransactionCategory.CASHBACK]: 'Cashback',
+    [TransactionCategory.GIFT_RECEIVED]: 'Gift Received',
+    [TransactionCategory.INHERITANCE]: 'Inheritance',
+    [TransactionCategory.OTHER_INCOME]: 'Other Income',
     [TransactionCategory.GIFTS]: 'Gifts',
     [TransactionCategory.DONATION]: 'Donation',
     [TransactionCategory.OTHER]: 'Other',
