@@ -330,15 +330,22 @@
 
 ## Phase 5: Client-Side Encryption
 
-### 5.1 WebCrypto Helpers
+### 5.1 WebCrypto Helpers ✅
 
-- [ ] Create `/lib/crypto/encryption.ts`
-  - [ ] `generateKey()` - AES-GCM 256 key generation
-  - [ ] `encryptRow(data)` - encrypt with random nonce
-  - [ ] `decryptRow(encData)` - decrypt and verify
-  - [ ] `exportKey()` / `importKey()`
-- [ ] Implement key storage in IndexedDB
-- [ ] Create nonce generation (cryptographically secure random)
+- [x] Create `/lib/crypto/encryption.ts`
+  - [x] `generateKey()` - AES-GCM 256 key generation
+  - [x] `encryptRow(data)` - encrypt with random nonce
+  - [x] `decryptRow(encData)` - decrypt and verify
+  - [x] `exportKey()` / `importKey()`
+  - [x] `encryptData()` / `decryptData()` - full object encryption
+  - [x] `deriveKeyFromPassword()` - PBKDF2 fallback
+- [x] Implement key storage in IndexedDB
+  - [x] Create `/lib/crypto/key-storage.ts`
+  - [x] Separate key database for security isolation
+  - [x] `storeKey()` / `retrieveKey()` / `deleteKey()`
+  - [x] `getMasterKey()` - get or create master key
+  - [x] Key metadata tracking (created, last used)
+- [x] Create nonce generation (cryptographically secure random)
 
 ### 5.2 Passkey Integration
 
