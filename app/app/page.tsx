@@ -33,6 +33,7 @@ export default function CapturePage() {
       date: new Date(transaction.createdTs),
       note: transaction.note,
       currency: transaction.currency,
+      type: transaction.type, // Include transaction type
       raw: transaction.rawText || '',
       tokens: transaction.rawText?.split(/\s+/) || [],
       confidence: {
@@ -55,6 +56,7 @@ export default function CapturePage() {
       if (editingTransaction) {
         // Update existing transaction
         await updateTransaction(editingTransaction.id, {
+          type: expense.type || 'expense', // Update transaction type
           amountPaise: Math.round(expense.amount * 100), // Convert to paise
           currency: expense.currency || Currency.INR,
           merchant: expense.merchant || 'Unknown',
@@ -68,7 +70,7 @@ export default function CapturePage() {
         const now = Date.now();
         await addTransaction({
           userId: 'local', // Will be set during first sync
-          type: 'expense', // Default to expense
+          type: expense.type || 'expense', // Use parsed type, default to expense
           createdTs: now,
           postedTs: now,
           amountPaise: Math.round(expense.amount * 100), // Convert to paise

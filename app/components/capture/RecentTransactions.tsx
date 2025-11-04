@@ -7,7 +7,7 @@
 
 import { useState, useEffect } from 'react';
 import { Card, Badge } from '@/components/ui';
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency, cn } from '@/lib/utils';
 import { db } from '@/lib/db/schema';
 import type { Transaction } from '@/types';
 import { getCategoryLabel, getPaymentMethodLabel } from '@/types';
@@ -67,9 +67,38 @@ export function RecentTransactions({ onEdit, onDelete, refreshTrigger = 0 }: Rec
     );
   }
 
+  // Calculate net income/expense
+  const totalIncome = transactions
+    .filter((t) => t.type === 'income')
+    .reduce((sum, t) => sum + t.amountPaise, 0);
+  const totalExpense = transactions
+    .filter((t) => t.type === 'expense')
+    .reduce((sum, t) => sum + t.amountPaise, 0);
+  const netAmount = totalIncome - totalExpense;
+
   return (
     <div className="space-y-2">
-      <h3 className="text-sm font-medium text-muted">Recent</h3>
+      {/* Header with Net Summary */}
+      <div className="flex items-center justify-between">
+        <h3 className="text-sm font-medium text-muted">Recent</h3>
+        <div className="flex items-center gap-3 text-xs">
+          <span className="text-green-600 dark:text-green-400">
+            +{formatCurrency(totalIncome)}
+          </span>
+          <span className="text-red-600 dark:text-red-400">
+            -{formatCurrency(totalExpense)}
+          </span>
+          <span
+            className={cn(
+              'font-semibold',
+              netAmount >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+            )}
+          >
+            {netAmount >= 0 ? '+' : ''}
+            {formatCurrency(netAmount)}
+          </span>
+        </div>
+      </div>
       <div className="space-y-2">
         {transactions.map((transaction) => (
           <Card
@@ -79,18 +108,63 @@ export function RecentTransactions({ onEdit, onDelete, refreshTrigger = 0 }: Rec
             className="transition-colors hover:border-primary/50"
           >
             <div className="flex items-center justify-between">
-              {/* Left: Merchant & Category */}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <p className="text-sm font-medium truncate">
-                    {transaction.merchant || 'Unknown Merchant'}
-                  </p>
-                  {transaction.category && (
-                    <Badge variant="outline" size="sm">
-                      {getCategoryLabel(transaction.category)}
-                    </Badge>
-                  )}
-                </div>
+              {/* Left: Icon, Merchant & Category */}
+              <div className="flex-1 min-w-0 flex items-center gap-2">
+                {/* Income/Expense Icon */}
+                {transaction.type === 'income' ? (
+                  <svg
+                    className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M7 11l5-5m0 0l5 5m-5-5v12"
+                    />
+                  </svg>
+                ) : transaction.type === 'transfer' ? (
+                  <svg
+                    className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    className="h-5 w-5 text-red-600 dark:text-red-400 flex-shrink-0"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 13l-5 5m0 0l-5-5m5 5V6"
+                    />
+                  </svg>
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-medium truncate">
+                      {transaction.merchant || 'Unknown Merchant'}
+                    </p>
+                    {transaction.category && (
+                      <Badge variant="outline" size="sm">
+                        {getCategoryLabel(transaction.category)}
+                      </Badge>
+                    )}
+                  </div>
                 <div className="flex items-center gap-2 mt-1">
                   <p className="text-xs text-muted">
                     {new Date(transaction.createdTs).toLocaleDateString('en-IN', {
@@ -107,11 +181,21 @@ export function RecentTransactions({ onEdit, onDelete, refreshTrigger = 0 }: Rec
                     </>
                   )}
                 </div>
+                </div>
               </div>
 
               {/* Right: Amount & Actions */}
               <div className="flex items-center gap-3 ml-4">
-                <p className="text-sm font-semibold whitespace-nowrap">
+                <p
+                  className={cn(
+                    'text-sm font-semibold whitespace-nowrap',
+                    transaction.type === 'income' && 'text-green-600 dark:text-green-400',
+                    transaction.type === 'expense' && 'text-red-600 dark:text-red-400',
+                    transaction.type === 'transfer' && 'text-blue-600 dark:text-blue-400'
+                  )}
+                >
+                  {transaction.type === 'income' && '+'}
+                  {transaction.type === 'expense' && '-'}
                   {formatCurrency(transaction.amountPaise)}
                 </p>
 
