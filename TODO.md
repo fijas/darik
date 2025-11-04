@@ -347,14 +347,19 @@
   - [x] Key metadata tracking (created, last used)
 - [x] Create nonce generation (cryptographically secure random)
 
-### 5.2 Passkey Integration
+### 5.2 Passkey Integration ✅
 
-- [ ] Create `/lib/crypto/passkey-wrapper.ts`
-  - [ ] Wrap encryption key with passkey credential
-  - [ ] Unwrap key on login
-  - [ ] Fallback to password-derived key (PBKDF2)
-- [ ] Implement key rotation logic
-- [ ] Test WebAuthn across browsers/devices
+- [x] Create `/lib/crypto/passkey-wrapper.ts`
+  - [x] Wrap encryption key with passkey credential
+  - [x] Unwrap key on login
+  - [x] Fallback to password-derived key (PBKDF2)
+  - [x] `registerPasskey()` - create passkey and store key
+  - [x] `authenticateWithPasskey()` - authenticate and retrieve key
+  - [x] `registerWithPassword()` / `authenticateWithPassword()` - fallback
+  - [x] `autoLogin()` - automatic authentication attempt
+  - [x] Browser capability detection
+- [ ] Implement key rotation logic (deferred - Phase 9)
+- [ ] Test WebAuthn across browsers/devices (deferred - Phase 13)
 
 ### 5.3 Encryption Integration
 
