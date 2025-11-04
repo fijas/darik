@@ -361,13 +361,23 @@
 - [ ] Implement key rotation logic (deferred - Phase 9)
 - [ ] Test WebAuthn across browsers/devices (deferred - Phase 13)
 
-### 5.3 Encryption Integration
+### 5.3 Encryption Integration ✅
 
-- [ ] Update sync engine to encrypt before push
-- [ ] Update sync engine to decrypt after pull
-- [ ] Modify Dexie schema to optionally store encrypted data
-- [ ] Create `/lib/crypto/field-encryption.ts` for selective field encryption
-- [ ] Add encryption status indicator in UI
+- [x] Update sync engine to encrypt before push
+  - [x] Create `/lib/crypto/sync-encryption.ts` helper module
+  - [x] Encrypt transactions before sending to server
+  - [x] Selective field encryption (merchant, note, rawText)
+- [x] Update sync engine to decrypt after pull
+  - [x] Decrypt transactions after receiving from server
+  - [x] Batch encryption/decryption for performance
+- [x] Modify Dexie schema to optionally store encrypted data
+  - [x] Encrypted fields stored in `_encrypted` field
+  - [x] Metadata remains in plaintext for indexing
+- [x] Create selective field encryption helpers
+  - [x] `encryptForSync()` / `decryptFromSync()`
+  - [x] `encryptBatch()` / `decryptBatch()`
+  - [x] `isRowEncrypted()` checker
+- [ ] Add encryption status indicator in UI (Phase 5.4)
 
 ### 5.4 Client-Side Auth UI
 

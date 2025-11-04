@@ -1,6 +1,8 @@
 /**
  * Client-side Sync Engine
  * Manages synchronization between IndexedDB and Cloudflare Worker
+ *
+ * Data is encrypted client-side before push and decrypted after pull.
  */
 
 import { db } from '../db/schema';
@@ -13,6 +15,7 @@ import type {
   SyncConfig,
   SyncStatus,
 } from './types';
+import { encryptBatch, decryptBatch } from '../crypto/sync-encryption';
 
 export class SyncEngine {
   private config: SyncConfig;
@@ -103,14 +106,17 @@ export class SyncEngine {
       };
     }
 
+    // Encrypt transactions before sending
+    const encryptedTransactions = await encryptBatch('transactions', pendingTransactions as unknown as Record<string, unknown>[]);
+
     // Build push request
     const pushRequest: PushRequest<Transaction> = {
       tableName: 'transactions',
-      changes: pendingTransactions.map((tx) => ({
-        id: tx.id,
+      changes: encryptedTransactions.map((tx) => ({
+        id: tx.id as string,
         operation: 'update', // For now, treat everything as update
-        data: tx,
-        clientTimestamp: tx.postedTs,
+        data: tx as unknown as Transaction,
+        clientTimestamp: tx.postedTs as number,
       })),
     };
 
@@ -199,8 +205,19 @@ export class SyncEngine {
 
     const pullResponse: PullResponse<Transaction> = await response.json();
 
+    // Decrypt changes before applying
+    const decryptedChanges = await Promise.all(
+      pullResponse.changes.map(async (change) => {
+        if (change.data) {
+          const decryptedData = await decryptBatch('transactions', [change.data as unknown as Record<string, unknown>]);
+          return { ...change, data: decryptedData[0] as unknown as Transaction };
+        }
+        return change;
+      })
+    );
+
     // Apply changes locally
-    for (const change of pullResponse.changes) {
+    for (const change of decryptedChanges) {
       await this.applyChange(change);
     }
 
