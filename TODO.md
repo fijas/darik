@@ -197,22 +197,22 @@
 - [ ] Seed with common merchant patterns
 - [ ] Implement category suggestion with confidence
 
-### 3.3 Capture UI Component
+### 3.3 Capture UI Component ✅
 
-- [ ] Create `/components/capture/CaptureInput.tsx`
-  - [ ] Large text input field
-  - [ ] Voice input button (Web Speech API)
-  - [ ] Camera/gallery button
-  - [ ] Parse on input change (debounced)
-- [ ] Create `/components/capture/PreviewCard.tsx`
-  - [ ] Show parsed fields
-  - [ ] Edit individual fields inline
-  - [ ] Category selector dropdown
-  - [ ] Save/Cancel actions
-- [ ] Create `/components/capture/RecentTransactions.tsx`
-  - [ ] List last 10 transactions
-  - [ ] Quick edit/delete actions
-  - [ ] Swipe gestures (mobile)
+- [x] Create `/components/capture/CaptureInput.tsx`
+  - [x] Large text input field
+  - [x] Voice input button (Web Speech API)
+  - [x] Camera/gallery button
+  - [x] Parse on input change (debounced)
+- [x] Create `/components/capture/PreviewCard.tsx`
+  - [x] Show parsed fields
+  - [x] Edit individual fields inline
+  - [x] Category selector dropdown
+  - [x] Save/Cancel actions
+- [x] Create `/components/capture/RecentTransactions.tsx`
+  - [x] List last 10 transactions
+  - [x] Quick edit/delete actions
+  - [ ] Swipe gestures (mobile) - deferred
 
 ### 3.4 Voice Input Integration
 
@@ -849,8 +849,8 @@
 
 ## Progress Tracking
 
-**Current Phase**: Phase 2 - Basic UI Layout & Navigation (COMPLETE ✅)
-**Overall Completion**: 3/14 phases completed (21%)
+**Current Phase**: Phase 3 - Expense Capture & Parsing (IN PROGRESS)
+**Overall Completion**: 2/14 phases completed (14%), Phase 3: 60% complete
 
 **Phase 0 Progress**: ✅ Complete
 - [x] 0.1 Repository & Structure Setup
@@ -870,4 +870,11 @@
 - [x] 2.3 Core Pages
 - [x] 2.4 Loading & Error States
 
-Last Updated: 2025-11-03
+**Phase 3 Progress**: 🔄 In Progress (60%)
+- [x] 3.1 Natural Language Parser
+- [ ] 3.2 Category Auto-Learning (deferred)
+- [x] 3.3 Capture UI Component
+- [ ] 3.4 Voice Input Integration
+- [ ] 3.5 Transaction Management
+
+Last Updated: 2025-11-04

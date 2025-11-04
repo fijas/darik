@@ -3,79 +3,101 @@
  * Quick expense capture with natural language input
  */
 
+'use client';
+
+import { useState } from 'react';
 import { Layout } from '@/components/layout';
-import { Card, Button, Input } from '@/components/ui';
+import { CaptureInput } from '@/components/capture/CaptureInput';
+import { PreviewCard } from '@/components/capture/PreviewCard';
+import { RecentTransactions } from '@/components/capture/RecentTransactions';
+import { db } from '@/lib/db/schema';
+import type { ParsedExpense, Transaction } from '@/types';
+import { TransactionSource, Currency, TransactionCategory, PaymentMethod } from '@/types';
 
 export default function CapturePage() {
+  const [parsedExpense, setParsedExpense] = useState<ParsedExpense | null>(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  const handleParsed = (parsed: ParsedExpense) => {
+    setParsedExpense(parsed);
+  };
+
+  const handleSave = async (expense: ParsedExpense) => {
+    if (!expense.amount || expense.amount <= 0) return;
+
+    try {
+      // Create transaction object
+      const now = Date.now();
+      const transaction: Transaction = {
+        id: crypto.randomUUID(),
+        userId: 'local', // Will be set during first sync
+        createdTs: now,
+        postedTs: now,
+        amountPaise: Math.round(expense.amount * 100), // Convert to paise
+        currency: expense.currency || Currency.INR,
+        merchant: expense.merchant || 'Unknown',
+        category: expense.category || TransactionCategory.OTHER,
+        method: expense.method || PaymentMethod.CASH,
+        note: expense.note,
+        rawText: expense.raw,
+        source: TransactionSource.MANUAL,
+      };
+
+      // Save to IndexedDB
+      await db.transactions.add(transaction);
+
+      // Clear the form and refresh the list
+      setParsedExpense(null);
+      setRefreshTrigger((prev) => prev + 1);
+    } catch (error) {
+      console.error('Failed to save transaction:', error);
+      // TODO: Show error toast in Phase 4
+    }
+  };
+
+  const handleCancel = () => {
+    setParsedExpense(null);
+  };
+
+  const handleEdit = (_transaction: Transaction) => {
+    // TODO: Implement edit functionality in Phase 3.5
+    console.log('Edit not yet implemented');
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      // Delete transaction
+      await db.transactions.delete(id);
+      setRefreshTrigger((prev) => prev + 1);
+    } catch (error) {
+      console.error('Failed to delete transaction:', error);
+      // TODO: Show error toast in Phase 4
+    }
+  };
+
   return (
     <Layout title="Capture">
       <div className="mx-auto max-w-2xl space-y-6">
-        {/* Quick Capture Card */}
-        <Card variant="elevated" padding="lg">
-          <h2 className="mb-4 text-2xl font-bold">Add Expense</h2>
+        {/* Capture Input */}
+        <div className="space-y-4">
+          <CaptureInput onParsed={handleParsed} />
 
-          <div className="space-y-4">
-            <Input
-              placeholder="e.g., Fuel 900 cash 7:30pm"
-              className="text-lg"
+          {/* Preview Card - only show if we have parsed data */}
+          {parsedExpense && (parsedExpense.amount || parsedExpense.merchant) && (
+            <PreviewCard
+              parsed={parsedExpense}
+              onSave={handleSave}
+              onCancel={handleCancel}
             />
-
-            <div className="flex gap-2">
-              <Button variant="ghost" size="sm">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
-                  />
-                </svg>
-                Voice
-              </Button>
-              <Button variant="ghost" size="sm">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
-                Receipt
-              </Button>
-            </div>
-
-            <Button fullWidth size="lg">
-              Save Transaction
-            </Button>
-          </div>
-        </Card>
+          )}
+        </div>
 
         {/* Recent Transactions */}
-        <Card>
-          <h3 className="mb-4 text-lg font-semibold">Recent Transactions</h3>
-          <p className="text-center text-muted py-8">
-            No transactions yet. Add your first expense above!
-          </p>
-        </Card>
+        <RecentTransactions
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          refreshTrigger={refreshTrigger}
+        />
       </div>
     </Layout>
   );
