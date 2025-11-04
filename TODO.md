@@ -239,7 +239,7 @@
 - [x] Wire up edit functionality in capture page
 - [ ] Add undo functionality (deferred to Phase 4)
 
-### 3.6 Income & Transfer Support
+### 3.6 Income & Transfer Support ✅
 
 - [x] Expand income categories in `/types/enums.ts`
   - [x] Add VARIABLE_PAY, FREELANCE, BUSINESS_INCOME
@@ -252,19 +252,18 @@
   - [x] Update merchant extraction to handle income keywords
   - [x] Add income category matching logic
   - [x] Add `type` field to ParsedExpense
-- [ ] Add transaction type selector to UI (in progress)
-  - [ ] Update `/components/capture/PreviewCard.tsx` with type toggle
-  - [ ] Add segmented control: Income | Expense | Transfer
-  - [ ] Filter categories by selected type
-  - [ ] Style income (green) vs expense (red) differently
-- [ ] Update `/app/page.tsx` to support transaction type
-  - [ ] Pass type from PreviewCard to handleSave
-  - [ ] Remove hardcoded `type: 'expense'`
-- [ ] Visual improvements in `/components/capture/RecentTransactions.tsx`
-  - [ ] Show income in green, expense in red
-  - [ ] Add income/expense icons
-  - [ ] Display net summary (income - expense)
-- [ ] Add transfer type support (optional - can be deferred)
+- [x] Add transaction type selector to UI
+  - [x] Update `/components/capture/PreviewCard.tsx` with type toggle
+  - [x] Add segmented control: Income | Expense | Transfer
+  - [x] Style income (green) vs expense (red) differently
+- [x] Update `/app/page.tsx` to support transaction type
+  - [x] Pass type from PreviewCard to handleSave
+  - [x] Remove hardcoded `type: 'expense'`
+- [x] Visual improvements in `/components/capture/RecentTransactions.tsx`
+  - [x] Show income in green, expense in red with +/- prefix
+  - [x] Add income/expense/transfer icons (up/down/swap arrows)
+  - [x] Display net summary (income - expense) in header
+- [ ] Add transfer type support (deferred - Phase 6)
   - [ ] Require source and destination account
   - [ ] Handle account-to-account transfers
 
@@ -888,7 +887,7 @@
 
 ## Progress Tracking
 
-**Current Phase**: Phase 4 - Cloudflare Worker API & Sync Engine (COMPLETE ✅)
+**Current Phase**: Phase 3 & 4 - COMPLETE ✅
 **Overall Completion**: 4/14 phases completed (29%), Ready for Phase 5
 
 **Phase 0 Progress**: ✅ Complete
@@ -909,13 +908,13 @@
 - [x] 2.3 Core Pages
 - [x] 2.4 Loading & Error States
 
-**Phase 3 Progress**: 🔄 In Progress (85% - voice & auto-learning deferred)
+**Phase 3 Progress**: ✅ Complete (with deferrals)
 - [x] 3.1 Natural Language Parser
 - [ ] 3.2 Category Auto-Learning (deferred to Phase 9)
 - [x] 3.3 Capture UI Component
 - [ ] 3.4 Voice Input Integration (deferred to Phase 9)
 - [x] 3.5 Transaction Management
-- [ ] 3.6 Income & Transfer Support (in progress)
+- [x] 3.6 Income & Transfer Support
 
 **Phase 4 Progress**: ✅ Complete (85% - WebAuthn deferred)
 - [x] 4.1 Worker Authentication Setup (simple token-based for development)
@@ -924,6 +923,11 @@
 - [x] 4.4 Client-Side Sync Engine (auto-sync + manual trigger)
 
 **Current Status Summary**:
+- ✅ Natural language parser with income/expense detection
+- ✅ Income & expense tracking with visual differentiation
+- ✅ Transaction type selector (Income/Expense/Transfer)
+- ✅ Color-coded UI (green for income, red for expense)
+- ✅ Net summary display in transaction list
 - ✅ Cloudflare Worker with Hono framework, CORS, health checks
 - ✅ Simple bearer token authentication (UUID-based for development)
 - ✅ Rate limiting middleware with configurable limits per endpoint
@@ -933,9 +937,9 @@
 - ✅ Sync status UI indicator with floating button
 - ✅ Desktop navigation in Header, mobile nav in BottomNav
 - ✅ Both App and Worker build successfully
-- 🔄 Currently: Adding income & transfer support (Phase 3.6)
 - 📝 Note: Full WebAuthn/Passkeys deferred to Phase 5
+- 📝 Note: Voice input & ML categorization deferred to Phase 9
 
-**Next Phase**: Complete Phase 3.6 (Income Support), then Phase 5 - Client-Side Encryption
+**Next Phase**: Phase 5 - Client-Side Encryption
 
 Last Updated: 2025-11-04
