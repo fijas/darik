@@ -31,6 +31,7 @@ export default function CapturePage() {
       const transaction: Transaction = {
         id: crypto.randomUUID(),
         userId: 'local', // Will be set during first sync
+        type: 'expense', // Default to expense
         createdTs: now,
         postedTs: now,
         amountPaise: Math.round(expense.amount * 100), // Convert to paise
@@ -40,6 +41,7 @@ export default function CapturePage() {
         method: expense.method || PaymentMethod.CASH,
         note: expense.note,
         rawText: expense.raw,
+        isRecurring: false, // Default to non-recurring
         source: TransactionSource.MANUAL,
       };
 

@@ -320,23 +320,26 @@ See [TODO.md](TODO.md) for detailed implementation checklist.
 
 ### Completed
 
-- ✅ Project setup and scaffolding
-- ✅ Repository structure
+- ✅ Phase 0: Project setup and scaffolding
+- ✅ Phase 1: Data models and database schema (TypeScript types, Dexie, D1)
+- ✅ Phase 2: Basic UI layout & navigation (design system, pages, routing)
+- ✅ Phase 3.1: Natural language expense parser
+- ✅ Phase 3.3: Capture UI components (input, preview, transactions list)
 
 ### In Progress
 
-- 🔄 Next.js app setup
-- 🔄 Cloudflare Worker setup
+- 🔄 Phase 3: Expense capture & parsing (67% complete)
+  - ⏳ Phase 3.4: Voice input integration
+  - ⏳ Phase 3.5: Transaction management (CRUD functions)
 
 ### Planned
 
-- Data models and database schema
-- Expense capture and parsing
-- Sync engine and encryption
-- Portfolio management
-- Goals and net worth tracking
-- PWA and offline functionality
-- Testing and deployment
+- Phase 4: Cloudflare Worker API & sync engine
+- Phase 5: Client-side encryption with WebAuthn
+- Phase 6: Portfolio management & pricing data
+- Phase 7: Goals & net worth tracking
+- Phase 8: PWA & offline functionality
+- Phase 9-14: Advanced features, testing, deployment
 
 ## License
 

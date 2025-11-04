@@ -23,12 +23,54 @@ import type {
 } from './enums';
 
 /**
+ * Transaction Location
+ * GPS coordinates and address information
+ */
+export interface TransactionLocation {
+  latitude: number;
+  longitude: number;
+  name?: string; // Business name: "Starbucks, MG Road"
+  address?: string; // Full address
+}
+
+/**
+ * Transaction Attachment
+ * Receipts, invoices, photos attached to transaction
+ */
+export interface TransactionAttachment {
+  id: string; // UUID
+  type: 'receipt' | 'invoice' | 'photo' | 'document';
+  url: string; // R2 URL or data URL for local
+  thumbnailUrl?: string; // Thumbnail for display
+  fileName: string;
+  fileSize: number; // Bytes
+  mimeType: string; // e.g., "image/jpeg"
+  uploadedAt: number; // Timestamp
+}
+
+/**
+ * Transaction Split
+ * For splitting expenses among multiple people
+ */
+export interface TransactionSplit {
+  shares: Array<{
+    userId: string; // User ID or contact identifier
+    name: string; // Display name
+    amountPaise: number; // Their share in paise
+    settled: boolean; // Have they paid back?
+    settledAt?: number; // When they paid
+  }>;
+  totalPaise: number; // Total split amount (should match transaction amount)
+}
+
+/**
  * Transaction - Individual income/expense entries
  * Core table for all financial transactions
  */
 export interface Transaction {
   id: string; // UUID
   userId: string; // For multi-user support
+  type: 'income' | 'expense' | 'transfer'; // Transaction type
   createdTs: number; // Device timestamp (epoch ms)
   postedTs: number; // Server timestamp or trusted client
   amountPaise: number; // Amount in paise (₹100.50 = 10050)
@@ -36,9 +78,21 @@ export interface Transaction {
   merchant: string; // Merchant name or payee
   category: TransactionCategory;
   method: PaymentMethod;
+  account?: string; // Account/card identifier
   note?: string; // User notes
   rawText?: string; // Original input text for reference
   tags?: string; // JSON string array of tags
+  reference?: string; // Bank reference/UPI ID
+  location?: TransactionLocation; // Where the transaction occurred
+  attachments?: TransactionAttachment[]; // Receipts, invoices, photos
+  splitWith?: TransactionSplit; // Split transaction details
+
+  // Recurring transaction fields
+  isRecurring: boolean; // Is this a recurring transaction?
+  recurrenceRule?: string; // RFC 5545 RRULE format
+  recurrenceEndTs?: number; // When recurrence ends
+  parentTransactionId?: string; // If instance of recurring transaction
+
   source: TransactionSource; // How this transaction was created
   enc?: Uint8Array; // Encrypted payload (if using server-side encryption)
 
@@ -64,6 +118,9 @@ export interface Security {
   category?: string; // For MF: equity/debt/hybrid
   amc?: string; // Asset Management Company
   riskLevel?: 'low' | 'medium' | 'high';
+  exchange?: 'NSE' | 'BSE' | 'NYSE' | 'NASDAQ' | 'CRYPTO' | 'OTHER'; // Trading exchange
+  sector?: string; // For equities: Technology, Banking, etc.
+  marketCapPaise?: number; // Market capitalization in paise (for screening)
 
   // Client-side
   syncStatus?: 'synced' | 'pending' | 'conflict' | 'error';

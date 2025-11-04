@@ -56,9 +56,9 @@ export class DarikDatabase extends Dexie {
     // Version 1: Initial schema
     this.version(1).stores({
       // Transactions table
-      // Indices: userId, createdTs, postedTs, category, method, merchant
+      // Indices: userId, createdTs, postedTs, type, category, method, merchant, account, isRecurring, parentTransactionId
       transactions:
-        'id, userId, createdTs, postedTs, category, method, merchant, [userId+createdTs], [userId+category], [userId+method]',
+        'id, userId, type, createdTs, postedTs, category, method, merchant, account, isRecurring, parentTransactionId, [userId+createdTs], [userId+category], [userId+method], [userId+type]',
 
       // Securities table
       // Indices: symbol, type, name (for search)
