@@ -379,13 +379,15 @@
   - [x] `isRowEncrypted()` checker
 - [ ] Add encryption status indicator in UI (Phase 5.4)
 
-### 5.4 Client-Side Auth UI
+### 5.4 Client-Side Auth UI ✅
 
-- [ ] Create `/app/auth/login/page.tsx`
-- [ ] Create `/components/auth/PasskeySetup.tsx`
-- [ ] Create `/components/auth/PasskeyLogin.tsx`
-- [ ] Implement first-time setup flow
-- [ ] Implement device registration flow
+- [x] Create `/app/auth/login/page.tsx`
+- [x] Create `/components/auth/PasskeySetup.tsx`
+- [x] Create `/components/auth/PasskeyLogin.tsx`
+- [x] Implement first-time setup flow
+- [x] Implement device registration flow
+- [x] Add error handling and toast notifications
+- [x] Add slide-down animation for error toast
 
 ---
 
@@ -909,8 +911,8 @@
 
 ## Progress Tracking
 
-**Current Phase**: Phase 3 & 4 - COMPLETE ✅
-**Overall Completion**: 4/14 phases completed (29%), Ready for Phase 5
+**Current Phase**: Phase 5 - COMPLETE ✅
+**Overall Completion**: 5/14 phases completed (36%), Ready for Phase 6
 
 **Phase 0 Progress**: ✅ Complete
 - [x] 0.1 Repository & Structure Setup
@@ -944,6 +946,12 @@
 - [x] 4.3 Sync Protocol Implementation (clock-based delta sync)
 - [x] 4.4 Client-Side Sync Engine (auto-sync + manual trigger)
 
+**Phase 5 Progress**: ✅ Complete
+- [x] 5.1 WebCrypto Helpers (AES-GCM 256-bit encryption)
+- [x] 5.2 Passkey Integration (WebAuthn with password fallback)
+- [x] 5.3 Encryption Integration (selective field encryption in sync)
+- [x] 5.4 Client-Side Auth UI (setup and login flows)
+
 **Current Status Summary**:
 - ✅ Natural language parser with income/expense detection
 - ✅ Income & expense tracking with visual differentiation
@@ -957,11 +965,15 @@
 - ✅ Transaction sync endpoints (pull/push/stats/health)
 - ✅ Client-side sync engine with auto-sync and manual trigger
 - ✅ Sync status UI indicator with floating button
+- ✅ End-to-end encryption with AES-GCM 256-bit
+- ✅ Passkey (WebAuthn) authentication with password fallback
+- ✅ Selective field encryption (merchant, note, rawText)
+- ✅ Auth UI with setup and login flows
 - ✅ Desktop navigation in Header, mobile nav in BottomNav
 - ✅ Both App and Worker build successfully
-- 📝 Note: Full WebAuthn/Passkeys deferred to Phase 5
 - 📝 Note: Voice input & ML categorization deferred to Phase 9
+- 📝 Note: Key rotation logic deferred to Phase 9
 
-**Next Phase**: Phase 5 - Client-Side Encryption
+**Next Phase**: Phase 6 - Pricing Data & Portfolio
 
-Last Updated: 2025-11-04
+Last Updated: 2025-11-05
