@@ -391,71 +391,71 @@
 
 ---
 
-## Phase 6: Pricing Data & Portfolio
+## Phase 6: Pricing Data & Portfolio ✅
 
-### 6.1 AMFI Price Fetcher
+### 6.1 AMFI Price Fetcher ✅
 
-- [ ] Create `/worker/src/prices/amfi-fetcher.ts`
-  - [ ] Fetch AMFI NAV JSON (https://www.amfiindia.com/spages/NAVAll.txt)
-  - [ ] Parse NAV data to structured format
-  - [ ] Normalize prices to paise
-  - [ ] Cache raw data in KV with ETag headers
-- [ ] Create cron handler: `POST /api/prices/fetch`
-- [ ] Implement incremental updates
-- [ ] Insert/update prices in D1
-- [ ] Add error handling and retry logic
+- [x] Create `/worker/src/prices/amfi-fetcher.ts`
+  - [x] Fetch AMFI NAV JSON (https://www.amfiindia.com/spages/NAVAll.txt)
+  - [x] Parse NAV data to structured format
+  - [x] Normalize prices to paise
+  - [x] Cache raw data in KV with ETag headers
+- [x] Create cron handler: `POST /api/prices/fetch`
+- [x] Implement incremental updates
+- [x] Insert/update prices in D1
+- [x] Add error handling and retry logic
 
 ### 6.2 Securities Management
 
-- [ ] Create `/lib/db/securities.ts`
-  - [ ] `addSecurity()`
-  - [ ] `updateSecurity()`
-  - [ ] `getSecurityById()`
-  - [ ] `searchSecurities()` - fuzzy search by name/code
-- [ ] Create `/components/portfolio/SecurityPicker.tsx`
-- [ ] Implement manual price entry UI
-- [ ] Support multiple price sources (AMFI, manual, NSE)
+- [x] Create `/lib/db/securities.ts`
+  - [x] `addSecurity()`
+  - [x] `updateSecurity()`
+  - [x] `getSecurityById()`
+  - [x] `searchSecurities()` - fuzzy search by name/code
+- [x] Create `/components/portfolio/SecurityPicker.tsx`
+- [x] Implement manual price entry UI
+- [x] Support multiple price sources (AMFI, manual, NSE)
 
 ### 6.3 Holdings Management
 
-- [ ] Create `/lib/db/holdings.ts`
-  - [ ] `addHolding()` with lot tracking
-  - [ ] `updateHolding()`
-  - [ ] `deleteHolding()`
-  - [ ] `getHoldingsBySecurity()`
-  - [ ] `getAllHoldings()`
-- [ ] Create `/components/portfolio/HoldingCard.tsx`
-- [ ] Implement lot drilldown view
-- [ ] Add buy/sell transaction recording
+- [x] Create `/lib/db/holdings.ts`
+  - [x] `addHolding()` with lot tracking
+  - [x] `updateHolding()`
+  - [x] `deleteHolding()`
+  - [x] `getHoldingsBySecurity()`
+  - [x] `getAllHoldings()`
+- [x] Create `/components/portfolio/HoldingCard.tsx`
+- [x] Implement lot drilldown view
+- [x] Add buy/sell transaction recording
 
 ### 6.4 Portfolio Valuation
 
-- [ ] Create `/lib/calculations/portfolio.ts`
-  - [ ] `calculateMarketValue(holdings, prices)`
-  - [ ] `calculateUnrealizedPnL(holdings, prices)`
-  - [ ] `calculateDayChange(prices)`
-  - [ ] `calculateXIRR()` (internal rate of return)
-- [ ] Create `/components/portfolio/PortfolioSummary.tsx`
-  - [ ] Total value display
-  - [ ] Day change (₹ and %)
-  - [ ] Asset allocation chart
-- [ ] Create `/components/portfolio/HoldingsList.tsx`
-- [ ] Add asset class filters (MF, Equity, Gold, etc.)
+- [x] Create `/lib/calculations/portfolio.ts`
+  - [x] `calculateMarketValue(holdings, prices)`
+  - [x] `calculateUnrealizedPnL(holdings, prices)`
+  - [x] `calculateDayChange(prices)`
+  - [x] `calculateXIRR()` (internal rate of return)
+- [x] Create `/components/portfolio/PortfolioSummary.tsx`
+  - [x] Total value display
+  - [x] Day change (₹ and %)
+  - [x] Asset allocation chart
+- [x] Create `/components/portfolio/HoldingsList.tsx`
+- [x] Add asset class filters (MF, Equity, Gold, etc.)
 
 ### 6.5 CSV Import
 
-- [ ] Create `/lib/importers/csv-parser.ts`
-  - [ ] Generic CSV parser
-  - [ ] CAMS format parser
-  - [ ] KFintech format parser
-  - [ ] Kuvera format parser
-  - [ ] Zerodha format parser
-- [ ] Create `/components/import/CsvImporter.tsx`
-  - [ ] File upload
-  - [ ] Format detection
-  - [ ] Preview diff
-  - [ ] Confirm & import
-- [ ] Create `/app/import/page.tsx`
+- [x] Create `/lib/importers/csv-parser.ts`
+  - [x] Generic CSV parser
+  - [x] CAMS format parser
+  - [x] KFintech format parser
+  - [x] Kuvera format parser
+  - [x] Zerodha format parser
+- [x] Create `/components/import/CsvImporter.tsx`
+  - [x] File upload
+  - [x] Format detection
+  - [x] Preview diff
+  - [x] Confirm & import
+- [x] Create `/app/import/page.tsx`
 
 ---
 
@@ -911,8 +911,8 @@
 
 ## Progress Tracking
 
-**Current Phase**: Phase 5 - COMPLETE ✅
-**Overall Completion**: 5/14 phases completed (36%), Ready for Phase 6
+**Current Phase**: Phase 6 - COMPLETE ✅
+**Overall Completion**: 6/14 phases completed (43%), Ready for Phase 7
 
 **Phase 0 Progress**: ✅ Complete
 - [x] 0.1 Repository & Structure Setup
@@ -952,6 +952,13 @@
 - [x] 5.3 Encryption Integration (selective field encryption in sync)
 - [x] 5.4 Client-Side Auth UI (setup and login flows)
 
+**Phase 6 Progress**: ✅ Complete
+- [x] 6.1 AMFI Price Fetcher (NAV data from AMFI India)
+- [x] 6.2 Securities Management (CRUD operations for mutual funds, stocks, ETFs)
+- [x] 6.3 Holdings Management (lot-level tracking for tax calculations)
+- [x] 6.4 Portfolio Valuation (XIRR, P&L, asset allocation)
+- [x] 6.5 CSV Import (CAMS, KFintech, Kuvera, Zerodha)
+
 **Current Status Summary**:
 - ✅ Natural language parser with income/expense detection
 - ✅ Income & expense tracking with visual differentiation
@@ -969,11 +976,17 @@
 - ✅ Passkey (WebAuthn) authentication with password fallback
 - ✅ Selective field encryption (merchant, note, rawText)
 - ✅ Auth UI with setup and login flows
+- ✅ AMFI price fetcher for mutual fund NAV data
+- ✅ Securities and holdings management with lot tracking
+- ✅ Portfolio valuation with XIRR, P&L calculations
+- ✅ Portfolio UI with summary, holdings list, and filters
+- ✅ CSV import for CAMS, KFintech, Kuvera, Zerodha
 - ✅ Desktop navigation in Header, mobile nav in BottomNav
-- ✅ Both App and Worker build successfully
+- ✅ Worker builds successfully (TypeScript validation passes)
+- 📝 Note: App build requires network access for Google Fonts
 - 📝 Note: Voice input & ML categorization deferred to Phase 9
 - 📝 Note: Key rotation logic deferred to Phase 9
 
-**Next Phase**: Phase 6 - Pricing Data & Portfolio
+**Next Phase**: Phase 7 - Goals & Net Worth Tracking
 
 Last Updated: 2025-11-05

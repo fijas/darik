@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import type { Env } from './types';
 import syncRoutes from './routes/sync';
+import { pricesRouter } from './routes/prices';
 import { authMiddleware } from './middleware/auth';
 import { rateLimiter } from './middleware/rate-limit';
 
@@ -52,6 +53,11 @@ app.get('/api/health', async (c) => {
 app.use('/api/sync/*', authMiddleware, rateLimiter('sync'));
 app.route('/api/sync', syncRoutes);
 
+// Price routes - require authentication and rate limiting for write operations
+app.use('/api/prices/manual', authMiddleware, rateLimiter('sync'));
+app.use('/api/prices/fetch', rateLimiter('global')); // Cron or manual trigger
+app.route('/api/prices', pricesRouter);
+
 // 404 handler
 app.notFound((c) => {
   return c.json({ error: 'Not Found' }, 404);
@@ -68,4 +74,16 @@ app.onError((err, c) => {
   );
 });
 
-export default app;
+// Scheduled event handler for cron jobs
+export default {
+  fetch: app.fetch,
+  async scheduled(_event: ScheduledEvent, env: Env, _ctx: ExecutionContext) {
+    // Daily AMFI NAV fetch (runs at 23:00 IST)
+    console.log('Cron triggered: AMFI NAV fetch');
+
+    const { fetchAMFIData } = await import('./prices/amfi-fetcher');
+    const result = await fetchAMFIData(env);
+
+    console.log('Cron result:', result);
+  },
+};
