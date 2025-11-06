@@ -3,8 +3,6 @@
  * Reusable prepared statements for common database operations
  */
 
-import type { D1Database, D1PreparedStatement } from '@cloudflare/workers-types';
-
 /**
  * Transaction queries
  */

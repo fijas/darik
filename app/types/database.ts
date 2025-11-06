@@ -18,7 +18,6 @@ import type {
   AssetType,
   RepriceRule,
   LiabilityType,
-  GoalStrategy,
   Currency,
 } from './enums';
 
@@ -177,17 +176,25 @@ export interface Asset {
   id: string; // UUID
   type: AssetType;
   name: string; // User-friendly name
-  valuePaise: number; // Current value in paise
+  category?: string; // Asset category
+  currentValue: number; // Current value in paise
   repriceRule: RepriceRule; // How to update value
   linkedSecurityId?: string; // If repriceRule is 'link'
 
   // Additional metadata
   account?: string; // Account number (masked)
-  maturityDate?: string; // For FDs, bonds
-  interestRateBps?: number; // Interest rate in basis points (7.5% = 750)
+  maturityDate?: number; // Maturity date timestamp in ms
+  interestRate?: number; // Interest rate as percentage (7.5% = 7.5)
   notes?: string;
+  lastRepriced?: number; // Last repricing timestamp
 
-  // Client-side
+  // Timestamps
+  createdAt: number;
+  updatedAt: number;
+  deletedAt?: number; // Soft delete timestamp
+
+  // Sync metadata
+  clock: number; // Lamport clock for conflict resolution
   syncStatus?: 'synced' | 'pending' | 'conflict' | 'error';
   lastSyncedTs?: number;
 }
@@ -200,19 +207,26 @@ export interface Liability {
   id: string; // UUID
   type: LiabilityType;
   name: string; // User-friendly name
-  outstandingPaise: number; // Current outstanding amount
-  rateBps: number; // Interest rate in basis points (7.4% = 740)
-  emiPaise?: number; // EMI amount if applicable
-  nextDueDate?: string; // ISO date string
+  category?: string; // Liability category
+  currentBalance: number; // Current outstanding amount in paise
+  interestRate: number; // Interest rate as percentage (7.4% = 7.4)
+  emiAmount?: number; // EMI amount in paise if applicable
+  nextEmiDate?: number; // Next EMI date timestamp in ms
 
   // Additional metadata
   account?: string; // Account/loan number (masked)
-  startDate?: string;
-  maturityDate?: string;
+  startDate?: number; // Start date timestamp in ms
+  maturityDate?: number; // Maturity date timestamp in ms
   lender?: string;
   notes?: string;
 
-  // Client-side
+  // Timestamps
+  createdAt: number;
+  updatedAt: number;
+  deletedAt?: number; // Soft delete timestamp
+
+  // Sync metadata
+  clock: number; // Lamport clock for conflict resolution
   syncStatus?: 'synced' | 'pending' | 'conflict' | 'error';
   lastSyncedTs?: number;
 }
@@ -224,24 +238,33 @@ export interface Liability {
 export interface Goal {
   id: string; // UUID
   name: string; // User-friendly name
-  targetValuePaise: number; // Goal amount in paise
-  targetDate: string; // ISO date string
-  priority: number; // 1-5, higher = more important
-  strategy: GoalStrategy; // sip, lumpsum, hybrid
-  currentCorpusPaise: number; // Current amount allocated
-  assignedAccounts?: string; // JSON: mapping of accounts/holdings to %
+  category?: string; // Goal category (Emergency Fund, House, etc.)
+  targetAmount: number; // Goal amount in paise
+  currentValue: number; // Current amount allocated in paise
+  targetDate: number; // Target date timestamp in ms
+  startDate: number; // Start date timestamp in ms
+  monthlySip?: number; // Monthly SIP amount in paise
+  expectedReturnRate: number; // Expected annual return rate as percentage (e.g., 12 for 12%)
+  priority: number; // 1-3, higher = more important
+  strategy: 'sip' | 'lumpsum' | 'hybrid'; // Investment strategy
+  status: 'active' | 'achieved' | 'paused'; // Goal status
 
-  // Calculated fields (computed client-side)
-  requiredSipPaise?: number; // Calculated required monthly SIP
-  onTrack?: boolean; // Is goal on track?
-  probabilitySuccess?: number; // Monte Carlo probability (0-1)
-
-  // Metadata
-  description?: string;
+  // Optional metadata
+  notes?: string; // User notes
   icon?: string; // Icon name or emoji
   color?: string;
 
-  // Client-side
+  // Linked resources
+  linkedAccountIds?: string[]; // IDs of linked assets/accounts
+  linkedHoldingIds?: string[]; // IDs of linked holdings
+
+  // Timestamps
+  createdAt: number;
+  updatedAt: number;
+  deletedAt?: number; // Soft delete timestamp
+
+  // Sync metadata
+  clock: number; // Lamport clock for conflict resolution
   syncStatus?: 'synced' | 'pending' | 'conflict' | 'error';
   lastSyncedTs?: number;
 }

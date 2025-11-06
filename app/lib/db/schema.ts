@@ -101,6 +101,28 @@ export class DarikDatabase extends Dexie {
       transactions:
         'id, userId, type, createdTs, postedTs, category, method, merchant, account, isRecurring, parentTransactionId, syncStatus, [userId+createdTs], [userId+category], [userId+method], [userId+type]',
     });
+
+    // Version 3: Update schema for Phase 7 - Goals, Assets, Liabilities with timestamps and sync metadata
+    this.version(3).stores({
+      // Updated goals table with new fields
+      goals: 'id, targetDate, startDate, priority, status, clock, deletedAt, [status+targetDate]',
+
+      // Updated assets table with new fields
+      assets: 'id, type, name, clock, deletedAt, maturityDate, lastRepriced',
+
+      // Updated liabilities table with new fields
+      liabilities: 'id, type, nextEmiDate, clock, deletedAt, maturityDate',
+    });
+  }
+
+  /**
+   * Get next clock value for sync
+   * Simple incrementing clock for conflict resolution
+   */
+  async getNextClock(): Promise<number> {
+    // Use a simple timestamp-based clock
+    // In a production system, you might use a Lamport or vector clock
+    return Date.now();
   }
 }
 

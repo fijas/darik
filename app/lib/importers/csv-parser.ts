@@ -9,6 +9,7 @@
  */
 
 import type { Holding, Security, Lot } from '@/types/database';
+import { SecurityType, PriceSource } from '@/types/enums';
 import { stringifyLots } from '../db/holdings';
 
 /**
@@ -131,8 +132,8 @@ export function parseCAMSCSV(rows: string[][]): CSVImportResult {
       const security: Omit<Security, 'id' | 'syncStatus' | 'lastSyncedTs'> = {
         symbol: schemeName.substring(0, 50), // Use scheme name as symbol for now
         name: schemeName,
-        type: 'mf',
-        priceSource: 'amfi',
+        type: SecurityType.MUTUAL_FUND,
+        priceSource: PriceSource.AMFI,
         decimals: 3,
       };
 
@@ -187,7 +188,6 @@ export function parseKFinTechCSV(rows: string[][]): CSVImportResult {
       const schemeName = row[1] || '';
       const folioNo = row[2] || '';
       const units = parseFloat(row[3] || '0');
-      const nav = parseFloat(row[4] || '0');
       const currentValue = parseFloat(row[5] || '0');
 
       if (!schemeName || units === 0) {
@@ -196,15 +196,14 @@ export function parseKFinTechCSV(rows: string[][]): CSVImportResult {
         continue;
       }
 
-      const navPaise = Math.round(nav * 100);
       const currentValuePaise = Math.round(currentValue * 100);
       const avgCostPaise = Math.round((currentValuePaise / units) * 100) / 100;
 
       const security: Omit<Security, 'id' | 'syncStatus' | 'lastSyncedTs'> = {
         symbol: schemeName.substring(0, 50),
         name: schemeName,
-        type: 'mf',
-        priceSource: 'amfi',
+        type: SecurityType.MUTUAL_FUND,
+        priceSource: PriceSource.AMFI,
         decimals: 3,
         amc: fundHouse,
       };
@@ -257,9 +256,7 @@ export function parseKuveraCSV(rows: string[][]): CSVImportResult {
       const fundHouse = row[0] || '';
       const scheme = row[1] || '';
       const units = parseFloat(row[2] || '0');
-      const avgNav = parseFloat(row[3] || '0');
       const invested = parseFloat(row[4] || '0');
-      const currentValue = parseFloat(row[5] || '0');
 
       if (!scheme || units === 0) {
         result.errors.push(`Row ${i + 1}: Missing scheme or zero units`);
@@ -267,15 +264,14 @@ export function parseKuveraCSV(rows: string[][]): CSVImportResult {
         continue;
       }
 
-      const avgNavPaise = Math.round(avgNav * 100);
       const investedPaise = Math.round(invested * 100);
       const avgCostPaise = Math.round((investedPaise / units) * 100) / 100;
 
       const security: Omit<Security, 'id' | 'syncStatus' | 'lastSyncedTs'> = {
         symbol: scheme.substring(0, 50),
         name: scheme,
-        type: 'mf',
-        priceSource: 'amfi',
+        type: SecurityType.MUTUAL_FUND,
+        priceSource: PriceSource.AMFI,
         decimals: 3,
         amc: fundHouse,
       };
@@ -328,7 +324,6 @@ export function parseZerodhaCSV(rows: string[][]): CSVImportResult {
       const symbol = row[0] || '';
       const quantity = parseFloat(row[1] || '0');
       const avgPrice = parseFloat(row[2] || '0');
-      const ltp = parseFloat(row[3] || '0');
 
       if (!symbol || quantity === 0) {
         result.errors.push(`Row ${i + 1}: Missing symbol or zero quantity`);
@@ -337,13 +332,12 @@ export function parseZerodhaCSV(rows: string[][]): CSVImportResult {
       }
 
       const avgPricePaise = Math.round(avgPrice * 100);
-      const ltpPaise = Math.round(ltp * 100);
 
       const security: Omit<Security, 'id' | 'syncStatus' | 'lastSyncedTs'> = {
         symbol,
         name: symbol, // Zerodha uses symbol as name
-        type: 'equity',
-        priceSource: 'manual',
+        type: SecurityType.EQUITY,
+        priceSource: PriceSource.MANUAL,
         decimals: 2,
         exchange: 'NSE',
       };

@@ -3,7 +3,6 @@
  * Core logic for client-server synchronization with conflict resolution
  */
 
-import type { D1Database } from '@cloudflare/workers-types';
 import type {
   PullRequest,
   PullResponse,
@@ -59,7 +58,14 @@ export class SyncService {
         tombstone: number;
       }>();
 
-    const changes: SyncChange[] = (result.results || []).map((row) => ({
+    const changes: SyncChange[] = (result.results || []).map((row: {
+      id: string;
+      operation: SyncOperation;
+      data: string | null;
+      clock: number;
+      timestamp: number;
+      tombstone: number;
+    }) => ({
       id: row.id,
       operation: row.operation,
       data: row.data ? JSON.parse(row.data) : undefined,

@@ -137,21 +137,32 @@ export enum PriceSource {
 // Asset Types (non-market assets)
 export enum AssetType {
   BANK = 'bank',
+  CASH = 'cash',
+  EMERGENCY_FUND = 'emergency_fund',
   FIXED_DEPOSIT = 'fd',
   PROPERTY = 'property',
   PROVIDENT_FUND = 'pf',
   PPF = 'ppf',
   EPF = 'epf',
   NPS = 'nps',
-  CASH = 'cash',
+  BONDS = 'bonds',
+  CRYPTO = 'crypto',
+  OTHER_INVESTMENT = 'other_investment',
   VEHICLE = 'vehicle',
+  GOLD_PHYSICAL = 'gold_physical',
   JEWELRY = 'jewelry',
+  OTHER_PHYSICAL = 'other_physical',
   OTHER = 'other',
 }
 
 // Asset Reprice Rule
 export enum RepriceRule {
   MANUAL = 'manual',
+  DAILY = 'daily',
+  WEEKLY = 'weekly',
+  MONTHLY = 'monthly',
+  QUARTERLY = 'quarterly',
+  YEARLY = 'yearly',
   INDEXED = 'indexed',
   LINKED = 'link', // link:<security_id>
 }
@@ -160,10 +171,13 @@ export enum RepriceRule {
 export enum LiabilityType {
   HOME_LOAN = 'home_loan',
   CAR_LOAN = 'car_loan',
+  GOLD_LOAN = 'gold_loan',
   PERSONAL_LOAN = 'personal_loan',
   EDUCATION_LOAN = 'education_loan',
+  STUDENT_LOAN = 'student_loan',
   CREDIT_CARD = 'cc',
   OVERDRAFT = 'overdraft',
+  OTHER_LOAN = 'other_loan',
   OTHER = 'other',
 }
 
