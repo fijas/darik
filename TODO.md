@@ -617,27 +617,39 @@
 
 ## Phase 10: Testing
 
-### 10.1 Unit Tests
+### 10.1 Unit Tests ✅
 
-- [ ] Set up testing framework (Vitest or Jest)
-- [ ] Test expense parser
-  - [ ] Amount extraction
-  - [ ] Date parsing
-  - [ ] Merchant extraction
-  - [ ] Edge cases
-- [ ] Test financial calculations
-  - [ ] SIP calculation
-  - [ ] Portfolio valuation
-  - [ ] XIRR
-  - [ ] Monte Carlo
-- [ ] Test encryption helpers
-  - [ ] Key generation
-  - [ ] Encryption/decryption
-  - [ ] Nonce uniqueness
-- [ ] Test sync protocol
-  - [ ] Clock management
-  - [ ] Conflict resolution
-  - [ ] Tombstones
+- [x] Set up testing framework (Vitest) ✅
+- [x] Test expense parser (40 tests) ✅
+  - [x] Amount extraction (7 tests)
+  - [x] Category matching (6 tests)
+  - [x] Payment method detection (6 tests)
+  - [x] Date parsing (3 tests)
+  - [x] Merchant extraction (included)
+  - [x] Income detection (5 tests)
+  - [x] Edge cases (8 tests)
+  - [x] Complex inputs (3 tests)
+  - [x] Confidence scoring (2 tests)
+- [x] Test financial calculations (23 tests) ✅
+  - [x] SIP calculation (5 tests)
+  - [x] Future value calculation (5 tests)
+  - [x] Monte Carlo probability (4 tests)
+  - [x] Goal progress (5 tests)
+  - [x] Edge cases (4 tests)
+  - [ ] Portfolio valuation (deferred - Phase 6)
+  - [ ] XIRR (deferred - Phase 6)
+- [x] Test encryption helpers (33 tests) ✅
+  - [x] Key generation (3 tests)
+  - [x] Key export/import (3 tests)
+  - [x] Nonce generation (3 tests)
+  - [x] Data encryption/decryption (11 tests)
+  - [x] Row encryption/decryption (4 tests)
+  - [x] Password-based key derivation (6 tests)
+  - [x] Security properties (3 tests)
+- [ ] Test sync protocol (deferred to Phase 10.2 - requires integration testing)
+  - [ ] Clock management (requires IndexedDB mocking)
+  - [ ] Conflict resolution (requires server simulation)
+  - [ ] Tombstones (requires full sync flow)
 
 ### 10.2 Integration Tests
 

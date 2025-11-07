@@ -66,7 +66,7 @@ export function parseExpense(input: string): ParsedExpense {
     amount,
     merchant,
     category,
-    method,
+    method: method || PaymentMethod.UPI, // Default to UPI
     date: date || new Date(), // Default to now
     note: undefined,
     currency: Currency.INR,
@@ -106,7 +106,7 @@ function extractAmount(tokens: string[], raw: string): number | undefined {
     if (match && match[1]) {
       const numStr = match[1].replace(/,/g, '');
       const num = parseFloat(numStr);
-      if (!isNaN(num) && num > 0) {
+      if (!isNaN(num) && num >= 0) {
         return num;
       }
     }
@@ -312,10 +312,16 @@ function categorizeByMerchant(merchant?: string, isIncome?: boolean): Transactio
     restaurant: TransactionCategory.DINING,
     cafe: TransactionCategory.DINING,
     coffee: TransactionCategory.DINING,
+    lunch: TransactionCategory.DINING,
+    dinner: TransactionCategory.DINING,
+    breakfast: TransactionCategory.DINING,
+    brunch: TransactionCategory.DINING,
+    snack: TransactionCategory.DINING,
     food: TransactionCategory.FOOD_DELIVERY,
     swiggy: TransactionCategory.FOOD_DELIVERY,
     zomato: TransactionCategory.FOOD_DELIVERY,
     grocery: TransactionCategory.GROCERIES,
+    groceries: TransactionCategory.GROCERIES,
     supermarket: TransactionCategory.GROCERIES,
     dmart: TransactionCategory.GROCERIES,
     bigbasket: TransactionCategory.GROCERIES,

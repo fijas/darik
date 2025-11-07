@@ -96,16 +96,19 @@ export function calculateRequiredSIP(
  *
  * @param currentValue Current value in paise
  * @param targetValue Target value in paise
- * @returns Progress percentage (0-100)
+ * @returns Progress percentage (0-100+)
  */
 export function calculateProgress(
   currentValue: number,
   targetValue: number
 ): number {
-  if (targetValue <= 0) return 0;
+  if (targetValue <= 0) return 100;
   const progress = (currentValue / targetValue) * 100;
-  return Math.min(Math.round(progress * 100) / 100, 100); // Cap at 100%
+  return Math.round(progress * 100) / 100;
 }
+
+// Alias for consistency
+export const calculateGoalProgress = calculateProgress;
 
 /**
  * Calculate months remaining until target date
