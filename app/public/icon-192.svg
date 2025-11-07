@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <rect width="192" height="192" fill="#3b82f6" rx="28.799999999999997"/>
+  <g transform="translate(28.799999999999997, 28.799999999999997)">
+    <!-- Wallet icon -->
+    <rect x="19.200000000000003" y="48" width="96" height="76.80000000000001"
+          fill="white" opacity="0.9" rx="5.76"/>
+    <circle cx="105.60000000000001" cy="86.4" r="9.600000000000001" fill="#3b82f6"/>
+    <!-- Coin -->
+    <circle cx="96" cy="38.400000000000006" r="23.04" fill="#fbbf24" opacity="0.95"/>
+    <text x="96" y="44.160000000000004" font-family="Arial, sans-serif"
+          font-size="23.04" font-weight="bold" fill="#3b82f6" text-anchor="middle">₹</text>
+  </g>
+</svg>
