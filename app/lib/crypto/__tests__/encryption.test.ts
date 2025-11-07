@@ -16,7 +16,6 @@ import {
   deriveKeyFromPassword,
   generateSalt,
   testEncryption,
-  type EncryptedData,
 } from '../encryption';
 
 describe('Encryption', () => {

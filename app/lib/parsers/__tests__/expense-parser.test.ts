@@ -113,7 +113,9 @@ describe('Expense Parser', () => {
     it('should parse time in input', () => {
       const result = parseExpense('₹500 groceries 7:30pm');
       expect(result.date).toBeInstanceOf(Date);
-      expect(result.date.getHours()).toBeGreaterThanOrEqual(0);
+      if (result.date) {
+        expect(result.date.getHours()).toBeGreaterThanOrEqual(0);
+      }
     });
 
     it('should parse "yesterday"', () => {
@@ -121,14 +123,18 @@ describe('Expense Parser', () => {
       expect(result.date).toBeInstanceOf(Date);
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
-      expect(result.date.getDate()).toBe(yesterday.getDate());
+      if (result.date) {
+        expect(result.date.getDate()).toBe(yesterday.getDate());
+      }
     });
 
     it('should use current date if not specified', () => {
       const result = parseExpense('₹500 groceries');
       expect(result.date).toBeInstanceOf(Date);
       const now = new Date();
-      expect(result.date.getDate()).toBe(now.getDate());
+      if (result.date) {
+        expect(result.date.getDate()).toBe(now.getDate());
+      }
     });
   });
 
