@@ -179,7 +179,7 @@ export async function sellUnitsFromHolding(
     throw new Error(`Holding not found: ${holdingId}`);
   }
 
-  let lots = parseLots(holding.lots);
+  const lots = parseLots(holding.lots);
 
   // Sort lots by date
   if (method === 'fifo') {

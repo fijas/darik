@@ -220,7 +220,7 @@ export async function getTransactions(
   }
 
   // Get results
-  let results = await query.toArray();
+  const results = await query.toArray();
 
   // Apply sorting (in-memory since Dexie can't sort after filtering)
   if (options?.sortBy) {
