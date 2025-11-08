@@ -260,37 +260,41 @@ npm run db:seed          # Seed with test data
 
 ## Deployment
 
-### Production Deployment
+The project uses GitHub Actions for automated CI/CD with staging and production environments.
 
-1. **Deploy Next.js to Cloudflare Pages**
+### Quick Start
 
-   ```bash
-   cd app
-   npm run build
-   wrangler pages deploy out
-   ```
+1. **Set up Cloudflare resources** (see [DEPLOYMENT.md](DEPLOYMENT.md))
+2. **Configure GitHub secrets**
+3. **Push to master** → Auto-deploys to staging
+4. **Create version tag** → Deploys to production
 
-2. **Deploy Worker**
+### Environments
 
-   ```bash
-   cd worker
-   wrangler deploy
-   ```
+- **Development**: `http://localhost:3000`
+- **Staging**: Auto-deploys from `master` branch
+- **Production**: Manual deploy via version tags (e.g., `v1.0.0`)
 
-3. **Run production migrations**
-   ```bash
-   wrangler d1 migrations apply darik-finance
-   ```
+### Workflows
 
-### CI/CD with GitHub Actions
+- **CI** (`ci.yml`): Runs on all PRs - lints, tests, builds
+- **Staging** (`deploy-staging.yml`): Auto-deploys on push to master
+- **Production** (`deploy-production.yml`): Deploys on version tags
 
-The project includes GitHub Actions workflows for:
+### Manual Deployment
 
-- **CI** - Lint, test, and build on PR
-- **Preview** - Deploy preview on PR
-- **Production** - Deploy on tag `v*`
+```bash
+# Deploy Worker
+cd worker
+wrangler deploy --env staging    # or --env production
 
-See `.github/workflows/` for details.
+# Deploy App
+cd app
+npm run build
+npx wrangler pages deploy out --project-name=darik-finance
+```
+
+For detailed instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## Configuration
 

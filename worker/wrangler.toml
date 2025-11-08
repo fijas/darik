@@ -8,12 +8,17 @@ compatibility_flags = ["nodejs_compat"]
 [env.dev]
 name = "darik-finance-worker-dev"
 
+# Staging environment
+[env.staging]
+name = "darik-finance-worker-staging"
+
 # Production environment
 [env.production]
 name = "darik-finance-worker-prod"
 
 # D1 Database bindings
 # Run: wrangler d1 create darik-finance-dev
+# Run: wrangler d1 create darik-finance-staging
 # Run: wrangler d1 create darik-finance-prod
 # Then update the database_id values below
 
@@ -23,24 +28,34 @@ database_name = "darik-finance-dev"
 database_id = "dc75329a-04fd-4b2d-a0b5-bb3abe388fc5"
 preview_database_id = "local"
 
-[env.production.d1_databases]
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "darik-finance-staging"
+database_id = "81012b04-1cd6-492b-a8d2-849d9a8bdc9c"
+
+[[env.production.d1_databases]]
 binding = "DB"
 database_name = "darik-finance-prod"
-database_id = "TODO: Run 'wrangler d1 create darik-finance-prod' and paste database_id here"
+database_id = "f0bf169b-4673-4ff2-baad-4b168690e9aa"
 
 # KV Namespace bindings
 # Run: wrangler kv:namespace create "darik-kv-dev"
+# Run: wrangler kv:namespace create "darik-kv-staging"
 # Run: wrangler kv:namespace create "darik-kv-prod"
 # Then update the id values below
 
 [[kv_namespaces]]
 binding = "KV"
-id = "TODO: Run 'wrangler kv:namespace create darik-kv-dev' and paste id here"
-preview_id = "TODO: Run 'wrangler kv:namespace create darik-kv-dev --preview' and paste id here"
+id = "18f8eabe73e243cd8236d9dca7449123"
+preview_id = "a98b0e3fe16a4fcb87cd9c7a3610ad0e"
 
-[env.production.kv_namespaces]
+[[env.staging.kv_namespaces]]
 binding = "KV"
-id = "TODO: Run 'wrangler kv:namespace create darik-kv-prod' and paste id here"
+id = "dcf0703e71384df89da54c5764120829"
+
+[[env.production.kv_namespaces]]
+binding = "KV"
+id = "cef8351a82774d22be229394326443a3"
 
 # R2 Bucket bindings (optional - for backups)
 # Run: wrangler r2 bucket create darik-backups-dev
@@ -65,6 +80,9 @@ id = "TODO: Run 'wrangler kv:namespace create darik-kv-prod' and paste id here"
 # Environment variables
 [vars]
 ENVIRONMENT = "development"
+
+[env.staging.vars]
+ENVIRONMENT = "staging"
 
 [env.production.vars]
 ENVIRONMENT = "production"
