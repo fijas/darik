@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import { Sheet } from '@/components/ui/Sheet';
 import { formatCurrency } from '@/lib/utils';
 import {
   calculateNetWorth,
@@ -11,6 +12,13 @@ import {
   calculateFinancialHealthScore,
   getFinancialHealthStatus,
 } from '@/lib/calculations/networth';
+import { AssetForm } from '@/components/assets/AssetForm';
+import { LiabilityForm } from '@/components/liabilities/LiabilityForm';
+import { AssetList } from '@/components/assets/AssetList';
+import { LiabilityList } from '@/components/liabilities/LiabilityList';
+import { addAsset, updateAsset, deleteAsset, getAllAssets } from '@/lib/db/assets';
+import { addLiability, updateLiability, deleteLiability, getAllLiabilities } from '@/lib/db/liabilities';
+import type { Asset, Liability } from '@/types/database';
 
 export default function NetWorthPage() {
   const [netWorthData, setNetWorthData] = useState({
@@ -26,23 +34,111 @@ export default function NetWorthPage() {
     ReturnType<typeof calculateFinancialHealthScore>
   > | null>(null);
 
+  const [assets, setAssets] = useState<Asset[]>([]);
+  const [liabilities, setLiabilities] = useState<Liability[]>([]);
+
+  const [isAssetFormOpen, setIsAssetFormOpen] = useState(false);
+  const [isLiabilityFormOpen, setIsLiabilityFormOpen] = useState(false);
+  const [editingAsset, setEditingAsset] = useState<Asset | undefined>(undefined);
+  const [editingLiability, setEditingLiability] = useState<Liability | undefined>(undefined);
+
   useEffect(() => {
     loadData();
   }, []);
 
   const loadData = async () => {
     try {
-      const [nw, bd, hs] = await Promise.all([
+      const [nw, bd, hs, assetsList, liabilitiesList] = await Promise.all([
         calculateNetWorth(),
         getNetWorthBreakdown(),
         calculateFinancialHealthScore(0), // TODO: Get actual monthly expenses
+        getAllAssets(),
+        getAllLiabilities(),
       ]);
 
       setNetWorthData(nw);
       setBreakdown(bd);
       setHealthScore(hs);
+      setAssets(assetsList);
+      setLiabilities(liabilitiesList);
     } catch (error) {
       console.error('Failed to load net worth data:', error);
+    }
+  };
+
+  // Asset handlers
+  const handleAddAsset = () => {
+    setEditingAsset(undefined);
+    setIsAssetFormOpen(true);
+  };
+
+  const handleEditAsset = (asset: Asset) => {
+    setEditingAsset(asset);
+    setIsAssetFormOpen(true);
+  };
+
+  const handleDeleteAsset = async (assetId: string) => {
+    if (!confirm('Are you sure you want to delete this asset?')) return;
+    try {
+      await deleteAsset(assetId);
+      await loadData();
+    } catch (error) {
+      console.error('Failed to delete asset:', error);
+      alert('Failed to delete asset. Please try again.');
+    }
+  };
+
+  const handleSubmitAsset = async (assetData: Omit<Asset, 'id' | 'createdAt' | 'updatedAt'>) => {
+    try {
+      if (editingAsset) {
+        await updateAsset(editingAsset.id, assetData);
+      } else {
+        await addAsset(assetData);
+      }
+      await loadData();
+      setIsAssetFormOpen(false);
+      setEditingAsset(undefined);
+    } catch (error) {
+      console.error('Failed to save asset:', error);
+      alert('Failed to save asset. Please try again.');
+    }
+  };
+
+  // Liability handlers
+  const handleAddLiability = () => {
+    setEditingLiability(undefined);
+    setIsLiabilityFormOpen(true);
+  };
+
+  const handleEditLiability = (liability: Liability) => {
+    setEditingLiability(liability);
+    setIsLiabilityFormOpen(true);
+  };
+
+  const handleDeleteLiability = async (liabilityId: string) => {
+    if (!confirm('Are you sure you want to delete this liability?')) return;
+    try {
+      await deleteLiability(liabilityId);
+      await loadData();
+    } catch (error) {
+      console.error('Failed to delete liability:', error);
+      alert('Failed to delete liability. Please try again.');
+    }
+  };
+
+  const handleSubmitLiability = async (liabilityData: Omit<Liability, 'id' | 'createdAt' | 'updatedAt'>) => {
+    try {
+      if (editingLiability) {
+        await updateLiability(editingLiability.id, liabilityData);
+      } else {
+        await addLiability(liabilityData);
+      }
+      await loadData();
+      setIsLiabilityFormOpen(false);
+      setEditingLiability(undefined);
+    } catch (error) {
+      console.error('Failed to save liability:', error);
+      alert('Failed to save liability. Please try again.');
     }
   };
 
@@ -258,26 +354,64 @@ export default function NetWorthPage() {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-2 gap-4">
-          <Button variant="secondary" className="w-full">
+          <Button variant="secondary" className="w-full" onClick={handleAddAsset}>
             + Add Asset
           </Button>
-          <Button variant="secondary" className="w-full">
+          <Button variant="secondary" className="w-full" onClick={handleAddLiability}>
             + Add Liability
           </Button>
         </div>
 
-        {/* Placeholder for asset and liability lists */}
-        <Card className="p-12">
-          <div className="text-center">
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Asset and liability management coming soon
-            </p>
-            <p className="text-sm text-gray-500">
-              Track your bank accounts, properties, loans, and more
-            </p>
+        {/* Assets List */}
+        {assets.length > 0 && (
+          <div>
+            <h3 className="text-lg font-semibold mb-3">Assets</h3>
+            <AssetList
+              assets={assets}
+              onEdit={handleEditAsset}
+              onDelete={handleDeleteAsset}
+            />
           </div>
-        </Card>
+        )}
+
+        {/* Liabilities List */}
+        {liabilities.length > 0 && (
+          <div>
+            <h3 className="text-lg font-semibold mb-3">Liabilities</h3>
+            <LiabilityList
+              liabilities={liabilities}
+              onEdit={handleEditLiability}
+              onDelete={handleDeleteLiability}
+            />
+          </div>
+        )}
       </div>
+
+      {/* Asset Form Sheet */}
+      <Sheet
+        isOpen={isAssetFormOpen}
+        onClose={() => setIsAssetFormOpen(false)}
+        title={editingAsset ? 'Edit Asset' : 'Add New Asset'}
+      >
+        <AssetForm
+          asset={editingAsset}
+          onSubmit={handleSubmitAsset}
+          onCancel={() => setIsAssetFormOpen(false)}
+        />
+      </Sheet>
+
+      {/* Liability Form Sheet */}
+      <Sheet
+        isOpen={isLiabilityFormOpen}
+        onClose={() => setIsLiabilityFormOpen(false)}
+        title={editingLiability ? 'Edit Liability' : 'Add New Liability'}
+      >
+        <LiabilityForm
+          liability={editingLiability}
+          onSubmit={handleSubmitLiability}
+          onCancel={() => setIsLiabilityFormOpen(false)}
+        />
+      </Sheet>
     </Layout>
   );
 }

@@ -6,13 +6,18 @@
  */
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Layout } from '@/components/layout';
 import { Card, Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui';
 import PortfolioSummary from '@/components/portfolio/PortfolioSummary';
 import HoldingsList from '@/components/portfolio/HoldingsList';
+import { AssetList } from '@/components/assets/AssetList';
+import { LiabilityList } from '@/components/liabilities/LiabilityList';
 import type { PortfolioHolding } from '@/lib/calculations/portfolio';
 import { getAllHoldings } from '@/lib/db/holdings';
 import { getSecurityById } from '@/lib/db/securities';
+import { getAllAssets } from '@/lib/db/assets';
+import { getAllLiabilities } from '@/lib/db/liabilities';
 import { db } from '@/lib/db/schema';
 import {
   calculateMarketValue,
@@ -20,9 +25,13 @@ import {
   calculateUnrealizedPnL,
   calculatePortfolioXIRR,
 } from '@/lib/calculations/portfolio';
+import type { Asset, Liability } from '@/types/database';
 
 export default function PortfolioPage() {
+  const router = useRouter();
   const [holdings, setHoldings] = useState<PortfolioHolding[]>([]);
+  const [assets, setAssets] = useState<Asset[]>([]);
+  const [liabilities, setLiabilities] = useState<Liability[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -74,6 +83,15 @@ export default function PortfolioPage() {
       }
 
       setHoldings(portfolioHoldings);
+
+      // Load assets and liabilities
+      const [assetsList, liabilitiesList] = await Promise.all([
+        getAllAssets(),
+        getAllLiabilities(),
+      ]);
+
+      setAssets(assetsList);
+      setLiabilities(liabilitiesList);
     } catch (error) {
       console.error('Failed to load portfolio:', error);
     } finally {
@@ -152,19 +170,37 @@ export default function PortfolioPage() {
           </TabsContent>
 
           <TabsContent value="assets">
-            <Card>
-              <p className="text-center text-gray-500 dark:text-gray-400 py-12">
-                No assets yet. Track your bank accounts, FDs, and property here.
-              </p>
-            </Card>
+            {loading ? (
+              <Card>
+                <div className="animate-pulse space-y-4 py-12">
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mx-auto"></div>
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mx-auto"></div>
+                </div>
+              </Card>
+            ) : (
+              <AssetList
+                assets={assets}
+                onEdit={() => router.push('/networth')}
+                onDelete={() => router.push('/networth')}
+              />
+            )}
           </TabsContent>
 
           <TabsContent value="liabilities">
-            <Card>
-              <p className="text-center text-gray-500 dark:text-gray-400 py-12">
-                No liabilities yet. Track loans and credit cards here.
-              </p>
-            </Card>
+            {loading ? (
+              <Card>
+                <div className="animate-pulse space-y-4 py-12">
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mx-auto"></div>
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mx-auto"></div>
+                </div>
+              </Card>
+            ) : (
+              <LiabilityList
+                liabilities={liabilities}
+                onEdit={() => router.push('/networth')}
+                onDelete={() => router.push('/networth')}
+              />
+            )}
           </TabsContent>
         </Tabs>
       </div>
