@@ -62,13 +62,10 @@ jobs:
           NEXT_PUBLIC_ENABLE_SYNC: 'true'
 
       - name: Deploy to Cloudflare Pages (production)
-        uses: cloudflare/pages-action@v1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: darik-finance
-          directory: app/out
-          branch: production
+        run: npx wrangler pages deploy app/out --project-name=darik-finance --branch=production
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Create GitHub Release
         uses: actions/create-release@v1
