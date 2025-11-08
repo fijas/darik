@@ -3,11 +3,15 @@
  * App settings and preferences
  */
 
+'use client';
+
+import { useRouter } from 'next/navigation';
 import { Layout } from '@/components/layout';
 import { Card, Button, Badge } from '@/components/ui';
 import { APP_META } from '@/lib/config';
 
 export default function SettingsPage() {
+  const router = useRouter();
   return (
     <Layout title="Settings">
       <div className="mx-auto max-w-2xl space-y-6">
@@ -77,12 +81,12 @@ export default function SettingsPage() {
               <p className="text-sm text-muted">Manage your data</p>
             </div>
 
-            <Button variant="outline" fullWidth>
-              Export Data
+            <Button variant="outline" fullWidth onClick={() => router.push('/import')}>
+              Import Holdings
             </Button>
 
             <Button variant="outline" fullWidth>
-              Import Data
+              Export Data
             </Button>
 
             <Button variant="danger" fullWidth>
