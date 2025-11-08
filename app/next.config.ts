@@ -12,6 +12,10 @@ const withSerwist = withSerwistInit({
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   turbopack: {},
+  output: 'export', // Static site export for Cloudflare Pages
+  images: {
+    unoptimized: true, // Required for static export
+  },
 
   // Performance optimizations
   experimental: {
