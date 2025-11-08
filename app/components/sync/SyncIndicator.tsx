@@ -80,13 +80,13 @@ export function SyncIndicator() {
 
       {/* Details panel */}
       {showDetails && (
-        <div className="absolute bottom-16 right-0 w-64 rounded-lg bg-white p-4 shadow-xl dark:bg-gray-800">
+        <div className="absolute bottom-16 right-0 w-64 rounded-lg bg-card border border-border p-4 shadow-xl">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-gray-900 dark:text-white">Sync Status</h3>
+              <h3 className="font-semibold text-foreground">Sync Status</h3>
               <button
                 onClick={() => setShowDetails(false)}
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                className="text-muted hover:text-foreground"
               >
                 <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                   <path
@@ -98,7 +98,7 @@ export function SyncIndicator() {
               </button>
             </div>
 
-            <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+            <div className="space-y-2 text-sm text-muted-foreground">
               <div className="flex justify-between">
                 <span>Last sync:</span>
                 <span className="font-medium">{getLastSyncText()}</span>

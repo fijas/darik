@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { Layout } from '@/components/layout';
 import { Card, Button, Badge } from '@/components/ui';
 import { APP_META } from '@/lib/config';
+import ThemeToggle from '@/components/theme/ThemeToggle';
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -60,7 +61,7 @@ export default function SettingsPage() {
                 <p className="font-medium">Theme</p>
                 <p className="text-sm text-muted">Choose light or dark mode</p>
               </div>
-              <Badge>Auto</Badge>
+              <ThemeToggle />
             </div>
 
             <div className="flex items-center justify-between">

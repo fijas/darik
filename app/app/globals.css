@@ -17,7 +17,7 @@
   --warning: #f59e0b;
   --warning-foreground: #ffffff;
   --muted: #f1f5f9;
-  --muted-foreground: #64748b;
+  --muted-foreground: #475569; /* Darker slate-600 for better readability */
   --border: #e2e8f0;
   --card: #ffffff;
   --card-foreground: #171717;
@@ -25,8 +25,34 @@
   --ring: #3b82f6;
 }
 
+/* Dark mode - class-based for manual toggle */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: #1e293b;
+  --secondary-foreground: #f1f5f9;
+  --accent: #8b5cf6;
+  --accent-foreground: #ffffff;
+  --success: #10b981;
+  --success-foreground: #ffffff;
+  --danger: #ef4444;
+  --danger-foreground: #ffffff;
+  --warning: #f59e0b;
+  --warning-foreground: #ffffff;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --border: #334155;
+  --card: #0f172a;
+  --card-foreground: #ededed;
+  --input: #334155;
+  --ring: #3b82f6;
+}
+
+/* Auto mode - respects system preference */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light):not(.dark) {
     --background: #0a0a0a;
     --foreground: #ededed;
     --primary: #3b82f6;
@@ -94,6 +120,17 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Custom utility: text-muted should use muted-foreground color */
+.text-muted {
+  color: var(--muted-foreground) !important;
+}
+
+/* Ensure placeholder text uses muted-foreground for better contrast */
+::placeholder {
+  color: var(--muted-foreground);
+  opacity: 0.75;
 }
 
 /* Animations */

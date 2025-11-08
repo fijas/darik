@@ -85,12 +85,12 @@ export default function InstallPrompt() {
 
   return (
     <div className="fixed bottom-20 left-4 right-4 z-50 md:bottom-4 md:left-auto md:right-4 md:w-96">
-      <div className="rounded-lg border border-blue-200 bg-white p-4 shadow-lg">
+      <div className="rounded-lg border border-border bg-card p-4 shadow-lg">
         <div className="flex items-start gap-3">
           <div className="flex-shrink-0">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
               <svg
-                className="h-6 w-6 text-blue-600"
+                className="h-6 w-6 text-primary"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -106,21 +106,21 @@ export default function InstallPrompt() {
           </div>
 
           <div className="flex-1">
-            <h3 className="mb-1 text-sm font-semibold text-gray-900">Install Darik</h3>
-            <p className="mb-3 text-xs text-gray-600">
+            <h3 className="mb-1 text-sm font-semibold text-foreground">Install Darik</h3>
+            <p className="mb-3 text-xs text-muted-foreground">
               Install this app on your device for a better experience. Works offline!
             </p>
 
             <div className="flex gap-2">
               <button
                 onClick={handleInstall}
-                className="rounded-lg bg-blue-600 px-4 py-2 text-xs font-medium text-white hover:bg-blue-700"
+                className="rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90"
               >
                 Install
               </button>
               <button
                 onClick={handleDismiss}
-                className="rounded-lg border border-gray-300 px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50"
+                className="rounded-lg border border-border px-4 py-2 text-xs font-medium text-muted-foreground hover:bg-secondary"
               >
                 Not now
               </button>
@@ -129,7 +129,7 @@ export default function InstallPrompt() {
 
           <button
             onClick={handleDismiss}
-            className="flex-shrink-0 text-gray-400 hover:text-gray-600"
+            className="flex-shrink-0 text-muted hover:text-foreground"
           >
             <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
               <path
