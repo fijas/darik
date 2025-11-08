@@ -8,10 +8,16 @@ import type { Transaction, TransactionCategory, PaymentMethod } from '@/types';
 
 /**
  * Add a new transaction
- * @param transaction Transaction data (id will be generated if not provided)
+ * @param transaction Transaction data (id, createdTs, postedTs will be generated if not provided)
  * @returns Created transaction ID
  */
-export async function addTransaction(transaction: Omit<Transaction, 'id'> & { id?: string }): Promise<string> {
+export async function addTransaction(
+  transaction: Omit<Transaction, 'id' | 'createdTs' | 'postedTs' | 'syncStatus' | 'lastSyncedTs'> & {
+    id?: string;
+    createdTs?: number;
+    postedTs?: number;
+  }
+): Promise<string> {
   const id = transaction.id || crypto.randomUUID();
   const now = Date.now();
 
@@ -348,7 +354,13 @@ export async function countTransactions(filters?: TransactionFilters): Promise<n
  * @returns Array of created transaction IDs
  */
 export async function bulkAddTransactions(
-  transactions: Array<Omit<Transaction, 'id'> & { id?: string }>
+  transactions: Array<
+    Omit<Transaction, 'id' | 'createdTs' | 'postedTs' | 'syncStatus' | 'lastSyncedTs'> & {
+      id?: string;
+      createdTs?: number;
+      postedTs?: number;
+    }
+  >
 ): Promise<string[]> {
   const ids: string[] = [];
   const now = Date.now();

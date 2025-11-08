@@ -29,12 +29,12 @@ database_id = "dc75329a-04fd-4b2d-a0b5-bb3abe388fc5"
 preview_database_id = "local"
 
 [[env.staging.d1_databases]]
-binding = "DB"
+binding = "darik-finance-staging"
 database_name = "darik-finance-staging"
 database_id = "81012b04-1cd6-492b-a8d2-849d9a8bdc9c"
 
 [[env.production.d1_databases]]
-binding = "DB"
+binding = "darik-finance-prod"
 database_name = "darik-finance-prod"
 database_id = "f0bf169b-4673-4ff2-baad-4b168690e9aa"
 
@@ -45,16 +45,16 @@ database_id = "f0bf169b-4673-4ff2-baad-4b168690e9aa"
 # Then update the id values below
 
 [[kv_namespaces]]
-binding = "KV"
+binding = "darik_kv_dev"
 id = "18f8eabe73e243cd8236d9dca7449123"
 preview_id = "a98b0e3fe16a4fcb87cd9c7a3610ad0e"
 
 [[env.staging.kv_namespaces]]
-binding = "KV"
+binding = "darik_kv_staging"
 id = "dcf0703e71384df89da54c5764120829"
 
 [[env.production.kv_namespaces]]
-binding = "KV"
+binding = "darik_kv_prod"
 id = "cef8351a82774d22be229394326443a3"
 
 # R2 Bucket bindings (optional - for backups)

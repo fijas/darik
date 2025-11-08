@@ -14,7 +14,6 @@ import {
   getRecentTransactions,
   bulkAddTransactions,
 } from '../transactions';
-import type { Transaction } from '@/types';
 import { TransactionCategory, PaymentMethod, TransactionSource, Currency } from '@/types/enums';
 
 describe('Transaction Database Operations (Integration)', () => {
@@ -260,7 +259,7 @@ describe('Transaction Database Operations (Integration)', () => {
 
       const expenses = await getTransactions({ type: 'expense' });
       expect(expenses.length).toBe(1);
-      expect(expenses[0].type).toBe('expense');
+      expect(expenses[0]?.type).toBe('expense');
     });
   });
 
@@ -311,7 +310,7 @@ describe('Transaction Database Operations (Integration)', () => {
       const recent = await getRecentTransactions(2);
       expect(recent.length).toBe(2);
       // Most recent should be first
-      expect(recent[0].merchant).toBe('Store 2');
+      expect(recent[0]?.merchant).toBe('Store 2');
     });
   });
 
