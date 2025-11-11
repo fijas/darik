@@ -12,3 +12,4 @@ export * from './Tabs';
 export * from './Sheet';
 export * from './OfflineIndicator';
 export * from './SyncStatusIndicator';
+export * from './EmptyState';
