@@ -232,13 +232,13 @@ export class SyncService {
       );
     }
 
-    // Record in sync log
+    // Record in sync log (with data for insert/update operations)
     batch.push(
       this.db
         .prepare(
           `INSERT INTO sync_log (
-          id, user_id, table_name, record_id, clock, operation, timestamp, tombstone
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+          id, user_id, table_name, record_id, clock, operation, timestamp, tombstone, data
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
         )
         .bind(
           crypto.randomUUID(),
@@ -248,7 +248,8 @@ export class SyncService {
           nextClock,
           operation,
           now,
-          operation === 'delete' ? 1 : 0
+          operation === 'delete' ? 1 : 0,
+          (operation === 'insert' || operation === 'update') && data ? JSON.stringify(data) : null
         )
     );
 
