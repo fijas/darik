@@ -703,17 +703,17 @@
 - [x] Create environment configurations (dev, staging, production)
 - [x] Set up wrangler.toml with staging and production envs
 - [x] Create environment variable files (.env.example, .env.staging, .env.production)
-- [ ] Create Cloudflare account (user action required)
-- [ ] Create D1 databases for staging and production (user action required)
-  - [ ] Production: `darik-finance-prod`
-  - [ ] Staging: `darik-finance-staging`
-- [ ] Create KV namespaces
-  - [ ] Production: `darik-kv-prod`
-  - [ ] Staging: `darik-kv-staging`
+- [x] Create Cloudflare account (user action required)
+- [x] Create D1 databases for staging and production (user action required)
+  - [x] Production: `darik-finance-prod`
+  - [x] Staging: `darik-finance-staging`
+- [x] Create KV namespaces
+  - [x] Production: `darik-kv-prod`
+  - [x] Staging: `darik-kv-staging`
 - [ ] Create R2 buckets (optional)
   - [ ] `darik-backups-prod`
   - [ ] `darik-backups-staging`
-- [ ] Configure wrangler.toml for multiple environments
+- [x] Configure wrangler.toml for multiple environments
 
 ### 11.2 GitHub Actions Setup ✅
 
