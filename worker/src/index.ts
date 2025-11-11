@@ -5,14 +5,33 @@ import syncRoutes from './routes/sync';
 import { pricesRouter } from './routes/prices';
 import { authMiddleware } from './middleware/auth';
 import { rateLimiter } from './middleware/rate-limit';
+import { securityHeaders } from './middleware/security-headers';
 
 const app = new Hono<{ Bindings: Env }>();
+
+// Security headers for all responses
+app.use('/*', securityHeaders);
 
 // CORS configuration
 app.use(
   '/*',
   cors({
-    origin: (origin) => origin, // TODO: Restrict to app domain in production
+    origin: (origin) => {
+      // Allow localhost for development
+      if (origin && (origin.includes('localhost') || origin.includes('127.0.0.1'))) {
+        return origin;
+      }
+      // Allow Cloudflare Pages domains (staging and production)
+      if (origin && origin.match(/https:\/\/.*\.darik-finance\.pages\.dev$/)) {
+        return origin;
+      }
+      // Allow custom production domain (if configured)
+      const allowedOrigins = [
+        'https://darik-finance.pages.dev',
+        'https://staging.darik-finance.pages.dev',
+      ];
+      return allowedOrigins.includes(origin || '') ? origin : allowedOrigins[0];
+    },
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowHeaders: ['Content-Type', 'Authorization'],
     exposeHeaders: [
