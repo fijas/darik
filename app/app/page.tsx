@@ -68,8 +68,9 @@ export default function CapturePage() {
       } else {
         // Create new transaction
         const now = Date.now();
+        const { getUserId } = await import('@/lib/auth/user-id');
         await addTransaction({
-          userId: 'local', // Will be set during first sync
+          userId: getUserId(),
           type: expense.type || 'expense', // Use parsed type, default to expense
           createdTs: now,
           postedTs: now,

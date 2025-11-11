@@ -16,6 +16,7 @@ import type {
   SyncStatus,
 } from './types';
 import { encryptBatch, decryptBatch } from '../crypto/sync-encryption';
+import { getUserId } from '../auth/user-id';
 
 export class SyncEngine {
   private config: SyncConfig;
@@ -319,22 +320,9 @@ let syncEngine: SyncEngine | null = null;
  */
 export function getSyncEngine(): SyncEngine {
   if (!syncEngine) {
-    // Generate or retrieve a persistent user ID (UUID format for auth middleware)
-    let userId = 'local-user-00000000-0000-0000-0000-000000000000';
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('darik-user-id');
-      if (stored) {
-        userId = stored;
-      } else {
-        // Generate a valid UUID v4
-        userId = crypto.randomUUID();
-        localStorage.setItem('darik-user-id', userId);
-      }
-    }
-
     const config: SyncConfig = {
       workerUrl: process.env.NEXT_PUBLIC_WORKER_URL || 'http://localhost:8787',
-      userId,
+      userId: getUserId(),
       enabled: process.env.NEXT_PUBLIC_ENABLE_SYNC === 'true',
       autoSync: true,
       syncInterval: 5 * 60 * 1000, // 5 minutes
