@@ -39,8 +39,8 @@ export class SyncService {
         timestamp,
         tombstone
       FROM sync_log
-      WHERE userId = ?
-        AND tableName = ?
+      WHERE user_id = ?
+        AND table_name = ?
         AND clock > ?
       ORDER BY clock ASC
       LIMIT ?
@@ -76,7 +76,7 @@ export class SyncService {
 
     // Get current server clock for this table
     const clockResult = await this.db
-      .prepare('SELECT MAX(clock) as maxClock FROM sync_log WHERE userId = ? AND tableName = ?')
+      .prepare('SELECT MAX(clock) as maxClock FROM sync_log WHERE user_id = ? AND table_name = ?')
       .bind(userId, tableName)
       .first<{ maxClock: number | null }>();
 
@@ -122,7 +122,7 @@ export class SyncService {
 
     // Get current server clock
     const clockResult = await this.db
-      .prepare('SELECT MAX(clock) as maxClock FROM sync_log WHERE userId = ? AND tableName = ?')
+      .prepare('SELECT MAX(clock) as maxClock FROM sync_log WHERE user_id = ? AND table_name = ?')
       .bind(userId, tableName)
       .first<{ maxClock: number | null }>();
 
@@ -165,31 +165,31 @@ export class SyncService {
         const tx = data as any;
         const upsertQuery = `
           INSERT INTO transactions (
-            id, userId, type, createdTs, postedTs, amountPaise, currency,
-            merchant, category, method, account, note, rawText, tags,
-            reference, location, attachments, splitWith, isRecurring,
-            recurrenceRule, recurrenceEndTs, parentTransactionId, source, enc
+            id, user_id, type, created_ts, posted_ts, amount_paise, currency,
+            merchant, category, method, account, note, raw_text, tags,
+            reference, location, attachments, split_with, is_recurring,
+            recurrence_rule, recurrence_end_ts, parent_transaction_id, source, enc
           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
           ON CONFLICT(id) DO UPDATE SET
             type = excluded.type,
-            postedTs = excluded.postedTs,
-            amountPaise = excluded.amountPaise,
+            posted_ts = excluded.posted_ts,
+            amount_paise = excluded.amount_paise,
             currency = excluded.currency,
             merchant = excluded.merchant,
             category = excluded.category,
             method = excluded.method,
             account = excluded.account,
             note = excluded.note,
-            rawText = excluded.rawText,
+            raw_text = excluded.raw_text,
             tags = excluded.tags,
             reference = excluded.reference,
             location = excluded.location,
             attachments = excluded.attachments,
-            splitWith = excluded.splitWith,
-            isRecurring = excluded.isRecurring,
-            recurrenceRule = excluded.recurrenceRule,
-            recurrenceEndTs = excluded.recurrenceEndTs,
-            parentTransactionId = excluded.parentTransactionId,
+            split_with = excluded.split_with,
+            is_recurring = excluded.is_recurring,
+            recurrence_rule = excluded.recurrence_rule,
+            recurrence_end_ts = excluded.recurrence_end_ts,
+            parent_transaction_id = excluded.parent_transaction_id,
             source = excluded.source,
             enc = excluded.enc
         `;
@@ -227,7 +227,7 @@ export class SyncService {
       // Soft delete with tombstone
       batch.push(
         this.db
-          .prepare(`UPDATE ${tableName} SET deletedAt = ? WHERE id = ? AND userId = ?`)
+          .prepare(`UPDATE ${tableName} SET deleted_at = ? WHERE id = ? AND user_id = ?`)
           .bind(now, id, userId)
       );
     }
@@ -237,7 +237,7 @@ export class SyncService {
       this.db
         .prepare(
           `INSERT INTO sync_log (
-          id, userId, tableName, recordId, clock, operation, timestamp, tombstone
+          id, user_id, table_name, record_id, clock, operation, timestamp, tombstone
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
         )
         .bind(
@@ -261,7 +261,7 @@ export class SyncService {
    */
   private async getNextClock(userId: string, tableName: string): Promise<number> {
     const result = await this.db
-      .prepare('SELECT MAX(clock) as maxClock FROM sync_log WHERE userId = ? AND tableName = ?')
+      .prepare('SELECT MAX(clock) as maxClock FROM sync_log WHERE user_id = ? AND table_name = ?')
       .bind(userId, tableName)
       .first<{ maxClock: number | null }>();
 
@@ -290,7 +290,7 @@ export class SyncService {
   async getStats(userId: string, tableName?: string): Promise<any> {
     let query = `
       SELECT
-        tableName,
+        table_name,
         COUNT(*) as totalOps,
         SUM(CASE WHEN operation = 'insert' THEN 1 ELSE 0 END) as inserts,
         SUM(CASE WHEN operation = 'update' THEN 1 ELSE 0 END) as updates,
@@ -298,17 +298,17 @@ export class SyncService {
         MAX(clock) as maxClock,
         MAX(timestamp) as lastSync
       FROM sync_log
-      WHERE userId = ?
+      WHERE user_id = ?
     `;
 
     const bindings: any[] = [userId];
 
     if (tableName) {
-      query += ' AND tableName = ?';
+      query += ' AND table_name = ?';
       bindings.push(tableName);
     }
 
-    query += ' GROUP BY tableName';
+    query += ' GROUP BY table_name';
 
     const result = await this.db.prepare(query).bind(...bindings).all();
     return result.results || [];
