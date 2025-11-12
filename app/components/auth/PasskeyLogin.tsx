@@ -22,6 +22,7 @@ interface PasskeyLoginProps {
 export default function PasskeyLogin({ onLoginSuccess, onError, onSwitchToSetup }: PasskeyLoginProps) {
   const [loginMethod, setLoginMethod] = useState<'passkey' | 'password' | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
@@ -71,6 +72,11 @@ export default function PasskeyLogin({ onLoginSuccess, onError, onSwitchToSetup 
   };
 
   const handlePasswordLogin = async () => {
+    if (!email) {
+      onError?.('Please enter your email address');
+      return;
+    }
+
     if (!password) {
       onError?.('Please enter your password');
       return;
@@ -78,14 +84,36 @@ export default function PasskeyLogin({ onLoginSuccess, onError, onSwitchToSetup 
 
     setIsLoading(true);
     try {
-      // Get salt from stored key metadata
-      const metadata = await getKeyMetadata();
-      if (!metadata?.salt) {
-        throw new Error('Encryption key metadata not found');
+      // Try to restore key from server (for new device or after logout)
+      const { restoreKeyFromServer, hasKeyBackup } = await import('@/lib/crypto/key-backup');
+      const { getStoredEmail } = await import('@/lib/auth/user-id');
+      const workerUrl = process.env.NEXT_PUBLIC_WORKER_URL || 'http://localhost:8787';
+
+      const storedEmail = getStoredEmail();
+      const needsRestore = !storedEmail || storedEmail !== email;
+
+      if (needsRestore) {
+        // Check if account exists
+        const exists = await hasKeyBackup(email, workerUrl);
+        if (!exists) {
+          onError?.('No account found with this email. Please sign up first.');
+          return;
+        }
+
+        // Restore key from server
+        await restoreKeyFromServer(email, password, workerUrl);
+      } else {
+        // Use locally stored key with password
+        const metadata = await getKeyMetadata();
+        if (!metadata?.salt) {
+          // Fallback to restore from server
+          await restoreKeyFromServer(email, password, workerUrl);
+        } else {
+          const salt = new Uint8Array(metadata.salt);
+          await authenticateWithPassword(password, salt);
+        }
       }
 
-      const salt = new Uint8Array(metadata.salt);
-      await authenticateWithPassword(password, salt);
       onLoginSuccess();
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Authentication failed';
@@ -193,7 +221,22 @@ export default function PasskeyLogin({ onLoginSuccess, onError, onSwitchToSetup 
 
       <Card className="p-6 space-y-4">
         <div className="space-y-2">
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Email Address
+          </label>
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="your.email@example.com"
+            disabled={isLoading}
+            autoComplete="email"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Password
           </label>
           <div className="relative">
@@ -206,7 +249,7 @@ export default function PasskeyLogin({ onLoginSuccess, onError, onSwitchToSetup 
               disabled={isLoading}
               autoComplete="current-password"
               onKeyDown={(e) => {
-                if (e.key === 'Enter' && password) {
+                if (e.key === 'Enter' && email && password) {
                   handlePasswordLogin();
                 }
               }}
@@ -235,10 +278,10 @@ export default function PasskeyLogin({ onLoginSuccess, onError, onSwitchToSetup 
 
         <Button
           onClick={handlePasswordLogin}
-          disabled={isLoading || !password}
+          disabled={isLoading || !email || !password}
           className="w-full"
         >
-          {isLoading ? 'Decrypting...' : 'Unlock'}
+          {isLoading ? 'Signing in...' : 'Sign In'}
         </Button>
 
         {authMethod === 'passkey' && hasPasskey() && (

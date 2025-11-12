@@ -54,6 +54,11 @@ export default function PasskeySetup({ onSetupComplete, onError }: PasskeySetupP
   };
 
   const handlePasswordSetup = async () => {
+    if (!email) {
+      onError?.('Please enter your email address');
+      return;
+    }
+
     if (!password || password !== confirmPassword) {
       onError?.('Passwords do not match');
       return;
@@ -66,7 +71,11 @@ export default function PasskeySetup({ onSetupComplete, onError }: PasskeySetupP
 
     setIsLoading(true);
     try {
-      await registerWithPassword(password);
+      // Backup key to server for cross-device access
+      const { backupKeyToServer } = await import('@/lib/crypto/key-backup');
+      const workerUrl = process.env.NEXT_PUBLIC_WORKER_URL || 'http://localhost:8787';
+
+      await backupKeyToServer(email, password, workerUrl);
       onSetupComplete();
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Password setup failed';
@@ -254,7 +263,25 @@ export default function PasskeySetup({ onSetupComplete, onError }: PasskeySetupP
 
       <Card className="p-6 space-y-4">
         <div className="space-y-2">
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Email Address
+          </label>
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="your.email@example.com"
+            disabled={isLoading}
+            autoComplete="email"
+          />
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            Used to sync your data across devices
+          </p>
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Password
           </label>
           <Input
@@ -266,13 +293,13 @@ export default function PasskeySetup({ onSetupComplete, onError }: PasskeySetupP
             disabled={isLoading}
             autoComplete="new-password"
           />
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-gray-500 dark:text-gray-400">
             Minimum 12 characters recommended
           </p>
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Confirm Password
           </label>
           <Input
@@ -288,10 +315,10 @@ export default function PasskeySetup({ onSetupComplete, onError }: PasskeySetupP
 
         <Button
           onClick={handlePasswordSetup}
-          disabled={isLoading || !password || !confirmPassword || password !== confirmPassword}
+          disabled={isLoading || !email || !password || !confirmPassword || password !== confirmPassword}
           className="w-full"
         >
-          {isLoading ? 'Setting up...' : 'Create Encryption Key'}
+          {isLoading ? 'Setting up...' : 'Create Account'}
         </Button>
       </Card>
 
