@@ -19,6 +19,9 @@ import {
   deleteAllData,
 } from '@/lib/db/export';
 import { formatDistanceToNow } from 'date-fns';
+import { clearUserId } from '@/lib/auth/user-id';
+import { deletePasskey } from '@/lib/crypto/passkey-wrapper';
+import { deleteKey } from '@/lib/crypto/key-storage';
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -99,6 +102,31 @@ export default function SettingsPage() {
     } catch (error) {
       console.error('Delete failed:', error);
       alert('Failed to delete data. Please try again.');
+    }
+  };
+
+  const handleLogout = async () => {
+    const confirmed = confirm(
+      'Are you sure you want to log out?\n\nThis will:\n- Clear your encryption key from this device\n- Lock access to your encrypted data\n- You will need to authenticate again to access the app\n\nNote: Your data will remain synced in the cloud.'
+    );
+
+    if (!confirmed) return;
+
+    try {
+      // Clear encryption key
+      await deleteKey('master');
+
+      // Clear passkey metadata if exists
+      deletePasskey();
+
+      // Clear user ID
+      clearUserId();
+
+      // Redirect to login
+      router.push('/auth/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      alert('Failed to log out. Please try again.');
     }
   };
 
@@ -259,6 +287,23 @@ export default function SettingsPage() {
                 This action cannot be undone
               </p>
             </div>
+          </div>
+        </Card>
+
+        {/* Account */}
+        <Card>
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-lg font-semibold">Account</h3>
+              <p className="text-sm text-muted">Manage your account and authentication</p>
+            </div>
+
+            <Button variant="outline" fullWidth onClick={handleLogout}>
+              Log Out
+            </Button>
+            <p className="text-xs text-muted text-center">
+              Clears encryption key and locks the app on this device
+            </p>
           </div>
         </Card>
 
