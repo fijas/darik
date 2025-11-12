@@ -41,33 +41,33 @@ export default function LoginPage() {
 
   if (mode === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="text-center space-y-4">
           <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4">
       {/* Error Toast */}
       {error && (
         <div className="fixed top-4 right-4 left-4 md:left-auto md:w-96 z-50 animate-slide-down">
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 shadow-lg">
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 shadow-lg">
             <div className="flex items-start gap-3">
-              <svg className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                       d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <div className="flex-1">
-                <p className="font-medium text-red-800">Error</p>
-                <p className="text-sm text-red-700 mt-1">{error}</p>
+                <p className="font-medium text-red-800 dark:text-red-200">Error</p>
+                <p className="text-sm text-red-700 dark:text-red-300 mt-1">{error}</p>
               </div>
               <button
                 onClick={() => setError(null)}
-                className="text-red-400 hover:text-red-600"
+                className="text-red-400 hover:text-red-600 dark:hover:text-red-300"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -94,10 +94,10 @@ export default function LoginPage() {
 
       {/* Footer */}
       <div className="mt-12 text-center">
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-gray-500 dark:text-gray-400">
           Darik Finance - Your data, encrypted and private
         </p>
-        <p className="text-xs text-gray-400 mt-1">
+        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
           End-to-end encryption ensures only you can access your financial data
         </p>
       </div>

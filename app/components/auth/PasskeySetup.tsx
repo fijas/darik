@@ -80,8 +80,8 @@ export default function PasskeySetup({ onSetupComplete, onError }: PasskeySetupP
     return (
       <div className="max-w-md mx-auto p-6 space-y-6">
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold">Secure Your Data</h1>
-          <p className="text-gray-600">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Secure Your Data</h1>
+          <p className="text-gray-600 dark:text-gray-400">
             Choose how you want to protect your financial data with end-to-end encryption
           </p>
         </div>
@@ -98,8 +98,8 @@ export default function PasskeySetup({ onSetupComplete, onError }: PasskeySetupP
                   </svg>
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-lg">Passkey (Recommended)</h3>
-                  <p className="text-sm text-gray-600">
+                  <h3 className="font-semibold text-lg text-gray-900 dark:text-white">Passkey (Recommended)</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
                     Use fingerprint, Face ID, or device PIN for secure and convenient access
                   </p>
                   <div className="mt-2 flex flex-wrap gap-2">
@@ -122,8 +122,8 @@ export default function PasskeySetup({ onSetupComplete, onError }: PasskeySetupP
                 </svg>
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-lg">Password</h3>
-                <p className="text-sm text-gray-600">
+                <h3 className="font-semibold text-lg text-gray-900 dark:text-white">Password</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Use a strong password to derive your encryption key
                 </p>
                 <div className="mt-2 flex flex-wrap gap-2">
@@ -136,7 +136,7 @@ export default function PasskeySetup({ onSetupComplete, onError }: PasskeySetupP
         </div>
 
         <div className="text-center">
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-gray-500 dark:text-gray-400">
             Your data is encrypted on your device. Neither method sends your password or biometrics to any server.
           </p>
         </div>
@@ -150,7 +150,7 @@ export default function PasskeySetup({ onSetupComplete, onError }: PasskeySetupP
       <div className="max-w-md mx-auto p-6 space-y-6">
         <button
           onClick={() => setSetupMethod(null)}
-          className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+          className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -159,8 +159,8 @@ export default function PasskeySetup({ onSetupComplete, onError }: PasskeySetupP
         </button>
 
         <div className="space-y-2">
-          <h1 className="text-2xl font-bold">Set Up Passkey</h1>
-          <p className="text-gray-600">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Set Up Passkey</h1>
+          <p className="text-gray-600 dark:text-gray-400">
             Create a secure passkey using your device's biometric authentication
           </p>
         </div>
