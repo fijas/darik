@@ -19,6 +19,7 @@ interface PasskeySetupProps {
 export default function PasskeySetup({ onSetupComplete, onError }: PasskeySetupProps) {
   const [setupMethod, setSetupMethod] = useState<'passkey' | 'password' | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [password, setPassword] = useState('');

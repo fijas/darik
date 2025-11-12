@@ -3,6 +3,7 @@ import { cors } from 'hono/cors';
 import type { Env } from './types';
 import syncRoutes from './routes/sync';
 import { pricesRouter } from './routes/prices';
+import keyBackupRoutes from './routes/key-backup';
 import { authMiddleware } from './middleware/auth';
 import { rateLimiter } from './middleware/rate-limit';
 import { securityHeaders } from './middleware/security-headers';
@@ -76,6 +77,10 @@ app.route('/api/sync', syncRoutes);
 app.use('/api/prices/manual', authMiddleware, rateLimiter('sync'));
 app.use('/api/prices/fetch', rateLimiter('global')); // Cron or manual trigger
 app.route('/api/prices', pricesRouter);
+
+// Key backup routes - rate limiting on GET (to prevent brute force), no auth required for initial setup
+app.use('/api/auth/key-backup', rateLimiter('auth'));
+app.route('/api/auth', keyBackupRoutes);
 
 // 404 handler
 app.notFound((c) => {
