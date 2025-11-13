@@ -3,7 +3,7 @@
  * Handles encrypted master key backup to server for cross-device access
  */
 
-import { generateKey, wrapKey, unwrapKey, deriveKeyFromPassword } from './encryption';
+import { generateKey, deriveKeyFromPassword } from './encryption';
 import { storeKey, retrieveKey } from './key-storage';
 import { generateUserId, setUserId, setStoredEmail } from '../auth/user-id';
 

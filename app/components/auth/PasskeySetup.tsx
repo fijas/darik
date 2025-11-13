@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import {
   registerPasskey,
-  registerWithPassword,
   isPlatformAuthenticatorAvailable,
   isWebAuthnSupported,
 } from '@/lib/crypto/passkey-wrapper';
