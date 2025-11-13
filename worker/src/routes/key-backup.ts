@@ -118,18 +118,20 @@ app.get('/key-backup', async (c) => {
 
 /**
  * Delete key backup (for account deletion)
- * DELETE /api/auth/key-backup
+ * DELETE /api/auth/key-backup?email=user@example.com
  */
 app.delete('/key-backup', async (c) => {
   try {
-    const userId = c.get('userId'); // From auth middleware
+    const email = c.req.query('email');
 
-    if (!userId) {
-      return c.json({ error: 'Unauthorized' }, 401);
+    if (!email) {
+      return c.json({ error: 'Missing required parameter: email' }, 400);
     }
 
-    await c.env.DB.prepare('DELETE FROM key_backup WHERE user_id = ?')
-      .bind(userId)
+    const normalizedEmail = email.toLowerCase().trim();
+
+    await c.env.DB.prepare('DELETE FROM key_backup WHERE email = ?')
+      .bind(normalizedEmail)
       .run();
 
     return c.json({
